@@ -1,0 +1,470 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		BFB62AF832275CC1FA7C1D28 /* Pods_Routefire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34BC3A939C1E0D8C482FB926 /* Pods_Routefire.framework */; };
+		C43CAF591E1F14F000370D52 /* DestinationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43CAF581E1F14F000370D52 /* DestinationTableViewCell.swift */; };
+		C469AAAE1E1F31850009A15F /* BottomBorderTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C469AAAD1E1F31850009A15F /* BottomBorderTextField.swift */; };
+		C4746FE71E1E082C00832FC3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4746FE61E1E082C00832FC3 /* AppDelegate.swift */; };
+		C4746FEC1E1E082C00832FC3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4746FEA1E1E082C00832FC3 /* Main.storyboard */; };
+		C4746FEF1E1E082C00832FC3 /* Routefire.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C4746FED1E1E082C00832FC3 /* Routefire.xcdatamodeld */; };
+		C4746FF11E1E082C00832FC3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C4746FF01E1E082C00832FC3 /* Assets.xcassets */; };
+		C4746FF41E1E082C00832FC3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4746FF21E1E082C00832FC3 /* LaunchScreen.storyboard */; };
+		C4B305D71E1E0A2300C56A99 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B305D61E1E0A2300C56A99 /* Secrets.swift */; };
+		C4B305D91E1E0AEF00C56A99 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B305D81E1E0AEF00C56A99 /* HomeViewController.swift */; };
+		C4B305DB1E1E13D600C56A99 /* KeyframeAnimationOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B305DA1E1E13D600C56A99 /* KeyframeAnimationOptions.swift */; };
+		C4B305DD1E1E4BBE00C56A99 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B305DC1E1E4BBE00C56A99 /* Constants.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		34BC3A939C1E0D8C482FB926 /* Pods_Routefire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Routefire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5C223F96DCEC47D1C0B8AF18 /* Pods-Routefire.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Routefire.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Routefire/Pods-Routefire.debug.xcconfig"; sourceTree = "<group>"; };
+		77BB0D6CCC46922D13B4BFF0 /* Pods-Routefire.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Routefire.release.xcconfig"; path = "Pods/Target Support Files/Pods-Routefire/Pods-Routefire.release.xcconfig"; sourceTree = "<group>"; };
+		C43CAF581E1F14F000370D52 /* DestinationTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DestinationTableViewCell.swift; sourceTree = "<group>"; };
+		C469AAAD1E1F31850009A15F /* BottomBorderTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BottomBorderTextField.swift; sourceTree = "<group>"; };
+		C4746FE31E1E082C00832FC3 /* Routefire.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Routefire.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C4746FE61E1E082C00832FC3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		C4746FEB1E1E082C00832FC3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		C4746FEE1E1E082C00832FC3 /* Routefire.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Routefire.xcdatamodel; sourceTree = "<group>"; };
+		C4746FF01E1E082C00832FC3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C4746FF31E1E082C00832FC3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		C4746FF51E1E082C00832FC3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C4B305D61E1E0A2300C56A99 /* Secrets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
+		C4B305D81E1E0AEF00C56A99 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		C4B305DA1E1E13D600C56A99 /* KeyframeAnimationOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyframeAnimationOptions.swift; sourceTree = "<group>"; };
+		C4B305DC1E1E4BBE00C56A99 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C4746FE01E1E082C00832FC3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BFB62AF832275CC1FA7C1D28 /* Pods_Routefire.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		40B50608910CC459277175BB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				34BC3A939C1E0D8C482FB926 /* Pods_Routefire.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		AE3BEED239677E76C1E80767 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				5C223F96DCEC47D1C0B8AF18 /* Pods-Routefire.debug.xcconfig */,
+				77BB0D6CCC46922D13B4BFF0 /* Pods-Routefire.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		C4746FDA1E1E082C00832FC3 = {
+			isa = PBXGroup;
+			children = (
+				C4746FE51E1E082C00832FC3 /* Routefire */,
+				C4746FE41E1E082C00832FC3 /* Products */,
+				AE3BEED239677E76C1E80767 /* Pods */,
+				40B50608910CC459277175BB /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		C4746FE41E1E082C00832FC3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C4746FE31E1E082C00832FC3 /* Routefire.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C4746FE51E1E082C00832FC3 /* Routefire */ = {
+			isa = PBXGroup;
+			children = (
+				C4746FE61E1E082C00832FC3 /* AppDelegate.swift */,
+				C4B305CF1E1E096E00C56A99 /* View */,
+				C4B305D01E1E097200C56A99 /* Interactor */,
+				C4B305D11E1E097800C56A99 /* Presenter */,
+				C4B305D21E1E097E00C56A99 /* Entity */,
+				C4B305D31E1E098400C56A99 /* Router */,
+				C4B305D41E1E0A0100C56A99 /* Other */,
+			);
+			path = Routefire;
+			sourceTree = "<group>";
+		};
+		C4B305CF1E1E096E00C56A99 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				C4B305D81E1E0AEF00C56A99 /* HomeViewController.swift */,
+				C43CAF581E1F14F000370D52 /* DestinationTableViewCell.swift */,
+				C469AAAD1E1F31850009A15F /* BottomBorderTextField.swift */,
+				C4746FEA1E1E082C00832FC3 /* Main.storyboard */,
+				C4746FF21E1E082C00832FC3 /* LaunchScreen.storyboard */,
+				C4746FF01E1E082C00832FC3 /* Assets.xcassets */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		C4B305D01E1E097200C56A99 /* Interactor */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Interactor;
+			sourceTree = "<group>";
+		};
+		C4B305D11E1E097800C56A99 /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Presenter;
+			sourceTree = "<group>";
+		};
+		C4B305D21E1E097E00C56A99 /* Entity */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Entity;
+			sourceTree = "<group>";
+		};
+		C4B305D31E1E098400C56A99 /* Router */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Router;
+			sourceTree = "<group>";
+		};
+		C4B305D41E1E0A0100C56A99 /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				C4B305DA1E1E13D600C56A99 /* KeyframeAnimationOptions.swift */,
+				C4B305D61E1E0A2300C56A99 /* Secrets.swift */,
+				C4B305DC1E1E4BBE00C56A99 /* Constants.swift */,
+				C4746FF51E1E082C00832FC3 /* Info.plist */,
+				C4746FED1E1E082C00832FC3 /* Routefire.xcdatamodeld */,
+			);
+			name = Other;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		C4746FE21E1E082C00832FC3 /* Routefire */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C4746FF81E1E082C00832FC3 /* Build configuration list for PBXNativeTarget "Routefire" */;
+			buildPhases = (
+				CFFBA73F907A223BC4402F85 /* [CP] Check Pods Manifest.lock */,
+				C4746FDF1E1E082C00832FC3 /* Sources */,
+				C4746FE01E1E082C00832FC3 /* Frameworks */,
+				C4746FE11E1E082C00832FC3 /* Resources */,
+				6F108588BC373E631BEA7591 /* [CP] Embed Pods Frameworks */,
+				E8A8FE62977973AFFC015DC7 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Routefire;
+			productName = Routefire;
+			productReference = C4746FE31E1E082C00832FC3 /* Routefire.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C4746FDB1E1E082C00832FC3 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0820;
+				LastUpgradeCheck = 0820;
+				ORGANIZATIONNAME = "William Robinson";
+				TargetAttributes = {
+					C4746FE21E1E082C00832FC3 = {
+						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = TWPE6ND5AF;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = C4746FDE1E1E082C00832FC3 /* Build configuration list for PBXProject "Routefire" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = C4746FDA1E1E082C00832FC3;
+			productRefGroup = C4746FE41E1E082C00832FC3 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C4746FE21E1E082C00832FC3 /* Routefire */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		C4746FE11E1E082C00832FC3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C4746FF41E1E082C00832FC3 /* LaunchScreen.storyboard in Resources */,
+				C4746FF11E1E082C00832FC3 /* Assets.xcassets in Resources */,
+				C4746FEC1E1E082C00832FC3 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		6F108588BC373E631BEA7591 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Routefire/Pods-Routefire-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CFFBA73F907A223BC4402F85 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		E8A8FE62977973AFFC015DC7 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Routefire/Pods-Routefire-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C4746FDF1E1E082C00832FC3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C43CAF591E1F14F000370D52 /* DestinationTableViewCell.swift in Sources */,
+				C4746FE71E1E082C00832FC3 /* AppDelegate.swift in Sources */,
+				C469AAAE1E1F31850009A15F /* BottomBorderTextField.swift in Sources */,
+				C4B305DB1E1E13D600C56A99 /* KeyframeAnimationOptions.swift in Sources */,
+				C4B305D71E1E0A2300C56A99 /* Secrets.swift in Sources */,
+				C4746FEF1E1E082C00832FC3 /* Routefire.xcdatamodeld in Sources */,
+				C4B305D91E1E0AEF00C56A99 /* HomeViewController.swift in Sources */,
+				C4B305DD1E1E4BBE00C56A99 /* Constants.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		C4746FEA1E1E082C00832FC3 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C4746FEB1E1E082C00832FC3 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		C4746FF21E1E082C00832FC3 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C4746FF31E1E082C00832FC3 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		C4746FF61E1E082C00832FC3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		C4746FF71E1E082C00832FC3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		C4746FF91E1E082C00832FC3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5C223F96DCEC47D1C0B8AF18 /* Pods-Routefire.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = TWPE6ND5AF;
+				INFOPLIST_FILE = Routefire/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.WilliamRobinson.Routefire;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		C4746FFA1E1E082C00832FC3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 77BB0D6CCC46922D13B4BFF0 /* Pods-Routefire.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = TWPE6ND5AF;
+				INFOPLIST_FILE = Routefire/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.WilliamRobinson.Routefire;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C4746FDE1E1E082C00832FC3 /* Build configuration list for PBXProject "Routefire" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C4746FF61E1E082C00832FC3 /* Debug */,
+				C4746FF71E1E082C00832FC3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C4746FF81E1E082C00832FC3 /* Build configuration list for PBXNativeTarget "Routefire" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C4746FF91E1E082C00832FC3 /* Debug */,
+				C4746FFA1E1E082C00832FC3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		C4746FED1E1E082C00832FC3 /* Routefire.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				C4746FEE1E1E082C00832FC3 /* Routefire.xcdatamodel */,
+			);
+			currentVersion = C4746FEE1E1E082C00832FC3 /* Routefire.xcdatamodel */;
+			path = Routefire.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = C4746FDB1E1E082C00832FC3 /* Project object */;
+}

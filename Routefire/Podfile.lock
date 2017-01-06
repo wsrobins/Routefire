@@ -1,0 +1,22 @@
+PODS:
+  - GoogleMaps (2.1.1):
+    - GoogleMaps/Maps (= 2.1.1)
+  - GoogleMaps/Base (2.1.1)
+  - GoogleMaps/Maps (2.1.1):
+    - GoogleMaps/Base
+  - IQKeyboardManagerSwift (4.0.7)
+  - TouchVisualizer (2.0.1)
+
+DEPENDENCIES:
+  - GoogleMaps
+  - IQKeyboardManagerSwift
+  - TouchVisualizer
+
+SPEC CHECKSUMS:
+  GoogleMaps: a5b5bbe47734e2443bde781a6aa64e69fdb6d785
+  IQKeyboardManagerSwift: 58bbcf46b5cf9fd4ed625d28a60cb2fbae4ab0f4
+  TouchVisualizer: d1bd1b438d084245332c222d9e14416c271c5f25
+
+PODFILE CHECKSUM: f187e990f505dd1aeb87ed38504685a2a93b0792
+
+COCOAPODS: 1.1.1
