@@ -2,7 +2,14 @@ platform :ios, '10.0'
 
 target 'Routefire' do
   use_frameworks!
+
   pod 'GoogleMaps'
+  pod 'GooglePlaces'
+  pod 'GooglePlacePicker'
+  pod 'LyftSDK'
+  pod 'Alamofire'
+  pod 'ReachabilitySwift'
+  pod 'SnapKit'
   pod 'IQKeyboardManagerSwift'
   pod 'TouchVisualizer'
 end

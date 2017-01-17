@@ -23,7 +23,7 @@
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Routefire" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r3K-dz-5fb">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <fontDescription key="fontDescription" type="system" weight="ultraLight" pointSize="44"/>
+                                <fontDescription key="fontDescription" type="system" weight="ultraLight" pointSize="66"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>

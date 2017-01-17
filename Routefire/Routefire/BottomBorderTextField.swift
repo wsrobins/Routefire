@@ -17,30 +17,29 @@ class BottomBorderTextField: UITextField , UITextFieldDelegate {
     
     delegate = self
     
-    border.borderColor = UIColor.lightGray.withAlphaComponent(0.5).cgColor
+    border.borderColor = UIColor.lightGray.withAlphaComponent(0.4).cgColor
     border.borderWidth = width
-    border.frame = CGRect(x: 0,
-                          y: self.frame.size.height - width,
-                          width:  self.frame.size.width,
-                          height: self.frame.size.height)
+    border.frame = CGRect(x: 0, y: self.frame.size.height - width, width:  self.frame.size.width, height: width)
     
     self.layer.addSublayer(border)
     self.layer.masksToBounds = true
   }
   
   override func draw(_ rect: CGRect) {
-    border.frame = CGRect(x: 0,
-                          y: self.frame.size.height - width,
-                          width:  self.frame.size.width,
-                          height: self.frame.size.height)
+    border.frame = CGRect(x: 0, y: self.frame.size.height - width, width:  self.frame.size.width, height: width)
   }
   
   override func awakeFromNib() {
     super.awakeFromNib()
     
-    border.frame = CGRect(x: 0,
-                          y: self.frame.size.height - width,
-                          width:  self.frame.size.width,
-                          height: self.frame.size.height)
+    border.frame = CGRect(x: 0, y: self.frame.size.height - width, width:  self.frame.size.width, height: self.frame.size.height)
+  }
+  
+  override func textRect(forBounds bounds: CGRect) -> CGRect {
+    return UIEdgeInsetsInsetRect(bounds, UIEdgeInsetsMake(10, 15, 8, 15))
+  }
+  
+  override func editingRect(forBounds bounds: CGRect) -> CGRect {
+    return UIEdgeInsetsInsetRect(bounds, UIEdgeInsetsMake(10, 15, 8, 15))
   }
 }

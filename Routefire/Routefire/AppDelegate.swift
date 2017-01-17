@@ -9,45 +9,67 @@
 import UIKit
 import CoreData
 import GoogleMaps
+import GooglePlaces
+import LyftSDK
 import IQKeyboardManagerSwift
-import TouchVisualizer
+
+// ••••••••••
+
+//import TouchVisualizer
+
+// ••••••••••
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
   var window: UIWindow?
+  var containerVC: ContainerViewController?
+  var locationManager: CLLocationManager?
   
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
     
-    GMSServices.provideAPIKey(Secrets.googleMapsAPIKey)
-  
+    // ••••••••••
+
+//    var config = Configuration()
+//    config.color = UIColor.lightGray
+//    config.defaultSize = CGSize(width: 35, height: 35)
+//    Visualizer.start(config)
+    
+    // ••••••••••
+    
+    // Location manager
+    locationManager = CLLocationManager()
+    locationManager?.desiredAccuracy = kCLLocationAccuracyBest
+    
+    // Google Maps and Google Places
+    GMSServices.provideAPIKey(Secrets.googleAPIKey)
+    GMSPlacesClient.provideAPIKey(Secrets.googleAPIKey)
+    
+    // Uber
+    Uber.shared.getProductIDs()
+    
+    // Lyft
+    LyftConfiguration.developer = (token: Secrets.lyftClientToken, clientId: Secrets.lyftClientID)
+    
+    // Keyboard manager
     IQKeyboardManager.sharedManager().enable = true
     IQKeyboardManager.sharedManager().shouldResignOnTouchOutside = true
     
-//    var config = Configuration()
-//    config.color = UIColor.lightGray
-//    config.defaultSize = CGSize(width: 45, height: 45)
-//    Visualizer.start(config)
+    // Container view controller
+    containerVC = ContainerViewController()
+    containerVC?.add(child: HomeViewController(), .above)
+    
+    // Show window
+    window = UIWindow(frame: UIScreen.main.bounds)
+    window?.rootViewController = containerVC
+    window?.makeKeyAndVisible()
     
     return true
   }
   
-  func applicationWillResignActive(_ application: UIApplication) {
-    // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-    // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
+  func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+    return true
   }
   
-  func applicationDidEnterBackground(_ application: UIApplication) {
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-    // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-  }
-  
-  func applicationWillEnterForeground(_ application: UIApplication) {
-    // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
-  }
-  
-  func applicationDidBecomeActive(_ application: UIApplication) {
-    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-  }
   
   func applicationWillTerminate(_ application: UIApplication) {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
@@ -55,8 +77,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     self.saveContext()
   }
   
-  // MARK: - Core Data stack
-  
+  // MARK: Core Data
   lazy var persistentContainer: NSPersistentContainer = {
     /*
      The persistent container for the application. This implementation
@@ -99,6 +120,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       }
     }
   }
-  
 }
 

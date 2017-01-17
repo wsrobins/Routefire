@@ -9,5 +9,11 @@
 import Foundation
 
 struct Constants {
+  
+  // Cell identifiers
+  static let bestRouteCell = "bestRouteCell"
   static let destinationCell = "destinationCell"
+  
+  // Notification names
+  static let locationAuthorizedNotification = Notification.Name("locationAuthorized")
 }

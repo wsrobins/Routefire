@@ -2,84 +2,65 @@
 //  HomeViewController.swift
 //  Routefire
 //
-//  Created by William Robinson on 1/5/17.
+//  Created by William Robinson on 1/8/17.
 //  Copyright © 2017 William Robinson. All rights reserved.
 //
 
 import UIKit
 import GoogleMaps
-import IQKeyboardManagerSwift
+import LyftSDK
+import Alamofire
+import ReachabilitySwift
 
 class HomeViewController: UIViewController {
   
-  // MARK: Views
-  @IBOutlet weak var mapView: GMSMapView!
-  @IBOutlet weak var settingsButton: UIButton!
-  @IBOutlet weak var buttonStackView: UIStackView!
-  @IBOutlet weak var firstRecentDestinationButton: UIButton!
-  @IBOutlet weak var secondRecentDestinationButton: UIButton!
-  @IBOutlet weak var thirdRecentDestinationButton: UIButton!
-  @IBOutlet weak var upperView: UIView!
-  @IBOutlet weak var whereToButton: UIButton!
-  @IBOutlet weak var backButton: UIButton!
-  @IBOutlet weak var fieldStackView: UIStackView!
-  @IBOutlet weak var locationField: UITextField!
-  @IBOutlet weak var destinationField: UITextField!
-  @IBOutlet weak var destinationTableView: UITableView!
-  @IBOutlet weak var destinationTableViewBlurView: UIVisualEffectView!
-  @IBOutlet weak var settingsView: UIView!
-  @IBOutlet weak var settingsBlurView: UIVisualEffectView!
-  @IBOutlet weak var settingsMenuView: UIView!
-  @IBOutlet weak var userNameLabel: UILabel!
-  @IBOutlet weak var pastRoutesButton: UIButton!
-  @IBOutlet weak var reportDelaysButton: UIButton!
-  @IBOutlet weak var profileButton: UIButton!
-  @IBOutlet weak var slideView: UIView!
-  @IBOutlet weak var profileView: UIView!
+  // MARK: Presenter
+  let presenter = HomePresenter()
   
-  // MARK: Gesture recognizers
-  @IBOutlet var settingsViewPanGestureRecognizer: UIPanGestureRecognizer!
+  // MARK: View
+  @IBOutlet weak var mapView: GMSMapView!
+  @IBOutlet weak var reachabilityView: UIView!
+  @IBOutlet weak var settingsButton: UIButton!
+  @IBOutlet weak var whereToButton: UIButton!
+  @IBOutlet weak var bestRoutesView: UIView!
+  @IBOutlet weak var bestRoutesAddressView: UIView!
+  @IBOutlet weak var bestRoutesAddressTopView: UIView!
+  @IBOutlet weak var bestRoutesExpandButton: UIButton!
+  @IBOutlet weak var bestRoutesAddressButton: UIButton!
+  @IBOutlet weak var bestRoutesCollectionView: UICollectionView!
+  let spacing: CGFloat = 8
   
   // MARK: Constraints
-  @IBOutlet weak var settingsButtonBottomConstraint: NSLayoutConstraint!
-  @IBOutlet weak var upperViewTopConstraint: NSLayoutConstraint!
-  @IBOutlet weak var upperViewWidthConstraint: NSLayoutConstraint!
-  @IBOutlet weak var upperViewHeightConstraint: NSLayoutConstraint!
-  @IBOutlet weak var backButtonTrailingConstraint: NSLayoutConstraint!
-  @IBOutlet weak var fieldStackViewLeadingConstraint: NSLayoutConstraint!
-  @IBOutlet weak var fieldStackViewTopConstraint: NSLayoutConstraint!
-  @IBOutlet weak var destinationTableViewTopConstraint: NSLayoutConstraint!
-  @IBOutlet weak var destinationTableViewHeightConstraint: NSLayoutConstraint!
-  @IBOutlet weak var settingsMenuViewTrailingConstraint: NSLayoutConstraint!
-  @IBOutlet weak var slideViewTrailingConstraint: NSLayoutConstraint!
+  @IBOutlet weak var reachabilityViewTop: NSLayoutConstraint!
+  @IBOutlet weak var reachabilityViewHeight: NSLayoutConstraint!
+  @IBOutlet weak var settingsButtonBottom: NSLayoutConstraint!
+  @IBOutlet weak var whereToButtonTop: NSLayoutConstraint!
+  @IBOutlet weak var whereToButtonWidth: NSLayoutConstraint!
+  @IBOutlet weak var whereToButtonHeight: NSLayoutConstraint!
+  @IBOutlet weak var bestRoutesAddressViewHeight: NSLayoutConstraint!
+  @IBOutlet weak var bestRoutesAddressTopViewHeight: NSLayoutConstraint!
   
   // MARK: Constraint constants
-  var settingsButtonVisibleBottomConstant: CGFloat!
-  var settingsButtonHiddenBottomConstant: CGFloat!
+  var reachabilityViewActiveTopConstant: CGFloat!
+  var reachabilityViewInactiveTopConstant: CGFloat!
   
-  var upperViewVisibleTopConstant: CGFloat!
-  var upperViewHiddenTopConstant: CGFloat!
+  var settingsButtonActiveBottomConstant: CGFloat!
+  var settingsButtonInactiveBottomConstant: CGFloat!
   
-  var upperViewVisibleWidthConstant: CGFloat!
-  var upperViewHiddenWidthConstant: CGFloat!
+  var whereToButtonActiveTopConstant: CGFloat!
+  var whereToButtonInactiveTopConstant: CGFloat!
   
-  var upperViewVisibleHeightConstant: CGFloat!
-  var upperViewHiddenHeightConstant: CGFloat!
+  var whereToButtonActiveWidthConstant: CGFloat!
+  var whereToButtonInactiveWidthConstant: CGFloat!
   
-  var backButtonVisibleTrailingConstant: CGFloat!
-  var backButtonHiddenTrailingConstant: CGFloat!
+  var whereToButtonActiveHeightConstant: CGFloat!
+  var whereToButtonInactiveHeightConstant: CGFloat!
   
-  var fieldStackViewVisibleLeadingConstant: CGFloat!
-  var fieldStackViewHiddenLeadingConstant: CGFloat!
+  var bestRoutesAddressViewActiveHeightConstant: CGFloat!
+  var bestRoutesAddressViewInactiveHeightConstant: CGFloat!
   
-  var destinationTableViewVisibleTopConstant: CGFloat!
-  var destinationTableViewHiddenTopConstant: CGFloat!
-  
-  var settingsMenuViewVisibleTrailingConstant: CGFloat!
-  var settingsMenuViewHiddenTrailingConstant: CGFloat!
-  
-  var slideViewVisibleTrailingConstant: CGFloat!
-  var slideViewHiddenTrailingConstant: CGFloat!
+  // MARK: Container view controller
+  let containerVC = (UIApplication.shared.delegate as? AppDelegate)?.containerVC
   
   // MARK: Life cycle
   override func viewDidLoad() {
@@ -87,442 +68,388 @@ class HomeViewController: UIViewController {
     
     configure()
   }
-}
-
-// MARK: - Table view data source
-extension HomeViewController: UITableViewDataSource {
-  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return 5
+  
+  // MARK: KVO
+  override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+    
+    // Update current location pin on map
+    if !presenter.didFindMyLocation {
+      guard let myLocation = change?[NSKeyValueChangeKey.newKey] as? CLLocation else { return }
+      mapView.camera = GMSCameraPosition.camera(withTarget: myLocation.coordinate, zoom: 15)
+      presenter.didFindMyLocation = true
+    }
   }
   
-  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.destinationCell) as? DestinationTableViewCell else {
-      return UITableViewCell()
+  // MARK: User interaction
+  @IBAction func whereToButtonTouched() {
+    let routeVC = RouteViewController()
+    transition(to: routeVC)
+  }
+  
+  @IBAction func settingsButtonTouched() {
+    let settingsVC = SettingsViewController()
+    transition(to: settingsVC)
+  }
+  
+  @IBAction func expandButtonTouched() {
+    view.layoutIfNeeded()
+    switch bestRoutesAddressViewHeight.constant {
+    case bestRoutesAddressViewInactiveHeightConstant:
+      UIView.animate(
+        withDuration: 0.18,
+        delay: 0,
+        options: .curveEaseInOut,
+        animations: {
+          self.bestRoutesExpandButton.transform = CGAffineTransform(rotationAngle: CGFloat(-M_PI * 0.5))
+          self.bestRoutesExpandButton.transform = CGAffineTransform(rotationAngle: CGFloat(-M_PI))
+          self.bestRoutesAddressViewHeight.constant = self.bestRoutesAddressViewActiveHeightConstant
+          self.view.layoutIfNeeded()
+      }, completion: nil)
+    default:
+      UIView.animate(
+        withDuration: 0.18,
+        delay: 0,
+        options: .curveEaseInOut,
+        animations: {
+          self.bestRoutesExpandButton.transform = CGAffineTransform(rotationAngle: 0)
+          self.bestRoutesAddressViewHeight.constant = self.bestRoutesAddressViewInactiveHeightConstant
+          self.view.layoutIfNeeded()
+      }, completion: nil)
+    }
+  }
+  
+  @IBAction func closeButtonTouched() {
+    closeBestRoutesView()
+  }
+}
+
+// MARK: - Best routes collection view delegate and data source
+extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+  
+  // Delegate
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    let route = presenter.bestRoutes[indexPath.row]
+    let pickupLat = route.start.latitude.description
+    let pickupLong = route.start.longitude.description
+    let dropoffLat = route.end.latitude.description
+    let dropoffLong = route.end.longitude.description
+    
+    switch route.service {
+    case .uber:
+      if UIApplication.shared.canOpenURL(URL(fileURLWithPath: "uber://")) {
+        let productID: String
+        switch route.routeType {
+        case "uberPOOL":
+          productID = Uber.shared.productIDs?["uberPOOL"] ?? ""
+        case "uberX":
+          productID = Uber.shared.productIDs?["uberX"] ?? ""
+        case "uberXL":
+          productID = Uber.shared.productIDs?["uberXL"] ?? ""
+        case "UberBLACK":
+          productID = Uber.shared.productIDs?["UberBLACK"] ?? ""
+        case "SUV":
+          productID = Uber.shared.productIDs?["SUV"] ?? ""
+        case "WAV":
+          productID = Uber.shared.productIDs?["WAV"] ?? ""
+        case "uberFAMILY":
+          productID = Uber.shared.productIDs?["uberFAMILY"] ?? ""
+        default:
+          productID = ""
+        }
+        
+        let urlString = "uber://?client_id=\(Secrets.uberClientID)&action=setPickup&pickup[latitude]=\(pickupLat)&pickup[longitude]=\(pickupLong)&pickup[nickname]=\(route.startNickname)&pickup[formatted_address]=\(route.startAddress)&dropoff[latitude]=\(dropoffLat)&dropoff[longitude]=\(dropoffLong)&dropoff[nickname]=\(route.endNickname)&dropoff[formatted_address]=\(route.endAddress)&product_id=\(productID)"
+        guard let encodedURLString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+          let uberURL = URL(string: encodedURLString) else { return }
+        
+        UIApplication.shared.open(uberURL, options: [:], completionHandler: nil)
+      } else {
+        print("uber not installed")
+      }
+    case .lyft:
+      if UIApplication.shared.canOpenURL(URL(fileURLWithPath: "lyft://")) {
+        let rideKind: RideKind
+        switch route.routeType {
+        case "Lyft Line":
+          rideKind = .Line
+        case "Lyft Plus":
+          rideKind = .Plus
+        default:
+          rideKind = .Standard
+        }
+        
+        LyftDeepLink.requestRide(using: .native, kind: rideKind, from: route.start, to: route.end, couponCode: nil)
+      } else {
+        print("lyft not installed")
+      }
+    }
+  }
+  
+  // Data source
+  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    return presenter.bestRoutes.count
+  }
+  
+  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.bestRouteCell, for: indexPath) as? BestRouteCollectionViewCell else {
+      return UICollectionViewCell()
     }
     
+    let route = presenter.bestRoutes[indexPath.row]
+    cell.routeTypeLabel.text = route.routeType
+    cell.priceLabel.text = route.price
+    
     switch indexPath.row {
-    case 0: cell.destinationLabel.text = "Home"
-    case 1: cell.destinationLabel.text = "Work"
-    case 2: cell.destinationLabel.text = "Gym"
-    case 3: cell.destinationLabel.text = "Pablo's"
-    case 4: cell.destinationLabel.text = "McDanks"
+    case 0:
+      cell.routeTypeLabel.font = UIFont.systemFont(ofSize: 30, weight: UIFontWeightBlack)
     default:
-      break
+      cell.routeTypeLabel.font = UIFont.systemFont(ofSize: 20, weight: UIFontWeightBlack)
     }
     
     return cell
   }
-}
-
-// MARK: - Handle user interaction
-private extension HomeViewController {
-  @IBAction func whereToButtonTouched() {
-    let (keyframeAnimations, animations, keyframeCompletion, completion) = whereToButtonTouchedAnimations()
-    view.layoutIfNeeded()
-    UIView.animateKeyframes(withDuration: 0.35,
-                            delay: 0,
-                            options: UIViewKeyframeAnimationOptions(animationOptions: .curveEaseInOut),
-                            animations: keyframeAnimations,
-                            completion: keyframeCompletion)
-    UIView.animate(withDuration: 0.2,
-                   delay: 0.2,
-                   usingSpringWithDamping: 0.8,
-                   initialSpringVelocity: 1,
-                   options: .curveEaseOut,
-                   animations: animations,
-                   completion: completion)
-  }
   
-  
-  @IBAction func backButtonTouched() {
-    let (animations, completion) = backButtonTouchedAnimations()
-    IQKeyboardManager.sharedManager().resignFirstResponder()
-    view.layoutIfNeeded()
-    UIView.animateKeyframes(withDuration: 0.27,
-                            delay: 0,
-                            options: UIViewKeyframeAnimationOptions(animationOptions: .curveEaseInOut),
-                            animations: animations,
-                            completion: completion)
-  }
-  
-  
-  @IBAction func settingsButtonTouched() {
-    let animations = settingsButtonTouchedAnimations()
-    self.settingsView.isUserInteractionEnabled = true
-    view.layoutIfNeeded()
-    UIView.animate(withDuration: 0.65,
-                   delay: 0,
-                   usingSpringWithDamping: 0.75,
-                   initialSpringVelocity: 1,
-                   options: [.allowUserInteraction, .curveEaseOut],
-                   animations: animations,
-                   completion: nil)
-  }
-  
-  @IBAction func settingsViewPanned(_ gestureRecognizer: UIPanGestureRecognizer) {
-    switch gestureRecognizer.state {
-    case .began, .changed:
-      let translation = gestureRecognizer.translation(in: settingsView)
-      guard settingsMenuViewTrailingConstraint.constant + translation.x > settingsMenuViewHiddenTrailingConstant else {
-        settingsMenuViewTrailingConstraint.constant = settingsMenuViewHiddenTrailingConstant
-        slideViewTrailingConstraint.constant = slideViewHiddenTrailingConstant
-        
-        return
-      }
-      
-      guard settingsMenuViewTrailingConstraint.constant + translation.x <= settingsMenuViewVisibleTrailingConstant else {
-        settingsMenuViewTrailingConstraint.constant = settingsMenuViewVisibleTrailingConstant
-        
-        if slideViewTrailingConstraint.constant > slideViewHiddenTrailingConstant {
-          slideViewTrailingConstraint.constant = slideViewVisibleTrailingConstant
-        }
-        
-        return
-      }
-      
-      settingsMenuViewTrailingConstraint.constant += translation.x
-      
-      if slideViewTrailingConstraint.constant > slideViewHiddenTrailingConstant {
-        slideViewTrailingConstraint.constant += translation.x
-      }
-      
-      gestureRecognizer.setTranslation(CGPoint.zero, in: settingsView)
-      
-    case .ended:
-      if settingsMenuViewTrailingConstraint.constant <= settingsMenuView.frame.width * 0.65 {
-        let (animations, completion) = settingsViewSlideLeftAnimations()
-        view.layoutIfNeeded()
-        UIView.animate(withDuration: 0.13, delay: 0, options: .curveLinear, animations: animations,completion: completion)
-      } else if settingsMenuViewTrailingConstraint.constant < settingsMenuViewVisibleTrailingConstant {
-        let animations = settingsViewSlideRightAnimations()
-        view.layoutIfNeeded()
-        UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseOut, animations: animations, completion: nil)
-      }
-      
+  // Flow layout delegate
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    let full = UIScreen.main.bounds.width - spacing * 2
+    let half = (UIScreen.main.bounds.width - spacing * 3) / 2
+    switch indexPath.row {
+    case 0:
+      return CGSize(width: full, height: half)
     default:
-      return
+      return CGSize(width: half, height: half)
     }
-  }
-  
-  @IBAction func profileButtonTouched() {
-    let animations = profileButtonTouchedAnimations()
-    slideView.layer.sublayers?.last?.opacity = 0
-    view.layoutIfNeeded()
-    UIView.animate(withDuration: 0.5,
-                   delay: 0,
-                   usingSpringWithDamping: 0.8,
-                   initialSpringVelocity: 1,
-                   options: [.allowUserInteraction, .curveEaseOut],
-                   animations: animations, completion: nil)
-  }
-  
-  @IBAction func profileBackButtonTouched() {
-    let (animations, completion) = profileBackButtonTouchedAnimations()
-    view.layoutIfNeeded()
-    UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseOut, animations: animations, completion: completion)
   }
 }
 
-// MARK: - Animation configurations
+// MARK: - User location
 private extension HomeViewController {
-  func whereToButtonTouchedAnimations() -> (() -> Void, () -> Void, (Bool) -> Void, (Bool) -> Void) {
-    let upperViewExpansion = {
-      self.lightShadow(self.upperView)
-      self.upperViewTopConstraint.constant = self.upperViewVisibleTopConstant
-      self.upperViewWidthConstraint.constant = self.upperViewVisibleWidthConstant
-      self.upperViewHeightConstraint.constant = self.upperViewVisibleHeightConstant
-      self.view.layoutIfNeeded()
-    }
-    
-    let destinationTableViewSlideUp = {
-      self.destinationTableViewTopConstraint.constant = self.destinationTableViewVisibleTopConstant
-      self.view.layoutIfNeeded()
-    }
-    
-    let settingsButtonFadeOutSlideUp = {
-      self.settingsButton.alpha = 0
-      self.settingsButtonBottomConstraint.constant = self.settingsButtonHiddenBottomConstant
-      self.view.layoutIfNeeded()
-    }
-    
-    let whereToButtonFadeOut = {
-      self.whereToButton.alpha = 0
-      self.view.layoutIfNeeded()
-    }
-    
-    let destinationTableViewBlurViewFadeOut = {
-      self.destinationTableViewBlurView.effect = nil
-      self.view.layoutIfNeeded()
-    }
-    
-    let backButtonFadeInSlideRight = {
-      self.backButton.alpha = 1
-      self.backButtonTrailingConstraint.constant = self.backButtonVisibleTrailingConstant
-      self.view.layoutIfNeeded()
-    }
-    
-    let keyframeAnimations = {
-      UIView.addKeyframe(withRelativeStartTime: 0.0, relativeDuration: 0.6, animations: upperViewExpansion)
-      UIView.addKeyframe(withRelativeStartTime: 0.0, relativeDuration: 0.6, animations: destinationTableViewSlideUp)
-      UIView.addKeyframe(withRelativeStartTime: 0.0, relativeDuration: 0.4, animations: settingsButtonFadeOutSlideUp)
-      UIView.addKeyframe(withRelativeStartTime: 0.0, relativeDuration: 0.3, animations: whereToButtonFadeOut)
-      UIView.addKeyframe(withRelativeStartTime: 0.6, relativeDuration: 0.4, animations: destinationTableViewBlurViewFadeOut)
-      UIView.addKeyframe(withRelativeStartTime: 0.7, relativeDuration: 0.3, animations: backButtonFadeInSlideRight)
-    }
-    
-    let animations = {
-      self.fieldStackView.alpha = 1
-      self.fieldStackViewLeadingConstraint.constant = self.fieldStackViewVisibleLeadingConstant
-      self.view.layoutIfNeeded()
-    }
-    
-    let keyframeCompletion: (Bool) -> Void = { success in
-      if success {
-        self.whereToButton.isEnabled = false
-      }
-    }
-    
-    let completion: (Bool) -> Void = { success in
-      if success {
-        self.destinationField.becomeFirstResponder()
-      }
-    }
-    
-    return (keyframeAnimations, animations, keyframeCompletion, completion)
-  }
-  
-  func backButtonTouchedAnimations() -> (() -> Void, (Bool) -> Void) {
-    let fieldStackViewFadeOutSlideRight = {
-      self.fieldStackView.alpha = 0
-      self.fieldStackViewLeadingConstraint.constant = self.fieldStackViewHiddenLeadingConstant
-      self.view.layoutIfNeeded()
-    }
-    
-    let destinationTableViewBlurViewFadeIn = {
-      self.destinationTableViewBlurView.effect = UIBlurEffect(style: .extraLight)
-      self.view.layoutIfNeeded()
-    }
-    
-    let backButtonFadeOutSlideLeft = {
-      self.backButton.alpha = 0
-      self.backButtonTrailingConstraint.constant = self.backButtonHiddenTrailingConstant
-      self.view.layoutIfNeeded()
-    }
-    
-    let destinationTableViewSlideDown = {
-      self.destinationTableViewTopConstraint.constant = self.destinationTableViewHiddenTopConstant
-      self.view.layoutIfNeeded()
-    }
-    
-    let upperViewCompression = {
-      self.boldShadow(self.upperView)
-      self.upperViewTopConstraint.constant = self.upperViewHiddenTopConstant
-      self.upperViewWidthConstraint.constant = self.upperViewHiddenWidthConstant
-      self.upperViewHeightConstraint.constant = self.upperViewHiddenHeightConstant
-      self.view.layoutIfNeeded()
-    }
-    
-    let settingsButtonFadeInSlideDown = {
-      self.settingsButton.alpha = 1
-      self.settingsButtonBottomConstraint.constant = self.settingsButtonVisibleBottomConstant
-      self.view.layoutIfNeeded()
-    }
-    
-    let whereToButtonFadeIn = {
-      self.whereToButton.alpha = 1
-      self.view.layoutIfNeeded()
-    }
-    
-    let animations = {
-      UIView.addKeyframe(withRelativeStartTime: 0.0, relativeDuration: 0.3, animations: fieldStackViewFadeOutSlideRight)
-      UIView.addKeyframe(withRelativeStartTime: 0.0, relativeDuration: 0.3, animations: destinationTableViewBlurViewFadeIn)
-      UIView.addKeyframe(withRelativeStartTime: 0.0, relativeDuration: 0.2, animations: backButtonFadeOutSlideLeft)
-      UIView.addKeyframe(withRelativeStartTime: 0.1, relativeDuration: 0.9, animations: destinationTableViewSlideDown)
-      UIView.addKeyframe(withRelativeStartTime: 0.3, relativeDuration: 0.7, animations: upperViewCompression)
-      UIView.addKeyframe(withRelativeStartTime: 0.4, relativeDuration: 0.6, animations: settingsButtonFadeInSlideDown)
-      UIView.addKeyframe(withRelativeStartTime: 0.6, relativeDuration: 0.4, animations: whereToButtonFadeIn)
-    }
-    
-    let completion: (Bool) -> Void = { success in
-      if success {
-        self.whereToButton.isEnabled = true
-      }
-    }
-    
-    return (animations, completion)
-  }
-  
-  func settingsButtonTouchedAnimations() -> () -> Void {
-    let animations = {
-      self.settingsBlurView.effect = UIBlurEffect(style: .light)
-      self.settingsMenuViewTrailingConstraint.constant = self.settingsMenuViewVisibleTrailingConstant
-      self.view.layoutIfNeeded()
-    }
-    
-    return animations
-  }
-  
-  func settingsViewSlideLeftAnimations() -> (() -> Void, (Bool) -> Void) {
-    let animations = {
-      self.settingsBlurView.effect = nil
-      self.settingsMenuViewTrailingConstraint.constant = self.settingsMenuViewHiddenTrailingConstant
-      
-      self.noShadow(self.profileView)
-      self.slideViewTrailingConstraint.constant = self.slideViewHiddenTrailingConstant
-      
-      self.view.layoutIfNeeded()
-    }
-    
-    let completion: (Bool) -> Void = { success in
-      if success {
-        self.settingsView.isUserInteractionEnabled = false
-        self.slideView.layer.sublayers?.last?.opacity = 1
-      }
-    }
-    
-    return (animations, completion)
-  }
-
-  func settingsViewSlideRightAnimations() -> () -> Void {
-    let animations = {
-      self.settingsMenuViewTrailingConstraint.constant = self.settingsMenuViewVisibleTrailingConstant
-      
-      if self.slideViewTrailingConstraint.constant > self.slideViewHiddenTrailingConstant {
-        self.slideViewTrailingConstraint.constant = self.slideViewVisibleTrailingConstant
-      }
-      
-      self.view.layoutIfNeeded()
-    }
-    
-    return animations
-  }
-  
-  func profileButtonTouchedAnimations() -> () -> Void {
-    let animations = {
-      self.settingsBlurView.effect = UIBlurEffect(style: .dark)
-      self.slideViewTrailingConstraint.constant = self.slideViewVisibleTrailingConstant
-      self.view.layoutIfNeeded()
-    }
-    
-    return animations
-  }
-  
-  func profileBackButtonTouchedAnimations() -> (() -> Void, (Bool) -> Void) {
-    let animations = {
-      self.settingsBlurView.effect = UIBlurEffect(style: .light)
-      self.noShadow(self.profileView)
-      self.slideViewTrailingConstraint.constant = self.slideViewHiddenTrailingConstant
-      self.view.layoutIfNeeded()
-    }
-    
-    let completion: (Bool) -> Void = { success in
-      if success {
-        self.slideView.layer.sublayers?.last?.opacity = 1
-      }
-    }
-    
-    return (animations, completion)
+  @objc func enableCurrentLocation() {
+    mapView.isMyLocationEnabled = true
   }
 }
 
-// MARK: - Toggle shadow
+// MARK: - Animate transitions
 private extension HomeViewController {
-  func boldShadow(_ view: UIView) {
-    view.layer.shadowColor = UIColor.black.cgColor
-    view.layer.shadowOpacity = 0.2
-    view.layer.shadowRadius = 10
-    view.layer.shadowOffset = CGSize(width: 0, height: 5)
+  
+  // Route view controller
+  func transition(to routeVC: RouteViewController) {
+    
+    // Setup
+    containerVC?.add(child: routeVC, .above)
+    
+    // Home view controller animations
+    view.layoutIfNeeded()
+    UIView.animate(withDuration: 0.25) {
+      self.whereToButton.backgroundColor = UIColor.white
+      self.view.layoutIfNeeded()
+    }
+    
+    view.layoutIfNeeded()
+    UIView.animate(withDuration: 0.18) {
+      self.bestRoutesView.alpha = 0
+      self.view.layoutIfNeeded()
+    }
+    
+    view.layoutIfNeeded()
+    UIView.animate(
+      withDuration: 0.1,
+      delay: 0,
+      options: .curveEaseIn,
+      animations: {
+        self.whereToButton.titleLabel?.alpha = 0
+        self.view.layoutIfNeeded()
+    }) { _ in
+      routeVC.destinationField.becomeFirstResponder()
+    }
+    
+    view.layoutIfNeeded()
+    UIView.animate(
+      withDuration: 0.28,
+      delay: 0.04,
+      options: .curveEaseInOut,
+      animations: {
+        self.whereToButtonTop.constant = self.whereToButtonInactiveTopConstant
+        self.whereToButtonWidth.constant = self.whereToButtonInactiveWidthConstant
+        self.whereToButtonHeight.constant = self.whereToButtonInactiveHeightConstant
+        self.view.layoutIfNeeded()
+    }) { _ in
+      routeVC.routeView.backgroundColor = UIColor.white
+    }
+    
+    view.layoutIfNeeded()
+    UIView.animate(
+      withDuration: 0.22,
+      delay: 0.04,
+      options: .curveEaseInOut,
+      animations: {
+        self.settingsButtonBottom.constant = self.settingsButtonInactiveBottomConstant
+        self.settingsButton.alpha = 0
+        self.view.layoutIfNeeded()
+    }, completion: nil)
+    
+    // Route view controller animations
+    routeVC.view.layoutIfNeeded()
+    UIView.animate(
+      withDuration: 0.55,
+      delay: 0,
+      usingSpringWithDamping: 0.8,
+      initialSpringVelocity: 1,
+      options: .curveEaseIn,
+      animations: {
+        routeVC.destinationsTableViewTop.constant = routeVC.destinationsTableViewActiveTopConstant
+        routeVC.view.layoutIfNeeded()
+    }) { _ in
+      self.containerVC?.removePreviousChild()
+    }
+    
+    routeVC.view.layoutIfNeeded()
+    UIView.animate(
+      withDuration: 0.15,
+      delay: 0.15,
+      options: .curveEaseInOut,
+      animations: {
+        routeVC.backButton.alpha = 1
+        routeVC.fieldStackView.alpha = 1
+        routeVC.view.layoutIfNeeded()
+    }, completion: nil)
   }
   
-  func lightShadow(_ view: UIView) {
-    view.layer.shadowColor = UIColor.black.cgColor
-    view.layer.shadowOpacity = 0.09
-    view.layer.shadowRadius = 6
-    view.layer.shadowOffset = CGSize(width: 0, height: 2)
+  // Settings view controller
+  func transition(to settingsVC: SettingsViewController) {
+    
+    // Setup
+    containerVC?.add(child: settingsVC, .above)
+    
+    // Settings view controller animations
+    settingsVC.view.layoutIfNeeded()
+    UIView.animate(
+      withDuration: 0.88,
+      delay: 0,
+      usingSpringWithDamping: 0.75,
+      initialSpringVelocity: 1,
+      options: [.allowUserInteraction, .curveEaseOut],
+      animations: {
+        settingsVC.panelTrailing.constant = settingsVC.panelActiveTrailingConstant
+        settingsVC.view.layoutIfNeeded()
+    }, completion: nil)
   }
   
-  func noShadow(_ view: UIView) {
-    view.layer.shadowOpacity = 0
+  // Close best routes view
+  func closeBestRoutesView() {
+    
+    // Setup
+    whereToButton.titleLabel?.alpha = 0
+    whereToButton.alpha = 0
+    whereToButton.isHidden = false
+    
+    // Animation
+    view.layoutIfNeeded()
+    UIView.animate(
+      withDuration: 0.35,
+      delay: 0,
+      options: .curveEaseInOut,
+      animations: {
+        self.whereToButton.alpha = 1
+        self.view.layoutIfNeeded()
+    }, completion: nil)
+    
+    view.layoutIfNeeded()
+    UIView.animate(
+      withDuration: 0.3,
+      delay: 0.05,
+      options: .curveEaseInOut,
+      animations: {
+        self.settingsButtonBottom.constant = self.settingsButtonActiveBottomConstant
+        self.whereToButtonTop.constant = self.whereToButtonActiveTopConstant
+        self.whereToButtonWidth.constant = self.whereToButtonActiveWidthConstant
+        self.whereToButtonHeight.constant = self.whereToButtonActiveHeightConstant
+        self.settingsButton.alpha = 1
+        self.view.layoutIfNeeded()
+    }, completion: nil)
+    
+    view.layoutIfNeeded()
+    UIView.animate(
+      withDuration: 0.2,
+      delay: 0,
+      options: .curveEaseIn,
+      animations: {
+        self.bestRoutesView.alpha = 0
+        self.view.layoutIfNeeded()
+    }) { _ in
+      self.bestRoutesView.isHidden = true
+    }
+    
+    view.layoutIfNeeded()
+    UIView.animate(
+      withDuration: 0.2,
+      delay: 0.15,
+      options: .curveEaseInOut,
+      animations: {
+        self.whereToButton.titleLabel?.alpha = 1
+        self.view.layoutIfNeeded()
+    }, completion: nil)
   }
 }
 
-// MARK: View configuration
+// MARK: - Configuration
 private extension HomeViewController {
   func configure() {
-    configureView()
-    configureConstraints()
-  }
-  
-  func configureView() {
-    boldShadow(upperView)
-    boldShadow(firstRecentDestinationButton)
-    boldShadow(secondRecentDestinationButton)
-    boldShadow(thirdRecentDestinationButton)
     
-    firstRecentDestinationButton.layer.cornerRadius = firstRecentDestinationButton.frame.height / 2
-    secondRecentDestinationButton.layer.cornerRadius = secondRecentDestinationButton.frame.height / 2
-    thirdRecentDestinationButton.layer.cornerRadius = thirdRecentDestinationButton.frame.height / 2
+    // Presenter
+    NotificationCenter.default.addObserver(self, selector: #selector(enableCurrentLocation), name: Constants.locationAuthorizedNotification, object: nil)
+    mapView.addObserver(self, forKeyPath: "myLocation", options: .new, context: nil)
+    presenter.configureLocationManager()
     
-    let bottomBorder = CALayer()
-    bottomBorder.backgroundColor = UIColor.white.cgColor
-    bottomBorder.frame = CGRect(x: 0, y: userNameLabel.frame.height - 1, width: userNameLabel.frame.width, height: 1)
-    userNameLabel.layer.addSublayer(bottomBorder)
+    // View
+    if let mapStyleURL = Bundle.main.url(forResource: "MapStyle", withExtension: "json") {
+      mapView.mapStyle = try? GMSMapStyle(contentsOfFileURL: mapStyleURL)
+    }
     
-    pastRoutesButton.layer.cornerRadius = pastRoutesButton.frame.height * 0.5
-    reportDelaysButton.layer.cornerRadius = reportDelaysButton.frame.height * 0.5
-    profileButton.layer.cornerRadius = profileButton.frame.height * 0.5
+    CALayer.boldShadow(whereToButton)
+    CALayer.boldShadow(bestRoutesView)
+    CALayer.boldShadow(bestRoutesAddressView)
     
-    settingsBlurView.effect = nil
+    let layout = UICollectionViewFlowLayout()
+    layout.minimumInteritemSpacing = spacing
+    layout.minimumLineSpacing = spacing
+    bestRoutesCollectionView.collectionViewLayout = layout
+    bestRoutesCollectionView.backgroundColor = UIColor.clear
+    bestRoutesCollectionView.delegate = self
+    bestRoutesCollectionView.dataSource = self
+    bestRoutesCollectionView.register(UINib(nibName: "BestRouteCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: Constants.bestRouteCell)
+    bestRoutesAddressButton.titleLabel?.adjustsFontSizeToFitWidth = true
     
-    let bounceLayer = CALayer()
-    bounceLayer.backgroundColor = UIColor.black.cgColor
-    bounceLayer.frame = CGRect(x: slideView.frame.width - 60, y: 0, width: 60, height: slideView.frame.height)
-    slideView.layer.addSublayer(bounceLayer)
+    // Store constraint constants
+    reachabilityViewActiveTopConstant = reachabilityViewTop.constant
+    reachabilityViewInactiveTopConstant = reachabilityViewHeight.constant
     
-    let layer = CAShapeLayer()
-    layer.bounds = self.profileView.frame
-    layer.position = self.profileView.center
-    layer.path = UIBezierPath(roundedRect: self.profileView.bounds, byRoundingCorners: [.topRight , .bottomRight], cornerRadii: CGSize(width: 20, height: 20)).cgPath
-    profileView.layer.mask = layer
-  }
-  
-  func configureConstraints() {
-    storeConstants()
-    initializeConstraints()
-  }
-  
-  func storeConstants() {
-    settingsButtonVisibleBottomConstant = UIApplication.shared.statusBarFrame.height + settingsButton.frame.height
-    settingsButtonHiddenBottomConstant = 0
+    settingsButtonActiveBottomConstant = settingsButtonBottom.constant
+    settingsButtonInactiveBottomConstant = 0
     
-    upperViewVisibleTopConstant = 0
-    upperViewHiddenTopConstant = upperViewTopConstraint.constant
+    whereToButtonActiveTopConstant = whereToButtonTop.constant
+    whereToButtonInactiveTopConstant = 0
     
-    upperViewVisibleWidthConstant = 0
-    upperViewHiddenWidthConstant = upperViewWidthConstraint.constant
+    whereToButtonActiveWidthConstant = UIScreen.main.bounds.width - 40
+    whereToButtonInactiveWidthConstant = UIScreen.main.bounds.width
     
-    upperViewVisibleHeightConstant = 200
-    upperViewHiddenHeightConstant = upperViewHeightConstraint.constant
+    whereToButtonActiveHeightConstant = whereToButtonHeight.constant
+    whereToButtonInactiveHeightConstant = 200
     
-    backButtonVisibleTrailingConstant = backButton.frame.width + 5
-    backButtonHiddenTrailingConstant = backButtonTrailingConstraint.constant
+    bestRoutesAddressViewActiveHeightConstant = UIScreen.main.bounds.height - UIScreen.main.bounds.width - 24
+    bestRoutesAddressViewInactiveHeightConstant = UIScreen.main.bounds.height - (UIScreen.main.bounds.width * 1.5) - 24
     
-    fieldStackViewVisibleLeadingConstant = view.frame.width
-    fieldStackViewHiddenLeadingConstant = fieldStackViewLeadingConstraint.constant
+    // Configure initial constraints
+    if Reachability()!.currentReachabilityStatus == .notReachable {
+      UIApplication.shared.statusBarStyle = .lightContent
+      reachabilityViewTop.constant = reachabilityViewActiveTopConstant
+    } else {
+      UIApplication.shared.statusBarStyle = .default
+      reachabilityViewTop.constant = reachabilityViewInactiveTopConstant
+    }
     
-    destinationTableViewVisibleTopConstant = view.frame.height - upperViewVisibleHeightConstant
-    destinationTableViewHiddenTopConstant = destinationTableViewTopConstraint.constant
-    
-    settingsMenuViewVisibleTrailingConstant = settingsMenuView.frame.width
-    settingsMenuViewHiddenTrailingConstant = settingsMenuViewTrailingConstraint.constant
-    
-    slideViewVisibleTrailingConstant = slideView.frame.width
-    slideViewHiddenTrailingConstant = slideViewTrailingConstraint.constant
-  }
-  
-  func initializeConstraints() {
-    settingsButtonBottomConstraint.constant = settingsButtonVisibleBottomConstant
-    fieldStackViewTopConstraint.constant = upperViewVisibleHeightConstant * 0.57
-    destinationTableViewHeightConstraint.constant = upperViewVisibleHeightConstant
+    whereToButtonWidth.constant = whereToButtonActiveWidthConstant
+    bestRoutesAddressViewHeight.constant = bestRoutesAddressViewInactiveHeightConstant
+    bestRoutesAddressTopViewHeight.constant = bestRoutesAddressViewInactiveHeightConstant
   }
 }
+

@@ -1,22 +1,45 @@
 PODS:
+  - Alamofire (4.2.0)
   - GoogleMaps (2.1.1):
     - GoogleMaps/Maps (= 2.1.1)
   - GoogleMaps/Base (2.1.1)
   - GoogleMaps/Maps (2.1.1):
     - GoogleMaps/Base
-  - IQKeyboardManagerSwift (4.0.7)
-  - TouchVisualizer (2.0.1)
+  - GooglePlacePicker (2.1.1):
+    - GoogleMaps (= 2.1.1)
+    - GooglePlaces (= 2.1.1)
+  - GooglePlaces (2.1.1):
+    - GoogleMaps/Base (= 2.1.1)
+  - IQKeyboardManagerSwift (4.0.8)
+  - LyftSDK (1.0.4):
+    - LyftSDK/Core (= 1.0.4)
+  - LyftSDK/Core (1.0.4)
+  - ReachabilitySwift (3)
+  - SnapKit (3.1.2)
+  - TouchVisualizer (2.1.0)
 
 DEPENDENCIES:
+  - Alamofire
   - GoogleMaps
+  - GooglePlacePicker
+  - GooglePlaces
   - IQKeyboardManagerSwift
+  - LyftSDK
+  - ReachabilitySwift
+  - SnapKit
   - TouchVisualizer
 
 SPEC CHECKSUMS:
+  Alamofire: aa2e09d871c9160ac53c90e83c68064a94e3dfbe
   GoogleMaps: a5b5bbe47734e2443bde781a6aa64e69fdb6d785
-  IQKeyboardManagerSwift: 58bbcf46b5cf9fd4ed625d28a60cb2fbae4ab0f4
-  TouchVisualizer: d1bd1b438d084245332c222d9e14416c271c5f25
+  GooglePlacePicker: 665f39f931f2df32f9dd3fcc45f7e8abf71e535c
+  GooglePlaces: 35636d86e5020cba3856eb988c09a5491de0a65a
+  IQKeyboardManagerSwift: c04bc9f68473823f825eb44d958fce98d921bead
+  LyftSDK: af4b38c913ba24df874a70e67ba387f952e49690
+  ReachabilitySwift: f5b9bb30a0777fac8f09ce8b067e32faeb29bb64
+  SnapKit: 12b24f569cb7c143acc9c22b9d91b23e7b1c84a2
+  TouchVisualizer: a67d7b7c2786b6a2e13103fd76ac08093542f0c0
 
-PODFILE CHECKSUM: f187e990f505dd1aeb87ed38504685a2a93b0792
+PODFILE CHECKSUM: e3d1700ba5cf966940b3f097cb44ed81e579bf12
 
 COCOAPODS: 1.1.1

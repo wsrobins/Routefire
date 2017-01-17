@@ -8,36 +8,88 @@
 
 /* Begin PBXBuildFile section */
 		BFB62AF832275CC1FA7C1D28 /* Pods_Routefire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34BC3A939C1E0D8C482FB926 /* Pods_Routefire.framework */; };
-		C43CAF591E1F14F000370D52 /* DestinationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43CAF581E1F14F000370D52 /* DestinationTableViewCell.swift */; };
+		C4037DFF1E2EB82600279B01 /* Uber.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4037DFE1E2EB82600279B01 /* Uber.swift */; };
+		C4037E011E2EB87D00279B01 /* Lyft.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4037E001E2EB87D00279B01 /* Lyft.swift */; };
+		C4037E031E2EB88D00279B01 /* Taxi.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4037E021E2EB88D00279B01 /* Taxi.swift */; };
+		C4037E051E2EB8A600279B01 /* Places.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4037E041E2EB8A600279B01 /* Places.swift */; };
+		C438C74B1E25A7CE0043922E /* RoutePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C438C74A1E25A7CE0043922E /* RoutePresenter.swift */; };
+		C4551CCD1E2C3A18001A8172 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4551CCB1E2C3A18001A8172 /* ProfileViewController.swift */; };
+		C4551CCE1E2C3A18001A8172 /* ProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4551CCC1E2C3A18001A8172 /* ProfileViewController.xib */; };
+		C468F2D71E2333BA0046FDD2 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C468F2D51E2333BA0046FDD2 /* HomeViewController.swift */; };
+		C468F2D81E2333BA0046FDD2 /* HomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C468F2D61E2333BA0046FDD2 /* HomeViewController.xib */; };
+		C468F2DB1E2343190046FDD2 /* RouteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C468F2D91E2343190046FDD2 /* RouteViewController.swift */; };
+		C468F2DC1E2343190046FDD2 /* RouteViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C468F2DA1E2343190046FDD2 /* RouteViewController.xib */; };
 		C469AAAE1E1F31850009A15F /* BottomBorderTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C469AAAD1E1F31850009A15F /* BottomBorderTextField.swift */; };
+		C46E12911E245BC2009E1D59 /* CustomShadows.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46E12901E245BC2009E1D59 /* CustomShadows.swift */; };
+		C46E12961E248318009E1D59 /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46E12941E248318009E1D59 /* ContainerViewController.swift */; };
+		C46E12991E258E64009E1D59 /* MapStyle.json in Resources */ = {isa = PBXBuildFile; fileRef = C46E12981E258E64009E1D59 /* MapStyle.json */; };
+		C472BF381E2A8E5600D9A2E7 /* CustomColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C472BF371E2A8E5600D9A2E7 /* CustomColors.swift */; };
 		C4746FE71E1E082C00832FC3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4746FE61E1E082C00832FC3 /* AppDelegate.swift */; };
-		C4746FEC1E1E082C00832FC3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4746FEA1E1E082C00832FC3 /* Main.storyboard */; };
 		C4746FEF1E1E082C00832FC3 /* Routefire.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C4746FED1E1E082C00832FC3 /* Routefire.xcdatamodeld */; };
 		C4746FF11E1E082C00832FC3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C4746FF01E1E082C00832FC3 /* Assets.xcassets */; };
 		C4746FF41E1E082C00832FC3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4746FF21E1E082C00832FC3 /* LaunchScreen.storyboard */; };
+		C474729B1E27433600292CD6 /* BestRouteCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47472991E27433600292CD6 /* BestRouteCollectionViewCell.swift */; };
+		C474729C1E27433600292CD6 /* BestRouteCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C474729A1E27433600292CD6 /* BestRouteCollectionViewCell.xib */; };
+		C474729F1E27479400292CD6 /* Route.swift in Sources */ = {isa = PBXBuildFile; fileRef = C474729E1E27479400292CD6 /* Route.swift */; };
+		C47472A21E27829400292CD6 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47472A01E27829400292CD6 /* SettingsViewController.swift */; };
+		C47472A31E27829400292CD6 /* SettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C47472A11E27829400292CD6 /* SettingsViewController.xib */; };
+		C47472A61E2782EE00292CD6 /* SettingsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47472A51E2782EE00292CD6 /* SettingsPresenter.swift */; };
 		C4B305D71E1E0A2300C56A99 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B305D61E1E0A2300C56A99 /* Secrets.swift */; };
-		C4B305D91E1E0AEF00C56A99 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B305D81E1E0AEF00C56A99 /* HomeViewController.swift */; };
 		C4B305DB1E1E13D600C56A99 /* KeyframeAnimationOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B305DA1E1E13D600C56A99 /* KeyframeAnimationOptions.swift */; };
 		C4B305DD1E1E4BBE00C56A99 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B305DC1E1E4BBE00C56A99 /* Constants.swift */; };
+		C4EAF3EF1E26EAA900AB7A23 /* DestinationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4EAF3ED1E26EAA900AB7A23 /* DestinationTableViewCell.swift */; };
+		C4EAF3F01E26EAA900AB7A23 /* DestinationTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4EAF3EE1E26EAA900AB7A23 /* DestinationTableViewCell.xib */; };
+		C4EAF3F61E26FDDF00AB7A23 /* HomePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4EAF3F51E26FDDF00AB7A23 /* HomePresenter.swift */; };
+		C4EAF3F81E2713D800AB7A23 /* RouteInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4EAF3F71E2713D800AB7A23 /* RouteInteractor.swift */; };
+		C4F4712B1E2EDA6900479187 /* BestRoutesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F471291E2EDA6900479187 /* BestRoutesViewController.swift */; };
+		C4F4712C1E2EDA6900479187 /* BestRoutesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4F4712A1E2EDA6900479187 /* BestRoutesViewController.xib */; };
+		C4F4712E1E2EDAB500479187 /* BestRoutesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F4712D1E2EDAB500479187 /* BestRoutesPresenter.swift */; };
+		C4F471311E2EE64700479187 /* HomeWireframe.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F471301E2EE64700479187 /* HomeWireframe.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		34BC3A939C1E0D8C482FB926 /* Pods_Routefire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Routefire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C223F96DCEC47D1C0B8AF18 /* Pods-Routefire.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Routefire.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Routefire/Pods-Routefire.debug.xcconfig"; sourceTree = "<group>"; };
 		77BB0D6CCC46922D13B4BFF0 /* Pods-Routefire.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Routefire.release.xcconfig"; path = "Pods/Target Support Files/Pods-Routefire/Pods-Routefire.release.xcconfig"; sourceTree = "<group>"; };
-		C43CAF581E1F14F000370D52 /* DestinationTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DestinationTableViewCell.swift; sourceTree = "<group>"; };
+		C4037DFE1E2EB82600279B01 /* Uber.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Uber.swift; sourceTree = "<group>"; };
+		C4037E001E2EB87D00279B01 /* Lyft.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lyft.swift; sourceTree = "<group>"; };
+		C4037E021E2EB88D00279B01 /* Taxi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Taxi.swift; sourceTree = "<group>"; };
+		C4037E041E2EB8A600279B01 /* Places.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Places.swift; sourceTree = "<group>"; };
+		C438C74A1E25A7CE0043922E /* RoutePresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoutePresenter.swift; sourceTree = "<group>"; };
+		C4551CCB1E2C3A18001A8172 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		C4551CCC1E2C3A18001A8172 /* ProfileViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileViewController.xib; sourceTree = "<group>"; };
+		C468F2D51E2333BA0046FDD2 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		C468F2D61E2333BA0046FDD2 /* HomeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeViewController.xib; sourceTree = "<group>"; };
+		C468F2D91E2343190046FDD2 /* RouteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteViewController.swift; sourceTree = "<group>"; };
+		C468F2DA1E2343190046FDD2 /* RouteViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RouteViewController.xib; sourceTree = "<group>"; };
 		C469AAAD1E1F31850009A15F /* BottomBorderTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BottomBorderTextField.swift; sourceTree = "<group>"; };
+		C46E12901E245BC2009E1D59 /* CustomShadows.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomShadows.swift; sourceTree = "<group>"; };
+		C46E12941E248318009E1D59 /* ContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
+		C46E12981E258E64009E1D59 /* MapStyle.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MapStyle.json; sourceTree = "<group>"; };
+		C472BF371E2A8E5600D9A2E7 /* CustomColors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomColors.swift; sourceTree = "<group>"; };
 		C4746FE31E1E082C00832FC3 /* Routefire.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Routefire.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4746FE61E1E082C00832FC3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		C4746FEB1E1E082C00832FC3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C4746FEE1E1E082C00832FC3 /* Routefire.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Routefire.xcdatamodel; sourceTree = "<group>"; };
 		C4746FF01E1E082C00832FC3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C4746FF31E1E082C00832FC3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C4746FF51E1E082C00832FC3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C47472991E27433600292CD6 /* BestRouteCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BestRouteCollectionViewCell.swift; sourceTree = "<group>"; };
+		C474729A1E27433600292CD6 /* BestRouteCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BestRouteCollectionViewCell.xib; sourceTree = "<group>"; };
+		C474729E1E27479400292CD6 /* Route.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Route.swift; sourceTree = "<group>"; };
+		C47472A01E27829400292CD6 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		C47472A11E27829400292CD6 /* SettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingsViewController.xib; sourceTree = "<group>"; };
+		C47472A51E2782EE00292CD6 /* SettingsPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsPresenter.swift; sourceTree = "<group>"; };
 		C4B305D61E1E0A2300C56A99 /* Secrets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
-		C4B305D81E1E0AEF00C56A99 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		C4B305DA1E1E13D600C56A99 /* KeyframeAnimationOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyframeAnimationOptions.swift; sourceTree = "<group>"; };
 		C4B305DC1E1E4BBE00C56A99 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		C4EAF3ED1E26EAA900AB7A23 /* DestinationTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DestinationTableViewCell.swift; sourceTree = "<group>"; };
+		C4EAF3EE1E26EAA900AB7A23 /* DestinationTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DestinationTableViewCell.xib; sourceTree = "<group>"; };
+		C4EAF3F51E26FDDF00AB7A23 /* HomePresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomePresenter.swift; sourceTree = "<group>"; };
+		C4EAF3F71E2713D800AB7A23 /* RouteInteractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteInteractor.swift; sourceTree = "<group>"; };
+		C4F471291E2EDA6900479187 /* BestRoutesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BestRoutesViewController.swift; sourceTree = "<group>"; };
+		C4F4712A1E2EDA6900479187 /* BestRoutesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BestRoutesViewController.xib; sourceTree = "<group>"; };
+		C4F4712D1E2EDAB500479187 /* BestRoutesPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BestRoutesPresenter.swift; sourceTree = "<group>"; };
+		C4F471301E2EE64700479187 /* HomeWireframe.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeWireframe.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +121,34 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		C4037DFD1E2EB6A300279B01 /* Interactor */ = {
+			isa = PBXGroup;
+			children = (
+				C4037DFE1E2EB82600279B01 /* Uber.swift */,
+				C4037E001E2EB87D00279B01 /* Lyft.swift */,
+				C4037E021E2EB88D00279B01 /* Taxi.swift */,
+				C4037E041E2EB8A600279B01 /* Places.swift */,
+			);
+			name = Interactor;
+			sourceTree = "<group>";
+		};
+		C4551CC51E2C39B8001A8172 /* Profile Module */ = {
+			isa = PBXGroup;
+			children = (
+				C4551CC61E2C39C3001A8172 /* View */,
+			);
+			name = "Profile Module";
+			sourceTree = "<group>";
+		};
+		C4551CC61E2C39C3001A8172 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				C4551CCB1E2C3A18001A8172 /* ProfileViewController.swift */,
+				C4551CCC1E2C3A18001A8172 /* ProfileViewController.xib */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
 		C4746FDA1E1E082C00832FC3 = {
 			isa = PBXGroup;
 			children = (
@@ -91,67 +171,209 @@
 			isa = PBXGroup;
 			children = (
 				C4746FE61E1E082C00832FC3 /* AppDelegate.swift */,
-				C4B305CF1E1E096E00C56A99 /* View */,
-				C4B305D01E1E097200C56A99 /* Interactor */,
-				C4B305D11E1E097800C56A99 /* Presenter */,
-				C4B305D21E1E097E00C56A99 /* Entity */,
-				C4B305D31E1E098400C56A99 /* Router */,
+				C46E12941E248318009E1D59 /* ContainerViewController.swift */,
+				C4746FF21E1E082C00832FC3 /* LaunchScreen.storyboard */,
+				C4746FF01E1E082C00832FC3 /* Assets.xcassets */,
+				C4037DFD1E2EB6A300279B01 /* Interactor */,
+				C4DD69E71E205FA900667A4C /* Home Module */,
+				C4F471251E2EDA0C00479187 /* Best Routes Module */,
+				C4DD69F51E20610E00667A4C /* Route Module */,
+				C4DD69E81E205FB400667A4C /* Settings Module */,
 				C4B305D41E1E0A0100C56A99 /* Other */,
 			);
 			path = Routefire;
 			sourceTree = "<group>";
 		};
-		C4B305CF1E1E096E00C56A99 /* View */ = {
+		C47472911E27235D00292CD6 /* Subviews */ = {
 			isa = PBXGroup;
 			children = (
-				C4B305D81E1E0AEF00C56A99 /* HomeViewController.swift */,
-				C43CAF581E1F14F000370D52 /* DestinationTableViewCell.swift */,
-				C469AAAD1E1F31850009A15F /* BottomBorderTextField.swift */,
-				C4746FEA1E1E082C00832FC3 /* Main.storyboard */,
-				C4746FF21E1E082C00832FC3 /* LaunchScreen.storyboard */,
-				C4746FF01E1E082C00832FC3 /* Assets.xcassets */,
+				C4EAF3ED1E26EAA900AB7A23 /* DestinationTableViewCell.swift */,
+				C4EAF3EE1E26EAA900AB7A23 /* DestinationTableViewCell.xib */,
 			);
-			name = View;
+			name = Subviews;
 			sourceTree = "<group>";
 		};
-		C4B305D01E1E097200C56A99 /* Interactor */ = {
+		C47472941E2742D500292CD6 /* Subviews */ = {
 			isa = PBXGroup;
 			children = (
+				C47472991E27433600292CD6 /* BestRouteCollectionViewCell.swift */,
+				C474729A1E27433600292CD6 /* BestRouteCollectionViewCell.xib */,
 			);
-			name = Interactor;
+			name = Subviews;
 			sourceTree = "<group>";
 		};
-		C4B305D11E1E097800C56A99 /* Presenter */ = {
+		C474729D1E27478200292CD6 /* Entity */ = {
 			isa = PBXGroup;
 			children = (
+				C474729E1E27479400292CD6 /* Route.swift */,
+			);
+			name = Entity;
+			sourceTree = "<group>";
+		};
+		C47472A41E2782D300292CD6 /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				C47472A51E2782EE00292CD6 /* SettingsPresenter.swift */,
 			);
 			name = Presenter;
 			sourceTree = "<group>";
 		};
-		C4B305D21E1E097E00C56A99 /* Entity */ = {
+		C4B305D41E1E0A0100C56A99 /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				C469AAAD1E1F31850009A15F /* BottomBorderTextField.swift */,
+				C4B305DA1E1E13D600C56A99 /* KeyframeAnimationOptions.swift */,
+				C46E12901E245BC2009E1D59 /* CustomShadows.swift */,
+				C472BF371E2A8E5600D9A2E7 /* CustomColors.swift */,
+				C4B305D61E1E0A2300C56A99 /* Secrets.swift */,
+				C4B305DC1E1E4BBE00C56A99 /* Constants.swift */,
+				C46E12981E258E64009E1D59 /* MapStyle.json */,
+				C4746FF51E1E082C00832FC3 /* Info.plist */,
+				C4746FED1E1E082C00832FC3 /* Routefire.xcdatamodeld */,
+			);
+			name = Other;
+			sourceTree = "<group>";
+		};
+		C4DD69E71E205FA900667A4C /* Home Module */ = {
+			isa = PBXGroup;
+			children = (
+				C4DD69EE1E20605500667A4C /* View */,
+				C4DD69F01E20607400667A4C /* Presenter */,
+				C4F4712F1E2EE5C300479187 /* Wireframe */,
+			);
+			name = "Home Module";
+			sourceTree = "<group>";
+		};
+		C4DD69E81E205FB400667A4C /* Settings Module */ = {
+			isa = PBXGroup;
+			children = (
+				C4551CC51E2C39B8001A8172 /* Profile Module */,
+				C47472A41E2782D300292CD6 /* Presenter */,
+				C4DD69EC1E20603500667A4C /* Entity */,
+				C4DD69EA1E20600200667A4C /* View */,
+			);
+			name = "Settings Module";
+			sourceTree = "<group>";
+		};
+		C4DD69EA1E20600200667A4C /* View */ = {
+			isa = PBXGroup;
+			children = (
+				C47472A01E27829400292CD6 /* SettingsViewController.swift */,
+				C47472A11E27829400292CD6 /* SettingsViewController.xib */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		C4DD69EC1E20603500667A4C /* Entity */ = {
 			isa = PBXGroup;
 			children = (
 			);
 			name = Entity;
 			sourceTree = "<group>";
 		};
-		C4B305D31E1E098400C56A99 /* Router */ = {
+		C4DD69EE1E20605500667A4C /* View */ = {
+			isa = PBXGroup;
+			children = (
+				C468F2D51E2333BA0046FDD2 /* HomeViewController.swift */,
+				C468F2D61E2333BA0046FDD2 /* HomeViewController.xib */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		C4DD69F01E20607400667A4C /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				C4EAF3F51E26FDDF00AB7A23 /* HomePresenter.swift */,
+			);
+			name = Presenter;
+			sourceTree = "<group>";
+		};
+		C4DD69F51E20610E00667A4C /* Route Module */ = {
+			isa = PBXGroup;
+			children = (
+				C4DD69F81E20611E00667A4C /* View */,
+				C4EAF3F91E27140700AB7A23 /* Interactor */,
+				C4EAF3FA1E27140C00AB7A23 /* Presenter */,
+				C474729D1E27478200292CD6 /* Entity */,
+				C4EAF3FC1E2714C000AB7A23 /* Router */,
+			);
+			name = "Route Module";
+			sourceTree = "<group>";
+		};
+		C4DD69F81E20611E00667A4C /* View */ = {
+			isa = PBXGroup;
+			children = (
+				C468F2D91E2343190046FDD2 /* RouteViewController.swift */,
+				C468F2DA1E2343190046FDD2 /* RouteViewController.xib */,
+				C47472911E27235D00292CD6 /* Subviews */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		C4EAF3F91E27140700AB7A23 /* Interactor */ = {
+			isa = PBXGroup;
+			children = (
+				C4EAF3F71E2713D800AB7A23 /* RouteInteractor.swift */,
+			);
+			name = Interactor;
+			sourceTree = "<group>";
+		};
+		C4EAF3FA1E27140C00AB7A23 /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				C438C74A1E25A7CE0043922E /* RoutePresenter.swift */,
+			);
+			name = Presenter;
+			sourceTree = "<group>";
+		};
+		C4EAF3FC1E2714C000AB7A23 /* Router */ = {
 			isa = PBXGroup;
 			children = (
 			);
 			name = Router;
 			sourceTree = "<group>";
 		};
-		C4B305D41E1E0A0100C56A99 /* Other */ = {
+		C4F471251E2EDA0C00479187 /* Best Routes Module */ = {
 			isa = PBXGroup;
 			children = (
-				C4B305DA1E1E13D600C56A99 /* KeyframeAnimationOptions.swift */,
-				C4B305D61E1E0A2300C56A99 /* Secrets.swift */,
-				C4B305DC1E1E4BBE00C56A99 /* Constants.swift */,
-				C4746FF51E1E082C00832FC3 /* Info.plist */,
-				C4746FED1E1E082C00832FC3 /* Routefire.xcdatamodeld */,
+				C4F471261E2EDA1400479187 /* View */,
+				C4F471271E2EDA1900479187 /* Presenter */,
+				C4F471281E2EDA4600479187 /* Wireframe */,
 			);
-			name = Other;
+			name = "Best Routes Module";
+			sourceTree = "<group>";
+		};
+		C4F471261E2EDA1400479187 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				C4F471291E2EDA6900479187 /* BestRoutesViewController.swift */,
+				C4F4712A1E2EDA6900479187 /* BestRoutesViewController.xib */,
+				C47472941E2742D500292CD6 /* Subviews */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		C4F471271E2EDA1900479187 /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				C4F4712D1E2EDAB500479187 /* BestRoutesPresenter.swift */,
+			);
+			name = Presenter;
+			sourceTree = "<group>";
+		};
+		C4F471281E2EDA4600479187 /* Wireframe */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Wireframe;
+			sourceTree = "<group>";
+		};
+		C4F4712F1E2EE5C300479187 /* Wireframe */ = {
+			isa = PBXGroup;
+			children = (
+				C4F471301E2EE64700479187 /* HomeWireframe.swift */,
+			);
+			name = Wireframe;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -218,8 +440,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				C4746FF41E1E082C00832FC3 /* LaunchScreen.storyboard in Resources */,
+				C47472A31E27829400292CD6 /* SettingsViewController.xib in Resources */,
+				C4F4712C1E2EDA6900479187 /* BestRoutesViewController.xib in Resources */,
+				C468F2DC1E2343190046FDD2 /* RouteViewController.xib in Resources */,
+				C46E12991E258E64009E1D59 /* MapStyle.json in Resources */,
+				C4EAF3F01E26EAA900AB7A23 /* DestinationTableViewCell.xib in Resources */,
+				C474729C1E27433600292CD6 /* BestRouteCollectionViewCell.xib in Resources */,
 				C4746FF11E1E082C00832FC3 /* Assets.xcassets in Resources */,
-				C4746FEC1E1E082C00832FC3 /* Main.storyboard in Resources */,
+				C4551CCE1E2C3A18001A8172 /* ProfileViewController.xib in Resources */,
+				C468F2D81E2333BA0046FDD2 /* HomeViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -278,28 +507,39 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C43CAF591E1F14F000370D52 /* DestinationTableViewCell.swift in Sources */,
+				C4EAF3F61E26FDDF00AB7A23 /* HomePresenter.swift in Sources */,
 				C4746FE71E1E082C00832FC3 /* AppDelegate.swift in Sources */,
+				C4F4712E1E2EDAB500479187 /* BestRoutesPresenter.swift in Sources */,
+				C47472A21E27829400292CD6 /* SettingsViewController.swift in Sources */,
+				C4037E031E2EB88D00279B01 /* Taxi.swift in Sources */,
+				C4F471311E2EE64700479187 /* HomeWireframe.swift in Sources */,
+				C4EAF3F81E2713D800AB7A23 /* RouteInteractor.swift in Sources */,
 				C469AAAE1E1F31850009A15F /* BottomBorderTextField.swift in Sources */,
 				C4B305DB1E1E13D600C56A99 /* KeyframeAnimationOptions.swift in Sources */,
+				C47472A61E2782EE00292CD6 /* SettingsPresenter.swift in Sources */,
 				C4B305D71E1E0A2300C56A99 /* Secrets.swift in Sources */,
+				C46E12961E248318009E1D59 /* ContainerViewController.swift in Sources */,
 				C4746FEF1E1E082C00832FC3 /* Routefire.xcdatamodeld in Sources */,
-				C4B305D91E1E0AEF00C56A99 /* HomeViewController.swift in Sources */,
+				C4037DFF1E2EB82600279B01 /* Uber.swift in Sources */,
+				C4F4712B1E2EDA6900479187 /* BestRoutesViewController.swift in Sources */,
+				C46E12911E245BC2009E1D59 /* CustomShadows.swift in Sources */,
+				C474729F1E27479400292CD6 /* Route.swift in Sources */,
+				C4EAF3EF1E26EAA900AB7A23 /* DestinationTableViewCell.swift in Sources */,
+				C438C74B1E25A7CE0043922E /* RoutePresenter.swift in Sources */,
+				C472BF381E2A8E5600D9A2E7 /* CustomColors.swift in Sources */,
+				C4037E011E2EB87D00279B01 /* Lyft.swift in Sources */,
+				C474729B1E27433600292CD6 /* BestRouteCollectionViewCell.swift in Sources */,
+				C468F2D71E2333BA0046FDD2 /* HomeViewController.swift in Sources */,
+				C4551CCD1E2C3A18001A8172 /* ProfileViewController.swift in Sources */,
 				C4B305DD1E1E4BBE00C56A99 /* Constants.swift in Sources */,
+				C468F2DB1E2343190046FDD2 /* RouteViewController.swift in Sources */,
+				C4037E051E2EB8A600279B01 /* Places.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		C4746FEA1E1E082C00832FC3 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				C4746FEB1E1E082C00832FC3 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		C4746FF21E1E082C00832FC3 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -406,6 +646,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5C223F96DCEC47D1C0B8AF18 /* Pods-Routefire.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = TWPE6ND5AF;
 				INFOPLIST_FILE = Routefire/Info.plist;
@@ -420,6 +661,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 77BB0D6CCC46922D13B4BFF0 /* Pods-Routefire.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = TWPE6ND5AF;
 				INFOPLIST_FILE = Routefire/Info.plist;

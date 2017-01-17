@@ -10,7 +10,8 @@ import UIKit
 
 // MARK: - Add Key Frame Animation Options
 extension UIViewKeyframeAnimationOptions {
-  init(animationOptions: UIViewAnimationOptions) {
+  init(_ animationOptions: UIViewAnimationOptions) {
     rawValue = animationOptions.rawValue
   }
 }
+
