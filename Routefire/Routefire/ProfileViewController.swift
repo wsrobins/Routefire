@@ -23,9 +23,6 @@ class ProfileViewController: UIViewController {
   var whiteViewActiveCenterXConstant: CGFloat!
   var whiteViewInactiveCenterXConstant: CGFloat!
   
-  // MARK: Container view controller
-  let containerVC = (UIApplication.shared.delegate as? AppDelegate)?.containerVC
-  
   // MARK: Life cycle
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -55,10 +52,10 @@ private extension ProfileViewController {
         self.whiteViewCenterX.constant = self.whiteViewInactiveCenterXConstant
         self.view.layoutIfNeeded()
     }) { _ in
-      let profileVC = self.containerVC?.currentChild
-      self.containerVC?.currentChild = self.containerVC?.previousChild
-      self.containerVC?.previousChild = profileVC
-      self.containerVC?.removePreviousChild()
+//      let profileVC = self.containerVC?.currentChild
+//      self.containerVC?.currentChild = self.containerVC?.previousChild
+//      self.containerVC?.previousChild = profileVC
+//      self.containerVC?.removePreviousChild()
     }
   }
 }

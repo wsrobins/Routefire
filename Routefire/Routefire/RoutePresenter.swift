@@ -10,7 +10,13 @@ import Foundation
 import Alamofire
 import GooglePlaces
 
-final class RoutePresenter {
+protocol RoutePresenterProtocol {
+  func autocomplete(_ text: String, completion: @escaping () -> Void)
+  func selectedDestination(at indexPath: IndexPath, completion: @escaping (String, [Route]) -> Void)
+  func locationName(_ indexPath: IndexPath) -> NSMutableAttributedString
+}
+
+final class RoutePresenter: RoutePresenterProtocol {
   
   // MARK: Interactor
   let interactor = RouteInteractor()
@@ -27,7 +33,7 @@ final class RoutePresenter {
   }
   
   func selectedDestination(at indexPath: IndexPath, completion: @escaping (String, [Route]) -> Void) {
-    guard let start = (UIApplication.shared.delegate as? AppDelegate)?.locationManager?.location,
+    guard let start = Location.shared.current,
       let destinationID = autocompleteResults[indexPath.row].placeID else {
         print("error unwrapping locations")
         return
@@ -35,8 +41,8 @@ final class RoutePresenter {
     
     interactor.getPlace(destinationID) { end in
       var routes = [Route]()
-      self.interactor.getUberPriceEstimates(start: start.coordinate, end: end.coordinate) { uberPrices in
-        self.interactor.getLyftEstimates(start: start.coordinate, end: end.coordinate) { lyftPrices in
+      self.interactor.getUberPriceEstimates(start: start, end: end.coordinate) { uberPrices in
+        self.interactor.getLyftEstimates(start: start, end: end.coordinate) { lyftPrices in
           if let lyftPrices = lyftPrices {
             for lyftPrice in lyftPrices {
               if let minPrice = lyftPrice.estimate?.minEstimate.amount,
@@ -44,7 +50,7 @@ final class RoutePresenter {
                 let time = lyftPrice.estimate?.durationSeconds {
                 let price = "$\(Int(NSDecimalNumber(decimal: minPrice)))-\(Int(NSDecimalNumber(decimal: maxPrice)))"
                 
-                let route = Route(service: .lyft, routeType: lyftPrice.displayName, price: price, distance: Double(time), start: start.coordinate, startAddress: "654 Flatbush Ave, Brooklyn, NY 11225", startNickname: "Home", end: end.coordinate, endAddress: end.formattedAddress ?? "", endNickname: end.name)
+                let route = Route(service: .lyft, routeType: lyftPrice.displayName, price: price, distance: Double(time), start: start, startAddress: "654 Flatbush Ave, Brooklyn, NY 11225", startNickname: "Home", end: end.coordinate, endAddress: end.formattedAddress ?? "", endNickname: end.name)
                 routes.append(route)
               }
             }
@@ -59,7 +65,7 @@ final class RoutePresenter {
                   return
               }
               
-              let route = Route(service: .uber, routeType: routeType, price: price, distance: distance, start: start.coordinate, startAddress: "654 Flatbush Ave, Brooklyn, NY 11225", startNickname: "Home", end: end.coordinate, endAddress: end.formattedAddress ?? "", endNickname: end.name)
+              let route = Route(service: .uber, routeType: routeType, price: price, distance: distance, start: start, startAddress: "654 Flatbush Ave, Brooklyn, NY 11225", startNickname: "Home", end: end.coordinate, endAddress: end.formattedAddress ?? "", endNickname: end.name)
               routes.append(route)
             }
           }

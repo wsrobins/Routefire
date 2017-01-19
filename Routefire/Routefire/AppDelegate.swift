@@ -22,23 +22,10 @@ import IQKeyboardManagerSwift
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
   var window: UIWindow?
-  var containerVC: ContainerViewController?
-  var locationManager: CLLocationManager?
-  
+
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
     
-    // ••••••••••
-
-//    var config = Configuration()
-//    config.color = UIColor.lightGray
-//    config.defaultSize = CGSize(width: 35, height: 35)
-//    Visualizer.start(config)
-    
-    // ••••••••••
-    
-    // Location manager
-    locationManager = CLLocationManager()
-    locationManager?.desiredAccuracy = kCLLocationAccuracyBest
+    Location.shared.configureManager()
     
     // Google Maps and Google Places
     GMSServices.provideAPIKey(Secrets.googleAPIKey)
@@ -54,14 +41,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     IQKeyboardManager.sharedManager().enable = true
     IQKeyboardManager.sharedManager().shouldResignOnTouchOutside = true
     
-    // Container view controller
-    containerVC = ContainerViewController()
-    containerVC?.add(child: HomeViewController(), .above)
+    // Configure launch module
+    let view = LaunchViewController()
+    view.router = LaunchRouter()
     
     // Show window
     window = UIWindow(frame: UIScreen.main.bounds)
-    window?.rootViewController = containerVC
+    window?.rootViewController = view
     window?.makeKeyAndVisible()
+    
+    // ••••••••••
+    
+    //    var config = Configuration()
+    //    config.color = UIColor.lightGray
+    //    config.defaultSize = CGSize(width: 35, height: 35)
+    //    Visualizer.start(config)
+    
+    // ••••••••••
     
     return true
   }

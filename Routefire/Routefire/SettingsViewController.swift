@@ -31,9 +31,6 @@ class SettingsViewController: UIViewController {
   var panelActiveTrailingConstant: CGFloat!
   var panelInactiveTrailingConstant: CGFloat!
   
-  // MARK: Container view controller
-  let containerVC = (UIApplication.shared.delegate as? AppDelegate)?.containerVC
-  
   // MARK: Life cycle
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -71,7 +68,7 @@ class SettingsViewController: UIViewController {
   
   @IBAction func profileButtonTouched() {
     let profileVC = ProfileViewController()
-    containerVC?.add(child: ProfileViewController(), .above)
+//    containerVC?.add(child: ProfileViewController(), .above)
     
     profileVC.view.layoutIfNeeded()
     UIView.animate(
@@ -84,7 +81,7 @@ class SettingsViewController: UIViewController {
         profileVC.whiteViewCenterX.constant = profileVC.whiteViewActiveCenterXConstant
         profileVC.view.layoutIfNeeded()
     }) { _ in
-      self.containerVC?.removePreviousChild()
+//      self.containerVC?.removePreviousChild()
     }
   }
   
@@ -105,10 +102,10 @@ private extension SettingsViewController {
         self.panelTrailing.constant = self.panelInactiveTrailingConstant
         self.view.layoutIfNeeded()
     }) { _ in
-      let settingsVC = self.containerVC?.currentChild
-      self.containerVC?.currentChild = self.containerVC?.previousChild
-      self.containerVC?.previousChild = settingsVC
-      self.containerVC?.removePreviousChild()
+//      let settingsVC = self.containerVC?.currentChild
+//      self.containerVC?.currentChild = self.containerVC?.previousChild
+//      self.containerVC?.previousChild = settingsVC
+//      self.containerVC?.removePreviousChild()
     }
   }
   

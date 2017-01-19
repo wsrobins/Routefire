@@ -10,6 +10,7 @@ target 'Routefire' do
   pod 'Alamofire'
   pod 'ReachabilitySwift'
   pod 'SnapKit'
+  pod 'Spring', :git => 'https://github.com/MengTo/Spring.git', :branch => 'swift3'
   pod 'IQKeyboardManagerSwift'
   pod 'TouchVisualizer'
 end

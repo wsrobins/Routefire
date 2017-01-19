@@ -23,14 +23,13 @@
                 <outlet property="mapView" destination="hOe-gw-jne" id="LUv-y0-5Ln"/>
                 <outlet property="reachabilityView" destination="y4J-8y-Zai" id="nQQ-k0-F4q"/>
                 <outlet property="reachabilityViewHeight" destination="1sj-je-4Xd" id="2pF-ET-kY9"/>
-                <outlet property="reachabilityViewTop" destination="ezx-uS-FbQ" id="pbH-wL-aNW"/>
                 <outlet property="settingsButton" destination="pBO-pK-OoL" id="CbL-NP-5MA"/>
                 <outlet property="settingsButtonBottom" destination="4Rb-lB-wGj" id="FUp-Wh-CVp"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="whereToButton" destination="waP-No-r0x" id="yDc-pI-6gR"/>
                 <outlet property="whereToButtonHeight" destination="DKg-Ky-QCR" id="GCU-oI-ZW5"/>
                 <outlet property="whereToButtonTop" destination="KHq-Mb-I1O" id="h32-Ph-x5L"/>
-                <outlet property="whereToButtonWidth" destination="mTl-Lu-872" id="Dhc-UG-frb"/>
+                <outlet property="whereToButtonWidth" destination="Stc-h4-1o4" id="viQ-ns-o4h"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -43,7 +42,7 @@
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </view>
                 <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pBO-pK-OoL" userLabel="Settings Button">
-                    <rect key="frame" x="10" y="80" width="44" height="44"/>
+                    <rect key="frame" x="10" y="-44" width="44" height="44"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="pBO-pK-OoL" secondAttribute="height" multiplier="1:1" id="C99-UD-La7"/>
                         <constraint firstAttribute="width" constant="44" id="q4B-9j-28o"/>
@@ -137,22 +136,22 @@
                     </constraints>
                 </view>
                 <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="waP-No-r0x">
-                    <rect key="frame" x="20" y="140" width="335" height="65"/>
+                    <rect key="frame" x="20" y="100" width="335" height="60"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="65" id="DKg-Ky-QCR"/>
-                        <constraint firstAttribute="width" constant="335" id="mTl-Lu-872"/>
+                        <constraint firstAttribute="height" constant="60" id="DKg-Ky-QCR"/>
+                        <constraint firstAttribute="width" constant="335" id="Stc-h4-1o4"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" weight="thin" pointSize="24"/>
+                    <fontDescription key="fontDescription" type="system" weight="thin" pointSize="22"/>
                     <state key="normal" title="Where to?">
-                        <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
                         <action selector="whereToButtonTouched" destination="-1" eventType="touchUpInside" id="f0V-BI-Bmf"/>
                     </connections>
                 </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y4J-8y-Zai">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
+                    <rect key="frame" x="0.0" y="-60" width="375" height="60"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We can't reach our network right now." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tfj-kY-HhU">
                             <rect key="frame" x="60" y="30" width="256" height="18"/>
@@ -171,19 +170,19 @@
             </subviews>
             <constraints>
                 <constraint firstItem="pBO-pK-OoL" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="10" id="3Fs-1m-NIC"/>
-                <constraint firstItem="pBO-pK-OoL" firstAttribute="bottom" secondItem="y4J-8y-Zai" secondAttribute="bottom" constant="64" id="4Rb-lB-wGj"/>
+                <constraint firstItem="pBO-pK-OoL" firstAttribute="bottom" secondItem="y4J-8y-Zai" secondAttribute="bottom" id="4Rb-lB-wGj"/>
                 <constraint firstItem="y4J-8y-Zai" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="4ve-Fb-xVP"/>
                 <constraint firstAttribute="bottom" secondItem="aEj-E4-1s2" secondAttribute="bottom" constant="8" id="D34-bE-A6i"/>
                 <constraint firstItem="aEj-E4-1s2" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="28" id="DFW-3F-Va2"/>
                 <constraint firstAttribute="trailing" secondItem="y4J-8y-Zai" secondAttribute="trailing" id="HlK-Hr-sdD"/>
-                <constraint firstItem="waP-No-r0x" firstAttribute="top" secondItem="y4J-8y-Zai" secondAttribute="bottom" constant="80" id="KHq-Mb-I1O"/>
+                <constraint firstItem="waP-No-r0x" firstAttribute="top" secondItem="y4J-8y-Zai" secondAttribute="bottom" constant="100" id="KHq-Mb-I1O"/>
                 <constraint firstItem="hOe-gw-jne" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="Nxc-yi-Rsb"/>
                 <constraint firstItem="hOe-gw-jne" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="QdW-TL-TcL"/>
                 <constraint firstItem="waP-No-r0x" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="RMW-Vk-caU"/>
                 <constraint firstItem="aEj-E4-1s2" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="Zrz-c8-KJE"/>
-                <constraint firstAttribute="top" secondItem="y4J-8y-Zai" secondAttribute="top" id="ezx-uS-FbQ"/>
                 <constraint firstItem="hOe-gw-jne" firstAttribute="height" secondItem="i5M-Pr-FkT" secondAttribute="height" id="gI0-iK-nzq"/>
                 <constraint firstAttribute="trailing" secondItem="aEj-E4-1s2" secondAttribute="trailing" constant="8" id="ulv-sU-djz"/>
+                <constraint firstItem="y4J-8y-Zai" firstAttribute="bottom" secondItem="i5M-Pr-FkT" secondAttribute="top" id="vOV-yq-UMk"/>
                 <constraint firstItem="hOe-gw-jne" firstAttribute="width" secondItem="i5M-Pr-FkT" secondAttribute="width" id="xlE-LB-QZc"/>
             </constraints>
             <point key="canvasLocation" x="195" y="35"/>

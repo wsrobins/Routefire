@@ -15,7 +15,7 @@ final class Uber {
   private init() {}
   
   func getProductIDs() {
-    guard let location = (UIApplication.shared.delegate as? AppDelegate)?.locationManager?.location?.coordinate,
+    guard let location = Location.shared.current,
       let url = URL(string: "https://api.uber.com/v1.2/products") else { return }
     let parameters: [String : Any] = ["server_token" : Secrets.uberServerToken,
                                       "latitude" : location.latitude,

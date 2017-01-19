@@ -9,25 +9,36 @@
 import UIKit
 import CoreLocation
 
-class HomePresenter: NSObject, CLLocationManagerDelegate {
-  
-  // MARK: Best routes
-  var bestRoutes = [Route]()
+protocol HomePresenterProtocol: class {
+  func configureLocation()
+  func updateLocation(_ change: [NSKeyValueChangeKey : Any]?)
+}
 
-  // MARK: Status
+class HomePresenter {
+  
+  // MARK: VIPER
+  weak var view: HomeViewProtocol!
+  
+  // MARK: Properties
+  var bestRoutes = [Route]()
   var didFindMyLocation = false
   
-  // MARK: Input
-  let locationManager = (UIApplication.shared.delegate as? AppDelegate)?.locationManager
-
-  func configureLocationManager() {
-    locationManager?.delegate = self
-    locationManager?.requestWhenInUseAuthorization()
-  }
-  
-  func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-    if status == CLAuthorizationStatus.authorizedWhenInUse {
-      NotificationCenter.default.post(name: Constants.locationAuthorizedNotification, object: nil)
-    }
+  @objc func locationAuthorized() {
+    view.enableCurrentLocationOnMap()
   }
 }
+
+// MARK: - Home presenter protocol
+extension HomePresenter: HomePresenterProtocol {
+  func configureLocation() {
+    NotificationCenter.default.addObserver(self, selector: #selector(locationAuthorized), name: Constants.locationAuthorizedNotification, object: nil)
+    Location.shared.configureManager()
+  }
+  
+  func updateLocation(_ change: [NSKeyValueChangeKey : Any]?) {
+    guard !didFindMyLocation, let myLocation = (change?[NSKeyValueChangeKey.newKey] as? CLLocation)?.coordinate else { return }
+    didFindMyLocation = true
+    view.zoomTo(myLocation)
+  }
+}
+

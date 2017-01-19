@@ -16,6 +16,7 @@ PODS:
   - LyftSDK/Core (1.0.4)
   - ReachabilitySwift (3)
   - SnapKit (3.1.2)
+  - Spring (1.0.3)
   - TouchVisualizer (2.1.0)
 
 DEPENDENCIES:
@@ -27,7 +28,18 @@ DEPENDENCIES:
   - LyftSDK
   - ReachabilitySwift
   - SnapKit
+  - Spring (from `https://github.com/MengTo/Spring.git`, branch `swift3`)
   - TouchVisualizer
+
+EXTERNAL SOURCES:
+  Spring:
+    :branch: swift3
+    :git: https://github.com/MengTo/Spring.git
+
+CHECKOUT OPTIONS:
+  Spring:
+    :commit: 3a9227c6e9157e7b47f5ac1ee5abab2a56b50002
+    :git: https://github.com/MengTo/Spring.git
 
 SPEC CHECKSUMS:
   Alamofire: aa2e09d871c9160ac53c90e83c68064a94e3dfbe
@@ -38,8 +50,9 @@ SPEC CHECKSUMS:
   LyftSDK: af4b38c913ba24df874a70e67ba387f952e49690
   ReachabilitySwift: f5b9bb30a0777fac8f09ce8b067e32faeb29bb64
   SnapKit: 12b24f569cb7c143acc9c22b9d91b23e7b1c84a2
+  Spring: 3f02b5dc3308572ef177b3cad0fa7bbc4b0706f7
   TouchVisualizer: a67d7b7c2786b6a2e13103fd76ac08093542f0c0
 
-PODFILE CHECKSUM: e3d1700ba5cf966940b3f097cb44ed81e579bf12
+PODFILE CHECKSUM: 79865889f4975755349fa36d93abab8a4ba34268
 
 COCOAPODS: 1.1.1
