@@ -10,10 +10,15 @@ import Foundation
 import Alamofire
 
 final class Uber {
-  static let shared = Uber()
+  
+  // MARK: Properties
   var productIDs: [String : String]?
+  
+  // MARK: Singleton initialization
+  static let shared = Uber()
   private init() {}
   
+  // MARK: Retrieve Uber products IDs for location
   func getProductIDs() {
     guard let location = Location.shared.current,
       let url = URL(string: "https://api.uber.com/v1.2/products") else { return }

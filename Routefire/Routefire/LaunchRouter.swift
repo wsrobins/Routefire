@@ -7,19 +7,12 @@
 //
 
 import UIKit
-import SnapKit
 
-// MARK: Launch router protocol
 protocol LaunchRouterProtocol: UIViewControllerAnimatedTransitioning {
   func transitionToHomeModule(_ launchView: LaunchViewController)
 }
 
 class LaunchRouter: NSObject, LaunchRouterProtocol {
-  
-  // MARK: Transition properties
-  let duration = 0.9
-  
-  // MARK: Custom transition to home module
   func transitionToHomeModule(_ launchView: LaunchViewController) {
     let homeView = HomeViewController()
     let homePresenter = HomePresenter()
@@ -33,7 +26,7 @@ class LaunchRouter: NSObject, LaunchRouterProtocol {
   }
   
   func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
-    return duration
+    return 0.65
   }
   
   func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
@@ -46,31 +39,50 @@ class LaunchRouter: NSObject, LaunchRouterProtocol {
     containerView.insertSubview(toVC.view, belowSubview: fromVC.view)
   
     containerView.layoutIfNeeded()
-    UIView.animateKeyframes(
-      withDuration: duration,
+    UIView.animate(
+      withDuration: 0.2,
       delay: 0,
-      options: UIViewKeyframeAnimationOptions(.curveEaseInOut),
+      options: .curveEaseIn,
+      animations: { 
+        fromVC.titleLabelCenterX.constant = fromVC.view.frame.width
+        containerView.layoutIfNeeded()
+    }, completion: nil)
+    
+    containerView.layoutIfNeeded()
+    UIView.animate(
+      withDuration: 0.3,
+      delay: 0.2,
+      options: .curveEaseInOut,
       animations: {
-        UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.3) {
-          fromVC.titleLabelCenterX.constant = fromVC.view.frame.width
-          containerView.layoutIfNeeded()
-        }
-        
-        UIView.addKeyframe(withRelativeStartTime: 0.3, relativeDuration: 0.5) {
-          fromVC.whiteViewTop.constant = toVC.whereToButtonTop.constant
-          fromVC.whiteViewWidth.constant = toVC.whereToButtonWidth.constant
-          fromVC.whiteViewHeight.constant = toVC.whereToButtonHeight.constant
-          blurView.effect = nil
-          containerView.layoutIfNeeded()
-        }
-        
-        UIView.addKeyframe(withRelativeStartTime: 0.8, relativeDuration: 0.2) {
-          fromVC.whiteView.alpha = 0
-          toVC.settingsButtonBottom.constant = toVC.settingsButton.frame.height + UIApplication.shared.statusBarFrame.height
-          containerView.layoutIfNeeded()
-        }
+        fromVC.whiteViewTop.constant = toVC.whereToButtonTop.constant
+        fromVC.whiteViewWidth.constant = toVC.whereToButton.frame.width
+        fromVC.whiteViewHeight.constant = toVC.whereToButton.frame.height
+        blurView.effect = nil
+        containerView.layoutIfNeeded()
     }) { _ in
       blurView.removeFromSuperview()
+    }
+    
+    containerView.layoutIfNeeded()
+    UIView.animate(
+      withDuration: 0.15,
+      delay: 0.35,
+      options: .curveEaseInOut,
+      animations: {
+        toVC.settingsButtonBottom.constant = toVC.settingsButton.frame.height + UIApplication.shared.statusBarFrame.height
+        toVC.settingsButton.alpha = 1
+        containerView.layoutIfNeeded()
+    }, completion: nil)
+    
+    containerView.layoutIfNeeded()
+    UIView.animate(
+      withDuration: 0.15,
+      delay: 0.5,
+      options: .curveEaseOut,
+      animations: {
+        fromVC.whiteView.alpha = 0
+        containerView.layoutIfNeeded()
+    }) { _ in
       transitionContext.completeTransition(true)
     }
   }

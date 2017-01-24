@@ -10,7 +10,7 @@ import UIKit
 
 class LaunchViewController: UIViewController {
   
-  // MARK: VIPER
+  // MARK: Launch module
   var router: LaunchRouterProtocol!
   
   // MARK: Subviews

@@ -8,7 +8,6 @@
 
 import UIKit
 import GoogleMaps
-import LyftSDK
 import Alamofire
 import ReachabilitySwift
 
@@ -19,7 +18,7 @@ protocol HomeViewProtocol: class {
 
 class HomeViewController: UIViewController {
   
-  // MARK: VIPER
+  // MARK: Home module
   var presenter: HomePresenterProtocol!
   var router: HomeRouterProtocol!
   
@@ -55,7 +54,7 @@ class HomeViewController: UIViewController {
   
   // MARK: KVO
   override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-    presenter?.updateLocation(change)
+    presenter.updateLocation(change)
   }
   
   // MARK: User interaction
@@ -374,6 +373,12 @@ private extension HomeViewController {
 // MARK: - Transitioning delegate
 extension HomeViewController: UIViewControllerTransitioningDelegate {
   func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    router.presenting = true
+    return router
+  }
+  
+  func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    router.presenting = false
     return router
   }
 }

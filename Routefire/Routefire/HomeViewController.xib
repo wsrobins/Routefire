@@ -41,7 +41,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </view>
-                <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pBO-pK-OoL" userLabel="Settings Button">
+                <button opaque="NO" alpha="0.0" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pBO-pK-OoL" userLabel="Settings Button">
                     <rect key="frame" x="10" y="-44" width="44" height="44"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="pBO-pK-OoL" secondAttribute="height" multiplier="1:1" id="C99-UD-La7"/>

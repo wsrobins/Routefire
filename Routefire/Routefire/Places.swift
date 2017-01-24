@@ -10,6 +10,8 @@ import Foundation
 import GooglePlaces
 
 final class Places {
+  
+  // MARK: Singleton initialization
   static let shared = Places()
   private init() {}
   

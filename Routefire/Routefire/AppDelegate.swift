@@ -10,7 +10,6 @@ import UIKit
 import CoreData
 import GoogleMaps
 import GooglePlaces
-import LyftSDK
 import IQKeyboardManagerSwift
 
 // ••••••••••
@@ -25,27 +24,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
     
+    // User location
     Location.shared.configureManager()
     
-    // Google Maps and Google Places
+    // Google Maps and Places
     GMSServices.provideAPIKey(Secrets.googleAPIKey)
     GMSPlacesClient.provideAPIKey(Secrets.googleAPIKey)
     
-    // Uber
+    // Uber product IDs
     Uber.shared.getProductIDs()
-    
-    // Lyft
-    LyftConfiguration.developer = (token: Secrets.lyftClientToken, clientId: Secrets.lyftClientID)
     
     // Keyboard manager
     IQKeyboardManager.sharedManager().enable = true
     IQKeyboardManager.sharedManager().shouldResignOnTouchOutside = true
     
-    // Configure launch module
+    // Initial module
     let view = LaunchViewController()
     view.router = LaunchRouter()
     
-    // Show window
+    // Set up window
     window = UIWindow(frame: UIScreen.main.bounds)
     window?.rootViewController = view
     window?.makeKeyAndVisible()
@@ -65,7 +62,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
     return true
   }
-  
   
   func applicationWillTerminate(_ application: UIApplication) {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.

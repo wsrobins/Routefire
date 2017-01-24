@@ -7,7 +7,14 @@
 //
 
 import UIKit
+import IQKeyboardManagerSwift
 
-class RouteRouter: NSObject {
+protocol RouteRouterProtocol {
+  func back(_ routeView: RouteViewController)
+}
 
+class RouteRouter: NSObject, RouteRouterProtocol {
+  func back(_ routeView: RouteViewController) {
+    routeView.dismiss(animated: true, completion: nil)
+  }
 }

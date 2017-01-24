@@ -8,8 +8,11 @@
 
 import Foundation
 import GooglePlaces
-import LyftSDK
 import Alamofire
+
+protocol RouteInteractorProtocol {
+  func autocomplete(_ text: String, completion: @escaping([GMSAutocompletePrediction]) -> Void)
+}
 
 class RouteInteractor {
   
@@ -60,17 +63,17 @@ class RouteInteractor {
   }
   
   // MARK: Lyft price and time estimate
-  func getLyftEstimates(start: CLLocationCoordinate2D, end: CLLocationCoordinate2D, completion: @escaping ([Cost]?) -> Void) {
-    LyftAPI.costEstimates(from: start, to: end, rideKind: nil) { response in
-      guard let prices = response.value, response.error == nil else {
-        print("error unwrapping lyft prices: \(response.error)")
-        completion(nil)
-        return
-      }
-      
-      completion(prices)
-    }
-  }
+//  func getLyftEstimates(start: CLLocationCoordinate2D, end: CLLocationCoordinate2D, completion: @escaping ([Cost]?) -> Void) {
+//    LyftAPI.costEstimates(from: start, to: end, rideKind: nil) { response in
+//      guard let prices = response.value, response.error == nil else {
+//        print("error unwrapping lyft prices: \(response.error)")
+//        completion(nil)
+//        return
+//      }
+//      
+//      completion(prices)
+//    }
+//  }
   
   
   // ••••••••••
