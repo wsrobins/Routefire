@@ -39,8 +39,8 @@ class RouteViewController: UIViewController {
   
   var loadingViewActiveWidthConstant: CGFloat!
   var loadingViewInactiveWidthConstant: CGFloat!
-
-
+  
+  
   // MARK: Life cycle
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -69,7 +69,6 @@ extension RouteViewController: UITableViewDelegate, UITableViewDataSource {
   // Delegate
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     blurFadeIn()
-    
     let timer = Timer.scheduledTimer(withTimeInterval: 0.7, repeats: true) { _ in
       self.view.layoutIfNeeded()
       UIView.animate(
@@ -92,85 +91,20 @@ extension RouteViewController: UITableViewDelegate, UITableViewDataSource {
       }, completion: nil)
     }
     
-    presenter.selectedDestination(at: indexPath) { destinationName, routes in
-      DispatchQueue.main.async {
-        self.containerVC?.add(child: homeVC, .below)
-        
-        self.view.layoutIfNeeded()
-        UIView.animate(
-          withDuration: 0.1,
-          delay: 0,
-          options: .curveEaseIn,
-          animations: {
-            self.loadingView.alpha = 0
-            self.view.layoutIfNeeded()
-        }) { _ in
-          timer.invalidate()
-        }
-        
-        if routes.count > 0 {
-          homeVC.settingsButtonBottom.constant = homeVC.settingsButtonInactiveBottomConstant
-          homeVC.settingsButton.alpha = 0
-          homeVC.whereToButton.isHidden = true
-          homeVC.presenter.bestRoutes = routes.sorted { $0.price < $1.price }
-          homeVC.bestRoutesCollectionView.reloadData()
-          homeVC.bestRoutesView.alpha = 0
-          homeVC.bestRoutesView.isHidden = false
-          homeVC.bestRoutesAddressButton.setTitle(destinationName, for: .normal)
-          
-          self.view.layoutIfNeeded()
-          UIView.animate(
-            withDuration: 0.35,
-            delay: 0,
-            options: .curveEaseIn,
-            animations: {
-              self.blurView.effect = nil
-              self.view.layoutIfNeeded()
-          }) { _ in
-            self.blurView.isHidden = true
-            self.containerVC?.removePreviousChild()
-          }
-          
-          self.view.layoutIfNeeded()
-          UIView.animate(
-            withDuration: 0.2,
-            delay: 0,
-            options: .curveEaseInOut,
-            animations: {
-              self.routeView.alpha = 0
-              self.view.layoutIfNeeded()
-          }) { _ in
-            self.destinationsTableViewTop.constant = self.destinationsTableViewInactiveTopConstant
-            self.routeView.backgroundColor = UIColor.clear
-          }
-          
-          homeVC.view.layoutIfNeeded()
-          UIView.animate(
-            withDuration: 0.2,
-            delay: 0.2,
-            options: .curveEaseOut,
-            animations: {
-              homeVC.bestRoutesView.alpha = 1
-              homeVC.view.layoutIfNeeded()
-          }, completion: nil)
-        } else {
-          homeVC.bestRoutesView.isHidden = true
-          
-          self.transition(to: homeVC)
-          self.view.layoutIfNeeded()
-          UIView.animate(
-            withDuration: 0.2,
-            delay: 0,
-            options: .curveEaseIn,
-            animations: {
-              self.blurView.effect = nil
-              self.view.layoutIfNeeded()
-          }) { _ in
-            self.blurView.isHidden = true
-          }
-        }
-      }
-    }
+    presenter.selectedDestination(at: indexPath)
+//    { destinationName, routes in
+//      self.view.layoutIfNeeded()
+//      UIView.animate(
+//        withDuration: 0.1,
+//        delay: 0,
+//        options: .curveEaseIn,
+//        animations: {
+//          self.loadingView.alpha = 0
+//          self.view.layoutIfNeeded()
+//      }) { _ in
+//        timer.invalidate()
+//      }
+//    }
   }
   
   // Data source
@@ -191,119 +125,6 @@ extension RouteViewController: UITableViewDelegate, UITableViewDataSource {
 
 // MARK: Animate transitions
 private extension RouteViewController {
-  
-  // Transition to home view controller
-  func transition(to homeVC: HomeViewController) {
-    
-    // Setup
-//    containerVC?.add(child: homeVC, .below)
-    IQKeyboardManager.sharedManager().resignFirstResponder()
-    routeView.backgroundColor = UIColor.clear
-    
-    // Route view controller
-    view.layoutIfNeeded()
-    UIView.animate(
-      withDuration: 0.1,
-      delay: 0,
-      options: .curveEaseIn,
-      animations: {
-        self.backButton.alpha = 0
-        self.fieldStackView.alpha = 0
-        self.view.layoutIfNeeded()
-    }, completion: nil)
-    
-    view.layoutIfNeeded()
-    UIView.animate(
-      withDuration: 0.25,
-      delay: 0.05,
-      options: .curveEaseInOut,
-      animations: {
-        self.destinationsTableViewTop.constant = self.destinationsTableViewInactiveTopConstant
-        self.view.layoutIfNeeded()
-    }, completion: nil)
-    
-    // Home view controller
-    homeVC.view.layoutIfNeeded()
-    UIView.animate(
-      withDuration: 0.25,
-      delay: 0.05,
-      options: .curveEaseInOut,
-      animations: {
-//        homeVC.settingsButtonBottom.constant = homeVC.settingsButtonActiveBottomConstant
-//        homeVC.whereToButtonTop.constant = homeVC.whereToButtonActiveTopConstant
-//        homeVC.whereToButtonWidth.constant = homeVC.whereToButtonActiveWidthConstant
-//        homeVC.whereToButtonHeight.constant = homeVC.whereToButtonActiveHeightConstant
-        homeVC.settingsButton.alpha = 1
-        homeVC.view.layoutIfNeeded()
-    }) { _ in
-//      self.containerVC?.removePreviousChild()
-    }
-    
-    homeVC.view.layoutIfNeeded()
-    UIView.animate(
-      withDuration: 0.25,
-      delay: 0.2,
-      options: .curveEaseInOut,
-      animations: {
-        homeVC.whereToButton.titleLabel?.alpha = 1
-        homeVC.view.layoutIfNeeded()
-    }, completion: nil)
-  }
-  
-  func bestRoutesTransition(to homeVC: HomeViewController) {
-    
-    // Setup
-//    containerVC?.add(child: homeVC, .below)
-    IQKeyboardManager.sharedManager().resignFirstResponder()
-    routeView.backgroundColor = UIColor.clear
-    
-    // Route view controller
-    view.layoutIfNeeded()
-    UIView.animate(
-      withDuration: 0.1,
-      delay: 0,
-      options: .curveEaseIn,
-      animations: {
-        self.backButton.alpha = 0
-        self.fieldStackView.alpha = 0
-        self.view.layoutIfNeeded()
-    }, completion: nil)
-    
-    view.layoutIfNeeded()
-    UIView.animate(
-      withDuration: 0.25,
-      delay: 0.05,
-      options: .curveEaseInOut,
-      animations: {
-        self.destinationsTableViewTop.constant = self.destinationsTableViewInactiveTopConstant
-        self.view.layoutIfNeeded()
-    }) { _ in
-//      self.containerVC?.removePreviousChild()
-    }
-    
-    // Home view controller
-    homeVC.view.layoutIfNeeded()
-    UIView.animate(
-      withDuration: 0.35,
-      delay: 0.05,
-      options: .curveEaseInOut,
-      animations: {
-        homeVC.whereToButton.backgroundColor = UIColor.themeBlue
-        homeVC.bestRoutesView.alpha = 1
-        homeVC.view.layoutIfNeeded()
-    }, completion: nil)
-    
-    homeVC.view.layoutIfNeeded()
-    UIView.animate(
-      withDuration: 0.25,
-      delay: 0.2,
-      options: .curveEaseInOut,
-      animations: {
-        homeVC.whereToButton.titleLabel?.alpha = 1
-        homeVC.view.layoutIfNeeded()
-    }, completion: nil)
-  }
-  
   func blurFadeIn() {
     blurView.isHidden = false
     self.view.layoutIfNeeded()
@@ -326,7 +147,7 @@ private extension RouteViewController {
     // View
     CALayer.lightShadow(routeView)
     CALayer.lightShadow(loadingView)
-
+    
     backButton.alpha = 0
     fieldStackView.alpha = 0
     currentLocationButton.layer.cornerRadius = currentLocationButton.frame.height * 0.5

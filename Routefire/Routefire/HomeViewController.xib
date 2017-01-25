@@ -23,8 +23,6 @@
                 <outlet property="mapView" destination="hOe-gw-jne" id="LUv-y0-5Ln"/>
                 <outlet property="reachabilityView" destination="y4J-8y-Zai" id="nQQ-k0-F4q"/>
                 <outlet property="reachabilityViewHeight" destination="1sj-je-4Xd" id="2pF-ET-kY9"/>
-                <outlet property="settingsButton" destination="pBO-pK-OoL" id="CbL-NP-5MA"/>
-                <outlet property="settingsButtonBottom" destination="4Rb-lB-wGj" id="FUp-Wh-CVp"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="whereToButton" destination="waP-No-r0x" id="yDc-pI-6gR"/>
                 <outlet property="whereToButtonHeight" destination="DKg-Ky-QCR" id="GCU-oI-ZW5"/>
@@ -41,19 +39,6 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </view>
-                <button opaque="NO" alpha="0.0" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pBO-pK-OoL" userLabel="Settings Button">
-                    <rect key="frame" x="10" y="-44" width="44" height="44"/>
-                    <constraints>
-                        <constraint firstAttribute="width" secondItem="pBO-pK-OoL" secondAttribute="height" multiplier="1:1" id="C99-UD-La7"/>
-                        <constraint firstAttribute="width" constant="44" id="q4B-9j-28o"/>
-                    </constraints>
-                    <state key="normal" image="Settings">
-                        <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <connections>
-                        <action selector="settingsButtonTouched" destination="-1" eventType="touchUpInside" id="Pn2-qz-N2a"/>
-                    </connections>
-                </button>
                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aEj-E4-1s2">
                     <rect key="frame" x="8" y="28" width="359" height="631"/>
                     <subviews>
@@ -136,11 +121,11 @@
                     </constraints>
                 </view>
                 <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="waP-No-r0x">
-                    <rect key="frame" x="20" y="100" width="335" height="60"/>
+                    <rect key="frame" x="40" y="100" width="295" height="60"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="60" id="DKg-Ky-QCR"/>
-                        <constraint firstAttribute="width" constant="335" id="Stc-h4-1o4"/>
+                        <constraint firstAttribute="width" constant="295" id="Stc-h4-1o4"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" weight="thin" pointSize="22"/>
                     <state key="normal" title="Where to?">
@@ -169,8 +154,6 @@
                 </view>
             </subviews>
             <constraints>
-                <constraint firstItem="pBO-pK-OoL" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="10" id="3Fs-1m-NIC"/>
-                <constraint firstItem="pBO-pK-OoL" firstAttribute="bottom" secondItem="y4J-8y-Zai" secondAttribute="bottom" id="4Rb-lB-wGj"/>
                 <constraint firstItem="y4J-8y-Zai" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="4ve-Fb-xVP"/>
                 <constraint firstAttribute="bottom" secondItem="aEj-E4-1s2" secondAttribute="bottom" constant="8" id="D34-bE-A6i"/>
                 <constraint firstItem="aEj-E4-1s2" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="28" id="DFW-3F-Va2"/>
@@ -191,6 +174,5 @@
     <resources>
         <image name="Close" width="36" height="36"/>
         <image name="Expand" width="36" height="36"/>
-        <image name="Settings" width="24" height="24"/>
     </resources>
 </document>

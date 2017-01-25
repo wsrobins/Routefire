@@ -1,5 +1,5 @@
 //
-//  HomeRouter.swift
+//  HomeWireframe.swift
 //  Routefire
 //
 //  Created by William Robinson on 1/17/17.
@@ -9,26 +9,34 @@
 import UIKit
 import IQKeyboardManagerSwift
 
-protocol HomeRouterProtocol: UIViewControllerAnimatedTransitioning {
+// Custom animated transitioning protocol
+protocol HomeWireframeAnimatedTransitioning: UIViewControllerAnimatedTransitioning {}
+
+protocol HomeWireframeProtocol: UIViewControllerAnimatedTransitioning {
   var presenting: Bool { get set }
   func transitionToRouteModule(_ homeView: HomeViewController)
 }
 
-class HomeRouter: NSObject, HomeRouterProtocol {
+class HomeWireframe: NSObject, HomeWireframeProtocol {
   var presenting = true
   
   func transitionToRouteModule(_ homeView: HomeViewController) {
     let routeView = RouteViewController()
     let routePresenter = RoutePresenter()
+    let routeRouter = RouteRouter()
     routeView.presenter = routePresenter
-    routeView.router = RouteRouter()
+    routeView.router = routeRouter
     routePresenter.view = routeView
     routePresenter.interactor = RouteInteractor()
+    routePresenter.router = routeRouter
     
     routeView.transitioningDelegate = homeView
     homeView.present(routeView, animated: true, completion: nil)
   }
-  
+}
+
+// Animated transitioning
+extension HomeWireframe: HomeWireframeAnimatedTransitioning {
   func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
     if presenting {
       return 0.5
@@ -86,8 +94,6 @@ class HomeRouter: NSObject, HomeRouterProtocol {
         fromVC.whereToButtonTop.constant = 0
         fromVC.whereToButtonWidth.constant = toVC.routeView.frame.width
         fromVC.whereToButtonHeight.constant = toVC.routeView.frame.height
-        fromVC.settingsButtonBottom.constant = 0
-        fromVC.settingsButton.alpha = 0
         containerView.layoutIfNeeded()
     }) { _ in
       toVC.routeView.backgroundColor = UIColor.white
@@ -130,10 +136,8 @@ class HomeRouter: NSObject, HomeRouterProtocol {
       animations: {
         fromVC.destinationsTableViewTop.constant = 0
         toVC.whereToButtonTop.constant = 100
-        toVC.whereToButtonWidth.constant = toVC.view.frame.width - 40
+        toVC.whereToButtonWidth.constant = toVC.view.frame.width - 80
         toVC.whereToButtonHeight.constant = 60
-        toVC.settingsButtonBottom.constant = toVC.settingsButton.frame.height + UIApplication.shared.statusBarFrame.height
-        toVC.settingsButton.alpha = 1
         containerView.layoutIfNeeded()
     }, completion: nil)
     

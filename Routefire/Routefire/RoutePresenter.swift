@@ -13,13 +13,14 @@ import GooglePlaces
 protocol RoutePresenterProtocol {
   var autocompleteResults: [GMSAutocompletePrediction] { get }
   func autocomplete(_ text: String, completion: @escaping () -> Void)
-  func selectedDestination(at indexPath: IndexPath, completion: @escaping (String, [Route]) -> Void)
+  func selectedDestination(at indexPath: IndexPath)
   func locationName(_ indexPath: IndexPath) -> NSMutableAttributedString
 }
 
 final class RoutePresenter: RoutePresenterProtocol {
   weak var view: RouteViewController!
   var interactor: RouteInteractor!
+  var router: RouteRouter!
   
   // MARK: Output
   var autocompleteResults = [GMSAutocompletePrediction]()
@@ -32,7 +33,7 @@ final class RoutePresenter: RoutePresenterProtocol {
     }
   }
   
-  func selectedDestination(at indexPath: IndexPath, completion: @escaping (String, [Route]) -> Void) {
+  func selectedDestination(at indexPath: IndexPath) {
     guard let start = Location.shared.current,
       let destinationID = autocompleteResults[indexPath.row].placeID else {
         print("error unwrapping locations")
@@ -56,7 +57,7 @@ final class RoutePresenter: RoutePresenterProtocol {
           }
         }
         
-        completion(end.name, routes)
+        self.router.showBestRoutes(self.view, routes: routes, destinationName: end.name)
       }
     }
   }

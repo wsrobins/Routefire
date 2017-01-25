@@ -6,18 +6,21 @@
 //  Copyright © 2017 William Robinson. All rights reserved.
 //
 
-import UIKit
 import CoreLocation
 
 protocol HomePresenterProtocol: class {
+  var bestRoutes: [Route] { get set }
   func configureLocation()
   func updateLocation(_ change: [NSKeyValueChangeKey : Any]?)
 }
 
 class HomePresenter {
   
-  // MARK: VIPER
+  // View
   weak var view: HomeViewProtocol!
+  
+  // Wireframe
+  var wireframe: HomeWireframeProtocol!
   
   // MARK: Properties
   var bestRoutes = [Route]()

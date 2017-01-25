@@ -9,13 +9,9 @@
 /* Begin PBXBuildFile section */
 		BFB62AF832275CC1FA7C1D28 /* Pods_Routefire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34BC3A939C1E0D8C482FB926 /* Pods_Routefire.framework */; };
 		C4037DFF1E2EB82600279B01 /* Uber.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4037DFE1E2EB82600279B01 /* Uber.swift */; };
-		C4037E011E2EB87D00279B01 /* Lyft.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4037E001E2EB87D00279B01 /* Lyft.swift */; };
-		C4037E031E2EB88D00279B01 /* Taxi.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4037E021E2EB88D00279B01 /* Taxi.swift */; };
 		C4037E051E2EB8A600279B01 /* Places.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4037E041E2EB8A600279B01 /* Places.swift */; };
 		C414A6F21E30A3D600B9DF14 /* RouteRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C414A6F11E30A3D600B9DF14 /* RouteRouter.swift */; };
 		C438C74B1E25A7CE0043922E /* RoutePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C438C74A1E25A7CE0043922E /* RoutePresenter.swift */; };
-		C4551CCD1E2C3A18001A8172 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4551CCB1E2C3A18001A8172 /* ProfileViewController.swift */; };
-		C4551CCE1E2C3A18001A8172 /* ProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4551CCC1E2C3A18001A8172 /* ProfileViewController.xib */; };
 		C468F2D71E2333BA0046FDD2 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C468F2D51E2333BA0046FDD2 /* HomeViewController.swift */; };
 		C468F2D81E2333BA0046FDD2 /* HomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C468F2D61E2333BA0046FDD2 /* HomeViewController.xib */; };
 		C468F2DB1E2343190046FDD2 /* RouteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C468F2D91E2343190046FDD2 /* RouteViewController.swift */; };
@@ -31,9 +27,7 @@
 		C474729B1E27433600292CD6 /* BestRouteCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47472991E27433600292CD6 /* BestRouteCollectionViewCell.swift */; };
 		C474729C1E27433600292CD6 /* BestRouteCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C474729A1E27433600292CD6 /* BestRouteCollectionViewCell.xib */; };
 		C474729F1E27479400292CD6 /* Route.swift in Sources */ = {isa = PBXBuildFile; fileRef = C474729E1E27479400292CD6 /* Route.swift */; };
-		C47472A21E27829400292CD6 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47472A01E27829400292CD6 /* SettingsViewController.swift */; };
-		C47472A31E27829400292CD6 /* SettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C47472A11E27829400292CD6 /* SettingsViewController.xib */; };
-		C47472A61E2782EE00292CD6 /* SettingsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47472A51E2782EE00292CD6 /* SettingsPresenter.swift */; };
+		C4A0B4741E3887AD000262D4 /* LaunchPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4A0B4731E3887AD000262D4 /* LaunchPresenter.swift */; };
 		C4B305D71E1E0A2300C56A99 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B305D61E1E0A2300C56A99 /* Secrets.swift */; };
 		C4B305DB1E1E13D600C56A99 /* KeyframeAnimationOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B305DA1E1E13D600C56A99 /* KeyframeAnimationOptions.swift */; };
 		C4B305DD1E1E4BBE00C56A99 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B305DC1E1E4BBE00C56A99 /* Constants.swift */; };
@@ -41,12 +35,9 @@
 		C4EAF3F01E26EAA900AB7A23 /* DestinationTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4EAF3EE1E26EAA900AB7A23 /* DestinationTableViewCell.xib */; };
 		C4EAF3F61E26FDDF00AB7A23 /* HomePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4EAF3F51E26FDDF00AB7A23 /* HomePresenter.swift */; };
 		C4EAF3F81E2713D800AB7A23 /* RouteInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4EAF3F71E2713D800AB7A23 /* RouteInteractor.swift */; };
-		C4F4712B1E2EDA6900479187 /* BestRoutesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F471291E2EDA6900479187 /* BestRoutesViewController.swift */; };
-		C4F4712C1E2EDA6900479187 /* BestRoutesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4F4712A1E2EDA6900479187 /* BestRoutesViewController.xib */; };
-		C4F4712E1E2EDAB500479187 /* BestRoutesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F4712D1E2EDAB500479187 /* BestRoutesPresenter.swift */; };
-		C4F471311E2EE64700479187 /* HomeRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F471301E2EE64700479187 /* HomeRouter.swift */; };
+		C4F471311E2EE64700479187 /* HomeWireframe.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F471301E2EE64700479187 /* HomeWireframe.swift */; };
 		C4F471331E2EE86E00479187 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F471321E2EE86E00479187 /* Location.swift */; };
-		C4F4713A1E2F025F00479187 /* LaunchRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F471391E2F025F00479187 /* LaunchRouter.swift */; };
+		C4F4713A1E2F025F00479187 /* LaunchWireframe.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F471391E2F025F00479187 /* LaunchWireframe.swift */; };
 		C4F4713D1E2F03EE00479187 /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F4713B1E2F03EE00479187 /* LaunchViewController.swift */; };
 		C4F4713E1E2F03EE00479187 /* LaunchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4F4713C1E2F03EE00479187 /* LaunchViewController.xib */; };
 /* End PBXBuildFile section */
@@ -56,13 +47,9 @@
 		5C223F96DCEC47D1C0B8AF18 /* Pods-Routefire.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Routefire.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Routefire/Pods-Routefire.debug.xcconfig"; sourceTree = "<group>"; };
 		77BB0D6CCC46922D13B4BFF0 /* Pods-Routefire.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Routefire.release.xcconfig"; path = "Pods/Target Support Files/Pods-Routefire/Pods-Routefire.release.xcconfig"; sourceTree = "<group>"; };
 		C4037DFE1E2EB82600279B01 /* Uber.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Uber.swift; sourceTree = "<group>"; };
-		C4037E001E2EB87D00279B01 /* Lyft.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lyft.swift; sourceTree = "<group>"; };
-		C4037E021E2EB88D00279B01 /* Taxi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Taxi.swift; sourceTree = "<group>"; };
 		C4037E041E2EB8A600279B01 /* Places.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Places.swift; sourceTree = "<group>"; };
 		C414A6F11E30A3D600B9DF14 /* RouteRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteRouter.swift; sourceTree = "<group>"; };
 		C438C74A1E25A7CE0043922E /* RoutePresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoutePresenter.swift; sourceTree = "<group>"; };
-		C4551CCB1E2C3A18001A8172 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
-		C4551CCC1E2C3A18001A8172 /* ProfileViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileViewController.xib; sourceTree = "<group>"; };
 		C468F2D51E2333BA0046FDD2 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		C468F2D61E2333BA0046FDD2 /* HomeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeViewController.xib; sourceTree = "<group>"; };
 		C468F2D91E2343190046FDD2 /* RouteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteViewController.swift; sourceTree = "<group>"; };
@@ -80,9 +67,7 @@
 		C47472991E27433600292CD6 /* BestRouteCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BestRouteCollectionViewCell.swift; sourceTree = "<group>"; };
 		C474729A1E27433600292CD6 /* BestRouteCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BestRouteCollectionViewCell.xib; sourceTree = "<group>"; };
 		C474729E1E27479400292CD6 /* Route.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Route.swift; sourceTree = "<group>"; };
-		C47472A01E27829400292CD6 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
-		C47472A11E27829400292CD6 /* SettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingsViewController.xib; sourceTree = "<group>"; };
-		C47472A51E2782EE00292CD6 /* SettingsPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsPresenter.swift; sourceTree = "<group>"; };
+		C4A0B4731E3887AD000262D4 /* LaunchPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchPresenter.swift; sourceTree = "<group>"; };
 		C4B305D61E1E0A2300C56A99 /* Secrets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
 		C4B305DA1E1E13D600C56A99 /* KeyframeAnimationOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyframeAnimationOptions.swift; sourceTree = "<group>"; };
 		C4B305DC1E1E4BBE00C56A99 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -90,12 +75,9 @@
 		C4EAF3EE1E26EAA900AB7A23 /* DestinationTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DestinationTableViewCell.xib; sourceTree = "<group>"; };
 		C4EAF3F51E26FDDF00AB7A23 /* HomePresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomePresenter.swift; sourceTree = "<group>"; };
 		C4EAF3F71E2713D800AB7A23 /* RouteInteractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteInteractor.swift; sourceTree = "<group>"; };
-		C4F471291E2EDA6900479187 /* BestRoutesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BestRoutesViewController.swift; sourceTree = "<group>"; };
-		C4F4712A1E2EDA6900479187 /* BestRoutesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BestRoutesViewController.xib; sourceTree = "<group>"; };
-		C4F4712D1E2EDAB500479187 /* BestRoutesPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BestRoutesPresenter.swift; sourceTree = "<group>"; };
-		C4F471301E2EE64700479187 /* HomeRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeRouter.swift; sourceTree = "<group>"; };
+		C4F471301E2EE64700479187 /* HomeWireframe.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeWireframe.swift; sourceTree = "<group>"; };
 		C4F471321E2EE86E00479187 /* Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
-		C4F471391E2F025F00479187 /* LaunchRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchRouter.swift; sourceTree = "<group>"; };
+		C4F471391E2F025F00479187 /* LaunchWireframe.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchWireframe.swift; sourceTree = "<group>"; };
 		C4F4713B1E2F03EE00479187 /* LaunchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
 		C4F4713C1E2F03EE00479187 /* LaunchViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -135,27 +117,8 @@
 				C4F471321E2EE86E00479187 /* Location.swift */,
 				C4037E041E2EB8A600279B01 /* Places.swift */,
 				C4037DFE1E2EB82600279B01 /* Uber.swift */,
-				C4037E001E2EB87D00279B01 /* Lyft.swift */,
-				C4037E021E2EB88D00279B01 /* Taxi.swift */,
 			);
 			name = "Data Manager";
-			sourceTree = "<group>";
-		};
-		C4551CC51E2C39B8001A8172 /* Profile Module */ = {
-			isa = PBXGroup;
-			children = (
-				C4551CC61E2C39C3001A8172 /* View */,
-			);
-			name = "Profile Module";
-			sourceTree = "<group>";
-		};
-		C4551CC61E2C39C3001A8172 /* View */ = {
-			isa = PBXGroup;
-			children = (
-				C4551CCB1E2C3A18001A8172 /* ProfileViewController.swift */,
-				C4551CCC1E2C3A18001A8172 /* ProfileViewController.xib */,
-			);
-			name = View;
 			sourceTree = "<group>";
 		};
 		C4746FDA1E1E082C00832FC3 = {
@@ -185,9 +148,7 @@
 				C4037DFD1E2EB6A300279B01 /* Data Manager */,
 				C4F471351E2F01BE00479187 /* Launch Module */,
 				C4DD69E71E205FA900667A4C /* Home Module */,
-				C4F471251E2EDA0C00479187 /* Best Routes Module */,
 				C4DD69F51E20610E00667A4C /* Route Module */,
-				C4DD69E81E205FB400667A4C /* Settings Module */,
 				C4B305D41E1E0A0100C56A99 /* Other */,
 			);
 			path = Routefire;
@@ -219,10 +180,10 @@
 			name = Entity;
 			sourceTree = "<group>";
 		};
-		C47472A41E2782D300292CD6 /* Presenter */ = {
+		C4A0B4721E388795000262D4 /* Presenter */ = {
 			isa = PBXGroup;
 			children = (
-				C47472A51E2782EE00292CD6 /* SettingsPresenter.swift */,
+				C4A0B4731E3887AD000262D4 /* LaunchPresenter.swift */,
 			);
 			name = Presenter;
 			sourceTree = "<group>";
@@ -248,36 +209,9 @@
 			children = (
 				C4DD69EE1E20605500667A4C /* View */,
 				C4DD69F01E20607400667A4C /* Presenter */,
-				C4F4712F1E2EE5C300479187 /* Router */,
+				C4F4712F1E2EE5C300479187 /* Wireframe */,
 			);
 			name = "Home Module";
-			sourceTree = "<group>";
-		};
-		C4DD69E81E205FB400667A4C /* Settings Module */ = {
-			isa = PBXGroup;
-			children = (
-				C4551CC51E2C39B8001A8172 /* Profile Module */,
-				C47472A41E2782D300292CD6 /* Presenter */,
-				C4DD69EC1E20603500667A4C /* Entity */,
-				C4DD69EA1E20600200667A4C /* View */,
-			);
-			name = "Settings Module";
-			sourceTree = "<group>";
-		};
-		C4DD69EA1E20600200667A4C /* View */ = {
-			isa = PBXGroup;
-			children = (
-				C47472A01E27829400292CD6 /* SettingsViewController.swift */,
-				C47472A11E27829400292CD6 /* SettingsViewController.xib */,
-			);
-			name = View;
-			sourceTree = "<group>";
-		};
-		C4DD69EC1E20603500667A4C /* Entity */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Entity;
 			sourceTree = "<group>";
 		};
 		C4DD69EE1E20605500667A4C /* View */ = {
@@ -285,6 +219,7 @@
 			children = (
 				C468F2D51E2333BA0046FDD2 /* HomeViewController.swift */,
 				C468F2D61E2333BA0046FDD2 /* HomeViewController.xib */,
+				C47472941E2742D500292CD6 /* Subviews */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -343,73 +278,31 @@
 			name = Router;
 			sourceTree = "<group>";
 		};
-		C4F471251E2EDA0C00479187 /* Best Routes Module */ = {
+		C4F4712F1E2EE5C300479187 /* Wireframe */ = {
 			isa = PBXGroup;
 			children = (
-				C4F471261E2EDA1400479187 /* View */,
-				C4F471271E2EDA1900479187 /* Presenter */,
-				C4F471281E2EDA4600479187 /* Wireframe */,
-			);
-			name = "Best Routes Module";
-			sourceTree = "<group>";
-		};
-		C4F471261E2EDA1400479187 /* View */ = {
-			isa = PBXGroup;
-			children = (
-				C4F471291E2EDA6900479187 /* BestRoutesViewController.swift */,
-				C4F4712A1E2EDA6900479187 /* BestRoutesViewController.xib */,
-				C47472941E2742D500292CD6 /* Subviews */,
-			);
-			name = View;
-			sourceTree = "<group>";
-		};
-		C4F471271E2EDA1900479187 /* Presenter */ = {
-			isa = PBXGroup;
-			children = (
-				C4F4712D1E2EDAB500479187 /* BestRoutesPresenter.swift */,
-			);
-			name = Presenter;
-			sourceTree = "<group>";
-		};
-		C4F471281E2EDA4600479187 /* Wireframe */ = {
-			isa = PBXGroup;
-			children = (
+				C4F471301E2EE64700479187 /* HomeWireframe.swift */,
 			);
 			name = Wireframe;
-			sourceTree = "<group>";
-		};
-		C4F4712F1E2EE5C300479187 /* Router */ = {
-			isa = PBXGroup;
-			children = (
-				C4F471301E2EE64700479187 /* HomeRouter.swift */,
-			);
-			name = Router;
 			sourceTree = "<group>";
 		};
 		C4F471351E2F01BE00479187 /* Launch Module */ = {
 			isa = PBXGroup;
 			children = (
-				C4F471361E2F01DA00479187 /* View */,
-				C4F471381E2F01EE00479187 /* Router */,
+				C4F4713B1E2F03EE00479187 /* LaunchViewController.swift */,
+				C4F4713C1E2F03EE00479187 /* LaunchViewController.xib */,
+				C4A0B4721E388795000262D4 /* Presenter */,
+				C4F471381E2F01EE00479187 /* Wireframe */,
 			);
 			name = "Launch Module";
 			sourceTree = "<group>";
 		};
-		C4F471361E2F01DA00479187 /* View */ = {
+		C4F471381E2F01EE00479187 /* Wireframe */ = {
 			isa = PBXGroup;
 			children = (
-				C4F4713B1E2F03EE00479187 /* LaunchViewController.swift */,
-				C4F4713C1E2F03EE00479187 /* LaunchViewController.xib */,
+				C4F471391E2F025F00479187 /* LaunchWireframe.swift */,
 			);
-			name = View;
-			sourceTree = "<group>";
-		};
-		C4F471381E2F01EE00479187 /* Router */ = {
-			isa = PBXGroup;
-			children = (
-				C4F471391E2F025F00479187 /* LaunchRouter.swift */,
-			);
-			name = Router;
+			name = Wireframe;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -477,14 +370,11 @@
 			files = (
 				C4746FF41E1E082C00832FC3 /* LaunchScreen.storyboard in Resources */,
 				C4F4713E1E2F03EE00479187 /* LaunchViewController.xib in Resources */,
-				C47472A31E27829400292CD6 /* SettingsViewController.xib in Resources */,
-				C4F4712C1E2EDA6900479187 /* BestRoutesViewController.xib in Resources */,
 				C468F2DC1E2343190046FDD2 /* RouteViewController.xib in Resources */,
 				C46E12991E258E64009E1D59 /* MapStyle.json in Resources */,
 				C4EAF3F01E26EAA900AB7A23 /* DestinationTableViewCell.xib in Resources */,
 				C474729C1E27433600292CD6 /* BestRouteCollectionViewCell.xib in Resources */,
 				C4746FF11E1E082C00832FC3 /* Assets.xcassets in Resources */,
-				C4551CCE1E2C3A18001A8172 /* ProfileViewController.xib in Resources */,
 				C468F2D81E2333BA0046FDD2 /* HomeViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -547,30 +437,24 @@
 				C414A6F21E30A3D600B9DF14 /* RouteRouter.swift in Sources */,
 				C4EAF3F61E26FDDF00AB7A23 /* HomePresenter.swift in Sources */,
 				C4F4713D1E2F03EE00479187 /* LaunchViewController.swift in Sources */,
+				C4A0B4741E3887AD000262D4 /* LaunchPresenter.swift in Sources */,
 				C4746FE71E1E082C00832FC3 /* AppDelegate.swift in Sources */,
-				C4F4712E1E2EDAB500479187 /* BestRoutesPresenter.swift in Sources */,
-				C47472A21E27829400292CD6 /* SettingsViewController.swift in Sources */,
-				C4037E031E2EB88D00279B01 /* Taxi.swift in Sources */,
-				C4F471311E2EE64700479187 /* HomeRouter.swift in Sources */,
+				C4F471311E2EE64700479187 /* HomeWireframe.swift in Sources */,
 				C4F471331E2EE86E00479187 /* Location.swift in Sources */,
 				C4EAF3F81E2713D800AB7A23 /* RouteInteractor.swift in Sources */,
 				C469AAAE1E1F31850009A15F /* BottomBorderTextField.swift in Sources */,
 				C4B305DB1E1E13D600C56A99 /* KeyframeAnimationOptions.swift in Sources */,
-				C47472A61E2782EE00292CD6 /* SettingsPresenter.swift in Sources */,
 				C4B305D71E1E0A2300C56A99 /* Secrets.swift in Sources */,
 				C4746FEF1E1E082C00832FC3 /* Routefire.xcdatamodeld in Sources */,
 				C4037DFF1E2EB82600279B01 /* Uber.swift in Sources */,
-				C4F4712B1E2EDA6900479187 /* BestRoutesViewController.swift in Sources */,
 				C46E12911E245BC2009E1D59 /* CustomShadows.swift in Sources */,
 				C474729F1E27479400292CD6 /* Route.swift in Sources */,
 				C4EAF3EF1E26EAA900AB7A23 /* DestinationTableViewCell.swift in Sources */,
 				C438C74B1E25A7CE0043922E /* RoutePresenter.swift in Sources */,
 				C472BF381E2A8E5600D9A2E7 /* CustomColors.swift in Sources */,
-				C4037E011E2EB87D00279B01 /* Lyft.swift in Sources */,
-				C4F4713A1E2F025F00479187 /* LaunchRouter.swift in Sources */,
+				C4F4713A1E2F025F00479187 /* LaunchWireframe.swift in Sources */,
 				C474729B1E27433600292CD6 /* BestRouteCollectionViewCell.swift in Sources */,
 				C468F2D71E2333BA0046FDD2 /* HomeViewController.swift in Sources */,
-				C4551CCD1E2C3A18001A8172 /* ProfileViewController.swift in Sources */,
 				C4B305DD1E1E4BBE00C56A99 /* Constants.swift in Sources */,
 				C468F2DB1E2343190046FDD2 /* RouteViewController.swift in Sources */,
 				C4037E051E2EB8A600279B01 /* Places.swift in Sources */,

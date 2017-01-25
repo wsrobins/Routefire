@@ -39,12 +39,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     IQKeyboardManager.sharedManager().shouldResignOnTouchOutside = true
     
     // Initial module
-    let view = LaunchViewController()
-    view.router = LaunchRouter()
+//    let view = LaunchViewController()
+//    let presenter = LaunchPresenter()
+//    let wireframe = LaunchWireframe()
+//    view.presenter = presenter
+//    presenter.wireframe = wireframe
+//    wireframe.view = view
     
     // Set up window
     window = UIWindow(frame: UIScreen.main.bounds)
-    window?.rootViewController = view
+    window?.rootViewController = LaunchViewController()
     window?.makeKeyAndVisible()
     
     // ••••••••••
