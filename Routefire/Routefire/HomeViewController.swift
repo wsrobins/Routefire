@@ -28,27 +28,26 @@ class HomeViewController: UIViewController {
   
   // Subviews
   @IBOutlet weak var mapView: GMSMapView!
-  @IBOutlet weak var reachabilityView: UIView!
   @IBOutlet weak var whereToButton: UIButton!
   @IBOutlet weak var bestRoutesView: UIView!
+  @IBOutlet weak var bestRoutesDropdownView: UIView!
   @IBOutlet weak var bestRoutesAddressView: UIView!
-  @IBOutlet weak var bestRoutesAddressTopView: UIView!
   @IBOutlet weak var bestRoutesExpandButton: UIButton!
   @IBOutlet weak var bestRoutesAddressButton: UIButton!
   @IBOutlet weak var bestRoutesCollectionView: UICollectionView!
-  let spacing: CGFloat = 8
+  @IBOutlet weak var reachabilityView: UIView!
   
   // Constraints
-  @IBOutlet weak var reachabilityViewHeight: NSLayoutConstraint!
   @IBOutlet weak var whereToButtonTop: NSLayoutConstraint!
   @IBOutlet weak var whereToButtonWidth: NSLayoutConstraint!
   @IBOutlet weak var whereToButtonHeight: NSLayoutConstraint!
+  @IBOutlet weak var bestRoutesDropdownViewHeight: NSLayoutConstraint!
   @IBOutlet weak var bestRoutesAddressViewHeight: NSLayoutConstraint!
-  @IBOutlet weak var bestRoutesAddressTopViewHeight: NSLayoutConstraint!
+  @IBOutlet weak var reachabilityViewBottom: NSLayoutConstraint!
   
   // Constraint constants
-  var bestRoutesAddressViewActiveHeightConstant: CGFloat!
-  var bestRoutesAddressViewInactiveHeightConstant: CGFloat!
+  let bestRoutesDropdownViewExpandedHeight = UIScreen.main.bounds.height - UIScreen.main.bounds.width - 24
+  let bestRoutesDropdownViewCollapsedHeight = UIScreen.main.bounds.height - (UIScreen.main.bounds.width * 1.5) - 24
   
   // Life cycle
   override func viewDidLoad() {
@@ -65,14 +64,13 @@ class HomeViewController: UIViewController {
   
   // User interaction
   @IBAction func whereToButtonTouched() {
-//    router.transitionToRouteModule(self)
+    presenter.showRouteModule()
   }
-
   
   @IBAction func expandButtonTouched() {
     view.layoutIfNeeded()
-    switch bestRoutesAddressViewHeight.constant {
-    case bestRoutesAddressViewInactiveHeightConstant:
+    switch bestRoutesDropdownViewHeight.constant {
+    case bestRoutesDropdownViewCollapsedHeight:
       UIView.animate(
         withDuration: 0.18,
         delay: 0,
@@ -80,7 +78,7 @@ class HomeViewController: UIViewController {
         animations: {
           self.bestRoutesExpandButton.transform = CGAffineTransform(rotationAngle: CGFloat(-M_PI * 0.5))
           self.bestRoutesExpandButton.transform = CGAffineTransform(rotationAngle: CGFloat(-M_PI))
-          self.bestRoutesAddressViewHeight.constant = self.bestRoutesAddressViewActiveHeightConstant
+          self.bestRoutesDropdownViewHeight.constant = self.bestRoutesDropdownViewExpandedHeight
           self.view.layoutIfNeeded()
       }, completion: nil)
     default:
@@ -90,7 +88,7 @@ class HomeViewController: UIViewController {
         options: .curveEaseInOut,
         animations: {
           self.bestRoutesExpandButton.transform = CGAffineTransform(rotationAngle: 0)
-          self.bestRoutesAddressViewHeight.constant = self.bestRoutesAddressViewInactiveHeightConstant
+          self.bestRoutesDropdownViewHeight.constant = self.bestRoutesDropdownViewCollapsedHeight
           self.view.layoutIfNeeded()
       }, completion: nil)
     }
@@ -117,46 +115,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
   
   // Delegate
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    let route = presenter.bestRoutes[indexPath.row]
-    let pickupLat = route.start.latitude.description
-    let pickupLong = route.start.longitude.description
-    let dropoffLat = route.end.latitude.description
-    let dropoffLong = route.end.longitude.description
-    
-    switch route.service {
-    case .uber:
-      if UIApplication.shared.canOpenURL(URL(fileURLWithPath: "uber://")) {
-        let productID: String
-        switch route.routeType {
-        case "uberPOOL":
-          productID = Uber.shared.productIDs?["uberPOOL"] ?? ""
-        case "uberX":
-          productID = Uber.shared.productIDs?["uberX"] ?? ""
-        case "uberXL":
-          productID = Uber.shared.productIDs?["uberXL"] ?? ""
-        case "UberBLACK":
-          productID = Uber.shared.productIDs?["UberBLACK"] ?? ""
-        case "SUV":
-          productID = Uber.shared.productIDs?["SUV"] ?? ""
-        case "WAV":
-          productID = Uber.shared.productIDs?["WAV"] ?? ""
-        case "uberFAMILY":
-          productID = Uber.shared.productIDs?["uberFAMILY"] ?? ""
-        default:
-          productID = ""
-        }
-        
-        let urlString = "uber://?client_id=\(Secrets.uberClientID)&action=setPickup&pickup[latitude]=\(pickupLat)&pickup[longitude]=\(pickupLong)&pickup[nickname]=\(route.startNickname)&pickup[formatted_address]=\(route.startAddress)&dropoff[latitude]=\(dropoffLat)&dropoff[longitude]=\(dropoffLong)&dropoff[nickname]=\(route.endNickname)&dropoff[formatted_address]=\(route.endAddress)&product_id=\(productID)"
-        guard let encodedURLString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-          let uberURL = URL(string: encodedURLString) else { return }
-        
-        UIApplication.shared.open(uberURL, options: [:], completionHandler: nil)
-      } else {
-        print("uber not installed")
-      }
-    case .lyft:
-      return
-    }
+    presenter.selectedRoute(at: indexPath)
   }
   
   // Data source
@@ -185,6 +144,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
   
   // Flow layout delegate
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    guard let spacing = (collectionViewLayout as? UICollectionViewFlowLayout)?.minimumInteritemSpacing else { return CGSize.zero }
     let full = UIScreen.main.bounds.width - spacing * 2
     let half = (UIScreen.main.bounds.width - spacing * 3) / 2
     switch indexPath.row {
@@ -263,8 +223,7 @@ extension HomeViewController: UIViewControllerTransitioningDelegate {
   }
   
   func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-    
-    return (dismissed as? RouteViewController)?.router
+    return (dismissed as? RouteViewController)?.wireframe
   }
 }
 
@@ -279,11 +238,11 @@ private extension HomeViewController {
     
     CALayer.boldShadow(whereToButton)
     CALayer.boldShadow(bestRoutesView)
-    CALayer.boldShadow(bestRoutesAddressView)
+    CALayer.boldShadow(bestRoutesDropdownView)
     
     let layout = UICollectionViewFlowLayout()
-    layout.minimumInteritemSpacing = spacing
-    layout.minimumLineSpacing = spacing
+    layout.minimumInteritemSpacing = 8
+    layout.minimumLineSpacing = 8
     bestRoutesCollectionView.collectionViewLayout = layout
     bestRoutesCollectionView.backgroundColor = UIColor.clear
     bestRoutesCollectionView.delegate = self
@@ -308,8 +267,6 @@ private extension HomeViewController {
     //    whereToButtonActiveHeightConstant = whereToButtonHeight.constant
     //    whereToButtonInactiveHeightConstant = 200
     //
-    bestRoutesAddressViewActiveHeightConstant = UIScreen.main.bounds.height - UIScreen.main.bounds.width - 24
-    bestRoutesAddressViewInactiveHeightConstant = UIScreen.main.bounds.height - (UIScreen.main.bounds.width * 1.5) - 24
     
     // Configure initial constraints
     //    if Reachability()!.currentReachabilityStatus == .notReachable {
@@ -323,6 +280,7 @@ private extension HomeViewController {
     //    whereToButtonWidth.constant = whereToButtonActiveWidthConstant
     //    bestRoutesAddressViewHeight.constant = bestRoutesAddressViewInactiveHeightConstant
     //    bestRoutesAddressTopViewHeight.constant = bestRoutesAddressViewInactiveHeightConstant
+    
   }
 }
 

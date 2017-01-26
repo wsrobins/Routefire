@@ -13,16 +13,16 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HomeViewController" customModule="Routefire" customModuleProvider="target">
             <connections>
                 <outlet property="bestRoutesAddressButton" destination="4yQ-KL-VJ6" id="Mot-Bc-bwS"/>
-                <outlet property="bestRoutesAddressTopView" destination="QBG-hl-6bI" id="E0U-fM-ShH"/>
-                <outlet property="bestRoutesAddressTopViewHeight" destination="Fsc-dS-TCo" id="EwD-Jg-Kua"/>
-                <outlet property="bestRoutesAddressView" destination="LKW-Q6-gLi" id="TOj-qc-y8A"/>
-                <outlet property="bestRoutesAddressViewHeight" destination="aRm-b1-r42" id="s91-ag-8aZ"/>
+                <outlet property="bestRoutesAddressView" destination="QBG-hl-6bI" id="kHE-XN-x0t"/>
+                <outlet property="bestRoutesAddressViewHeight" destination="Fsc-dS-TCo" id="3Q6-5n-zE3"/>
                 <outlet property="bestRoutesCollectionView" destination="quk-V0-wBA" id="LRp-Fa-eCD"/>
+                <outlet property="bestRoutesDropdownView" destination="LKW-Q6-gLi" id="bGx-mD-T3B"/>
+                <outlet property="bestRoutesDropdownViewHeight" destination="aRm-b1-r42" id="qM2-HF-g25"/>
                 <outlet property="bestRoutesExpandButton" destination="juP-Pe-HDf" id="9Wc-6a-2N0"/>
                 <outlet property="bestRoutesView" destination="aEj-E4-1s2" id="wy1-lS-psD"/>
                 <outlet property="mapView" destination="hOe-gw-jne" id="LUv-y0-5Ln"/>
                 <outlet property="reachabilityView" destination="y4J-8y-Zai" id="nQQ-k0-F4q"/>
-                <outlet property="reachabilityViewHeight" destination="1sj-je-4Xd" id="2pF-ET-kY9"/>
+                <outlet property="reachabilityViewBottom" destination="vOV-yq-UMk" id="x9h-gh-SLc"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="whereToButton" destination="waP-No-r0x" id="yDc-pI-6gR"/>
                 <outlet property="whereToButtonHeight" destination="DKg-Ky-QCR" id="GCU-oI-ZW5"/>
@@ -39,6 +39,21 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </view>
+                <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="waP-No-r0x">
+                    <rect key="frame" x="40" y="100" width="295" height="60"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="60" id="DKg-Ky-QCR"/>
+                        <constraint firstAttribute="width" constant="295" id="Stc-h4-1o4"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" weight="thin" pointSize="22"/>
+                    <state key="normal" title="Where to?">
+                        <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="whereToButtonTouched" destination="-1" eventType="touchUpInside" id="f0V-BI-Bmf"/>
+                    </connections>
+                </button>
                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aEj-E4-1s2">
                     <rect key="frame" x="8" y="28" width="359" height="631"/>
                     <subviews>
@@ -66,7 +81,7 @@
                                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
                                         </button>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aDU-nJ-eoH">
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aDU-nJ-eoH" userLabel="Best Routes Close Button">
                                             <rect key="frame" x="298" y="22" width="56" height="56"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" secondItem="aDU-nJ-eoH" secondAttribute="height" multiplier="1:1" id="CFk-C4-1G1"/>
@@ -120,21 +135,6 @@
                         <constraint firstItem="LKW-Q6-gLi" firstAttribute="leading" secondItem="aEj-E4-1s2" secondAttribute="leading" id="d6d-Js-5Ps"/>
                     </constraints>
                 </view>
-                <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="waP-No-r0x">
-                    <rect key="frame" x="40" y="100" width="295" height="60"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="60" id="DKg-Ky-QCR"/>
-                        <constraint firstAttribute="width" constant="295" id="Stc-h4-1o4"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" type="system" weight="thin" pointSize="22"/>
-                    <state key="normal" title="Where to?">
-                        <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <connections>
-                        <action selector="whereToButtonTouched" destination="-1" eventType="touchUpInside" id="f0V-BI-Bmf"/>
-                    </connections>
-                </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y4J-8y-Zai">
                     <rect key="frame" x="0.0" y="-60" width="375" height="60"/>
                     <subviews>

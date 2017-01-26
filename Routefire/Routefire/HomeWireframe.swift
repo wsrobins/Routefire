@@ -13,50 +13,42 @@ import IQKeyboardManagerSwift
 protocol HomeWireframeAnimatedTransitioning: UIViewControllerAnimatedTransitioning {}
 
 protocol HomeWireframeProtocol: UIViewControllerAnimatedTransitioning {
-  var presenting: Bool { get set }
-  func transitionToRouteModule(_ homeView: HomeViewController)
+  func transitionToRouteModule()
 }
 
 class HomeWireframe: NSObject, HomeWireframeProtocol {
-  var presenting = true
+  weak var view: HomeViewController!
+  weak var presenter: HomePresenterProtocol!
+  var interactor: HomeInteractorProtocol!
   
-  func transitionToRouteModule(_ homeView: HomeViewController) {
+  func transitionToRouteModule() {
     let routeView = RouteViewController()
     let routePresenter = RoutePresenter()
-    let routeRouter = RouteRouter()
+    let routeInteractor = RouteInteractor()
+    let routeWireframe = RouteWireframe()
     routeView.presenter = routePresenter
-    routeView.router = routeRouter
+    routeView.wireframe = routeWireframe
     routePresenter.view = routeView
-    routePresenter.interactor = RouteInteractor()
-    routePresenter.router = routeRouter
+    routePresenter.interactor = routeInteractor
+    routePresenter.wireframe = routeWireframe
+    routePresenter.uberProductIDs = presenter.uberProductIDs
+    routeInteractor.homeInteractor = interactor
     
-    routeView.transitioningDelegate = homeView
-    homeView.present(routeView, animated: true, completion: nil)
+    routeView.transitioningDelegate = view
+    view.present(routeView, animated: true, completion: nil)
   }
 }
 
 // Animated transitioning
 extension HomeWireframe: HomeWireframeAnimatedTransitioning {
   func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
-    if presenting {
-      return 0.5
-    } else {
-      return 0.45
-    }
+    return 0.5
   }
   
   func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
-    if presenting {
-      presentingTransition(transitionContext)
-    } else {
-      dismissingTransition(transitionContext)
-    }
-  }
-  
-  func presentingTransition(_ context: UIViewControllerContextTransitioning) {
-    let containerView = context.containerView
-    let fromVC =  context.viewController(forKey: .from) as! HomeViewController
-    let toVC = context.viewController(forKey: .to) as! RouteViewController
+    let containerView = transitionContext.containerView
+    let fromVC =  transitionContext.viewController(forKey: .from) as! HomeViewController
+    let toVC = transitionContext.viewController(forKey: .to) as! RouteViewController
     containerView.addSubview(toVC.view)
     
     containerView.layoutIfNeeded()
@@ -70,7 +62,7 @@ extension HomeWireframe: HomeWireframeAnimatedTransitioning {
         toVC.destinationsTableViewTop.constant = toVC.destinationsTableView.frame.height
         containerView.layoutIfNeeded()
     }) { _ in
-      context.completeTransition(true)
+      transitionContext.completeTransition(true)
     }
     
     containerView.layoutIfNeeded()
@@ -109,48 +101,5 @@ extension HomeWireframe: HomeWireframeAnimatedTransitioning {
         toVC.fieldStackView.alpha = 1
         containerView.layoutIfNeeded()
     }, completion: nil)
-  }
-  
-  func dismissingTransition(_ context: UIViewControllerContextTransitioning) {
-    let containerView = context.containerView
-    let fromVC = context.viewController(forKey: .from) as! RouteViewController
-    let toVC = context.viewController(forKey: .to) as! HomeViewController
-    containerView.insertSubview(toVC.view, belowSubview: fromVC.view)
-    IQKeyboardManager.sharedManager().resignFirstResponder()
-    
-    containerView.layoutIfNeeded()
-    UIView.animate(
-      withDuration: 0.1,
-      delay: 0,
-      options: .curveEaseIn,
-      animations: {
-        fromVC.routeView.alpha = 0
-        containerView.layoutIfNeeded()
-    }, completion: nil)
-    
-    containerView.layoutIfNeeded()
-    UIView.animate(
-      withDuration: 0.25,
-      delay: 0.05,
-      options: .curveEaseInOut,
-      animations: {
-        fromVC.destinationsTableViewTop.constant = 0
-        toVC.whereToButtonTop.constant = 100
-        toVC.whereToButtonWidth.constant = toVC.view.frame.width - 80
-        toVC.whereToButtonHeight.constant = 60
-        containerView.layoutIfNeeded()
-    }, completion: nil)
-    
-    containerView.layoutIfNeeded()
-    UIView.animate(
-      withDuration: 0.25,
-      delay: 0.2,
-      options: .curveEaseInOut,
-      animations: {
-        toVC.whereToButton.titleLabel?.alpha = 1
-        containerView.layoutIfNeeded()
-    }) { _ in
-      context.completeTransition(true)
-    }
   }
 }

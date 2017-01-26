@@ -16,12 +16,12 @@ protocol RouteInteractorProtocol {
 
 class RouteInteractor {
   
+  // Home interactor
+  var homeInteractor: HomeInteractorProtocol!
+  
   // MARK: Search autocompletion
   func autocomplete(_ text: String, completion: @escaping([GMSAutocompletePrediction]) -> Void) {
-    let northWest = CLLocationCoordinate2D(latitude: 40.917577, longitude: -74.259090)
-    let southEast = CLLocationCoordinate2D(latitude: 40.477399, longitude: -73.700272)
-    let bounds = GMSCoordinateBounds(coordinate: northWest, coordinate: southEast)
-    GMSPlacesClient.shared().autocompleteQuery(text, bounds: bounds, filter: nil) { results, error in
+    GMSPlacesClient.shared().autocompleteQuery(text, bounds: nil, filter: nil) { results, error in
       guard let results = results, error == nil else {
         print("error during autocompletion: \(error)")
         return
@@ -43,26 +43,38 @@ class RouteInteractor {
   }
   
   // MARK: Uber price estimate
-  func getUberPriceEstimates(start: CLLocationCoordinate2D, end: CLLocationCoordinate2D, completion: @escaping ([[String : Any]]?) -> Void) {
-    guard let url = URL(string: "https://api.uber.com//v1.2/estimates/price") else { return }
-    let parameters: [String : Any] = ["server_token" : Secrets.uberServerToken,
-                                      "start_latitude" : start.latitude,
-                                      "start_longitude" : start.longitude,
-                                      "end_latitude" : end.latitude,
-                                      "end_longitude" : end.longitude]
-    Alamofire.request(url, parameters: parameters).responseJSON { response in
-      guard let pricesJSON = response.result.value as? [String : [[String : Any]]],
-        let prices = pricesJSON.values.first else {
-          print("error unwrapping uber prices")
-          completion(nil)
-          return
+  func getUberPriceEstimates(start: CLLocationCoordinate2D, end: CLLocationCoordinate2D, productIDs: [String], completion: @escaping ([[String : Any]]?) -> Void) {
+    guard let url = URL(string: "https://api.uber.com/v1.2/requests/estimate") else { return }
+    var estimates = [[String : Any]]()
+    let group = DispatchGroup()
+    
+    for productID in productIDs {
+      let parameters: [String : Any] = ["server_token" : Secrets.uberServerToken,
+                                        "product_id" : productID,
+                                        "start_latitude" : start.latitude,
+                                        "start_longitude" : start.longitude,
+                                        "end_latitude" : end.latitude,
+                                        "end_longitude" : end.longitude]
+      group.enter()
+      Alamofire.request(url, method: .post, parameters: parameters).responseJSON { response in
+        guard let estimate = response.result.value as? [String : Any] else {
+            print("error unwrapping uber estimate")
+            completion(nil)
+            return
+        }
+        
+        estimates.append(estimate)
+        group.leave()
       }
-      
-      completion(prices)
+    }
+    
+    group.notify(queue: DispatchQueue.main) { 
+      print(estimates)
     }
   }
-  
-  // MARK: Lyft price and time estimate
+}
+
+// MARK: Lyft price and time estimate
 //  func getLyftEstimates(start: CLLocationCoordinate2D, end: CLLocationCoordinate2D, completion: @escaping ([Cost]?) -> Void) {
 //    LyftAPI.costEstimates(from: start, to: end, rideKind: nil) { response in
 //      guard let prices = response.value, response.error == nil else {
@@ -70,28 +82,27 @@ class RouteInteractor {
 //        completion(nil)
 //        return
 //      }
-//      
+//
 //      completion(prices)
 //    }
 //  }
-  
-  
-  // ••••••••••
-  
-  // MARK: Uber time estimate
-  //  func getUberTimeEstimate(completion: @escaping (Double) -> Void) {
-  //    guard let url = URL(string: "https://api.uber.com//v1.2/estimates/time") else { return }
-  //    let parameters: [String : Any] = ["server_token" : Secrets.uberServerToken,
-  //                                      "start_latitude" : 0,
-  //                                      "start_longitude" : 0]
-  //    Alamofire.request(url, parameters: parameters)
-  //      .responseString { response in
-  //        print(response)
-  //
-  //        completion(0)
-  //    }
-  //  }
-  
-  // ••••••••••
-  
-}
+
+
+// ••••••••••
+
+// MARK: Uber time estimate
+//  func getUberTimeEstimate(completion: @escaping (Double) -> Void) {
+//    guard let url = URL(string: "https://api.uber.com//v1.2/estimates/time") else { return }
+//    let parameters: [String : Any] = ["server_token" : Secrets.uberServerToken,
+//                                      "start_latitude" : 0,
+//                                      "start_longitude" : 0]
+//    Alamofire.request(url, parameters: parameters)
+//      .responseString { response in
+//        print(response)
+//
+//        completion(0)
+//    }
+//  }
+
+// ••••••••••
+

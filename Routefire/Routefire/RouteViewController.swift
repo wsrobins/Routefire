@@ -11,9 +11,11 @@ import IQKeyboardManagerSwift
 
 class RouteViewController: UIViewController {
   
-  // MARK: Viper
+  // Presenter
   var presenter: RoutePresenterProtocol!
-  var router: RouteRouterProtocol!
+  
+  // Wireframe
+  var wireframe: RouteWireframeAnimatedTransitioning!
   
   // MARK: Views
   @IBOutlet weak var destinationsTableView: UITableView!
@@ -50,7 +52,7 @@ class RouteViewController: UIViewController {
   
   // MARK: User interaction
   @IBAction func backButtonTouched() {
-    router.back(self)
+    
   }
   
   @objc func textDidChange(_ textField: UITextField) {
@@ -91,7 +93,9 @@ extension RouteViewController: UITableViewDelegate, UITableViewDataSource {
       }, completion: nil)
     }
     
-    presenter.selectedDestination(at: indexPath)
+    presenter.selectedDestination(at: indexPath) {
+      timer.invalidate()
+    }
 //    { destinationName, routes in
 //      self.view.layoutIfNeeded()
 //      UIView.animate(

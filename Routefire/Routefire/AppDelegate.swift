@@ -24,27 +24,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
     
-    // User location
-    Location.shared.configureManager()
-    
-    // Google Maps and Places
+    // Activate Google Maps and Places
     GMSServices.provideAPIKey(Secrets.googleAPIKey)
     GMSPlacesClient.provideAPIKey(Secrets.googleAPIKey)
-    
-    // Uber product IDs
-    Uber.shared.getProductIDs()
     
     // Keyboard manager
     IQKeyboardManager.sharedManager().enable = true
     IQKeyboardManager.sharedManager().shouldResignOnTouchOutside = true
-    
-    // Initial module
-//    let view = LaunchViewController()
-//    let presenter = LaunchPresenter()
-//    let wireframe = LaunchWireframe()
-//    view.presenter = presenter
-//    presenter.wireframe = wireframe
-//    wireframe.view = view
     
     // Set up window
     window = UIWindow(frame: UIScreen.main.bounds)

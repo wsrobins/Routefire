@@ -12,20 +12,21 @@ import GooglePlaces
 
 protocol RoutePresenterProtocol {
   var autocompleteResults: [GMSAutocompletePrediction] { get }
+  var uberProductIDs: [String] { get set }
   func autocomplete(_ text: String, completion: @escaping () -> Void)
-  func selectedDestination(at indexPath: IndexPath)
+  func selectedDestination(at indexPath: IndexPath, completion: @escaping () -> Void)
   func locationName(_ indexPath: IndexPath) -> NSMutableAttributedString
 }
 
 final class RoutePresenter: RoutePresenterProtocol {
   weak var view: RouteViewController!
   var interactor: RouteInteractor!
-  var router: RouteRouter!
+  var wireframe: RouteWireframe!
   
-  // MARK: Output
   var autocompleteResults = [GMSAutocompletePrediction]()
+  var uberProductIDs = [String]()
   
-  // MARK: Input
+  // Input
   func autocomplete(_ text: String, completion: @escaping () -> Void) {
     interactor.autocomplete(text) {
       self.autocompleteResults = $0
@@ -33,22 +34,24 @@ final class RoutePresenter: RoutePresenterProtocol {
     }
   }
   
-  func selectedDestination(at indexPath: IndexPath) {
-    guard let start = Location.shared.current,
+  func selectedDestination(at indexPath: IndexPath, completion: @escaping () -> Void) {
+    guard let start = interactor.homeInteractor.currentCoordinate,
       let destinationID = autocompleteResults[indexPath.row].placeID else {
         print("error unwrapping locations")
+        completion()
         return
     }
     
     interactor.getPlace(destinationID) { end in
       var routes = [Route]()
-      self.interactor.getUberPriceEstimates(start: start, end: end.coordinate) { uberPrices in
+      self.interactor.getUberPriceEstimates(start: start, end: end.coordinate, productIDs: self.uberProductIDs) { uberPrices in
         if let uberPrices = uberPrices {
           for priceDict in uberPrices {
             guard let routeType = priceDict["localized_display_name"] as? String,
               let price = priceDict["estimate"] as? String,
               let distance = priceDict["distance"] as? Double else {
                 print("error unwrapping uber price info")
+                completion()
                 return
             }
             
@@ -57,7 +60,8 @@ final class RoutePresenter: RoutePresenterProtocol {
           }
         }
         
-        self.router.showBestRoutes(self.view, routes: routes, destinationName: end.name)
+        completion()
+        self.wireframe.showBestRoutes(self.view, routes: routes, destinationName: end.name)
       }
     }
   }
