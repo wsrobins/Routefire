@@ -17,7 +17,7 @@ class RouteViewController: UIViewController {
   // Wireframe
   var wireframe: RouteWireframeAnimatedTransitioning!
   
-  // MARK: Views
+  // Subviews
   @IBOutlet weak var destinationsTableView: UITableView!
   @IBOutlet weak var routeView: UIView!
   @IBOutlet weak var backButton: UIButton!
@@ -27,7 +27,7 @@ class RouteViewController: UIViewController {
   @IBOutlet weak var blurView: UIVisualEffectView!
   @IBOutlet weak var loadingView: UIView!
   
-  // MARK: Constraints
+  // Constraints
   @IBOutlet weak var routeViewTop: NSLayoutConstraint!
   @IBOutlet weak var routeViewWidth: NSLayoutConstraint!
   @IBOutlet weak var routeViewHeight: NSLayoutConstraint!
@@ -35,24 +35,23 @@ class RouteViewController: UIViewController {
   @IBOutlet weak var destinationsTableViewHeight: NSLayoutConstraint!
   @IBOutlet weak var loadingViewWidth: NSLayoutConstraint!
   
-  // MARK: Constraint constants
+  // Constraint constants
   var destinationsTableViewActiveTopConstant: CGFloat!
   var destinationsTableViewInactiveTopConstant: CGFloat!
-  
   var loadingViewActiveWidthConstant: CGFloat!
   var loadingViewInactiveWidthConstant: CGFloat!
   
   
-  // MARK: Life cycle
+  // Life cycle
   override func viewDidLoad() {
     super.viewDidLoad()
     
     configureView()
   }
   
-  // MARK: User interaction
+  // User interaction
   @IBAction func backButtonTouched() {
-    presenter.transitionToHomeModule(routing: nil)
+    presenter.transitionToHomeModule()
   }
   
   @objc func textDidChange(_ textField: UITextField) {
@@ -61,17 +60,18 @@ class RouteViewController: UIViewController {
     }
     
     presenter.autocomplete(text) {
-      self.destinationsTableView.reloadData()
+      DispatchQueue.main.async {
+        self.destinationsTableView.reloadData()
+      }
     }
   }
 }
 
-// MARK: Destinations table view delegate and data source
+// Destinations table view delegate and data source
 extension RouteViewController: UITableViewDelegate, UITableViewDataSource {
   
   // Delegate
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    blurFadeIn()
     let timer = Timer.scheduledTimer(withTimeInterval: 0.7, repeats: true) { _ in
       self.view.layoutIfNeeded()
       UIView.animate(
@@ -94,22 +94,20 @@ extension RouteViewController: UITableViewDelegate, UITableViewDataSource {
       }, completion: nil)
     }
     
-    presenter.selectedDestination(at: indexPath) {
-      timer.invalidate()
-    }
-    //    { destinationName, routes in
-    //      self.view.layoutIfNeeded()
-    //      UIView.animate(
-    //        withDuration: 0.1,
-    //        delay: 0,
-    //        options: .curveEaseIn,
-    //        animations: {
-    //          self.loadingView.alpha = 0
-    //          self.view.layoutIfNeeded()
-    //      }) { _ in
-    //        timer.invalidate()
-    //      }
-    //    }
+    blurView.isHidden = false
+    loadingView.isHidden = false
+    self.view.layoutIfNeeded()
+    UIView.animate(
+      withDuration: 0.3,
+      delay: 0,
+      options: .curveEaseInOut,
+      animations: {
+        self.blurView.effect = UIBlurEffect(style: .light)
+        self.loadingView.alpha = 1
+        self.view.layoutIfNeeded()
+    }, completion: nil)
+    
+    presenter.selectedDestination(at: indexPath, timer: timer)
   }
   
   // Data source
@@ -125,23 +123,6 @@ extension RouteViewController: UITableViewDelegate, UITableViewDataSource {
     cell.destinationLabel.attributedText = presenter.locationName(indexPath)
     
     return cell
-  }
-}
-
-// MARK: Animate transitions
-private extension RouteViewController {
-  func blurFadeIn() {
-    blurView.isHidden = false
-    self.view.layoutIfNeeded()
-    UIView.animate(
-      withDuration: 0.3,
-      delay: 0,
-      options: .curveEaseInOut,
-      animations: {
-        self.blurView.effect = UIBlurEffect(style: .light)
-        self.loadingView.alpha = 1
-        self.view.layoutIfNeeded()
-    }, completion: nil)
   }
 }
 
@@ -168,6 +149,8 @@ private extension RouteViewController {
     
     loadingViewActiveWidthConstant = loadingViewWidth.constant * 1.8
     loadingViewInactiveWidthConstant = loadingViewWidth.constant
+    
+    view.bringSubview(toFront: blurView)
   }
 }
 

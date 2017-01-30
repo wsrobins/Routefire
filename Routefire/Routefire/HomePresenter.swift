@@ -36,14 +36,12 @@ class HomePresenter: HomePresenterProtocol {
   }
   
   @objc func reachabilityChanged(notification: Notification) {
-    DispatchQueue.main.async {
-      self.view.toggleReachabilityView((notification.object as! Reachability).isReachable)
-    }
+    self.view.toggleReachabilityView((notification.object as! Reachability).isReachable)
   }
   
   func setMapCamera(initial: Bool) {
     if initial {
-      view.setInitialMapCamera(to: Location.current, withZoom: 12)
+      view.setInitialMapCamera(to: Location.current, withZoom: 13)
     } else {
       self.view.zoomMapCamera(to: Location.current, withZoom: 15)
     }
@@ -54,45 +52,67 @@ class HomePresenter: HomePresenterProtocol {
   }
   
   func selectedRoute(at indexPath: IndexPath) {
-    //    let route = bestRoutes[indexPath.row]
-    //    let pickupLat = route.start.latitude.description
-    //    let pickupLong = route.start.longitude.description
-    //    let dropoffLat = route.end.latitude.description
-    //    let dropoffLong = route.end.longitude.description
+    let route = bestRoutes[indexPath.row]
+    let pickupLat = route.start.latitude.description
+    let pickupLong = route.start.longitude.description
+    let dropoffLat = route.end.latitude.description
+    let dropoffLong = route.end.longitude.description
     
-    //    switch route.service {
-    //    case .uber:
-    //      if UIApplication.shared.canOpenURL(URL(fileURLWithPath: "uber://")) {
-    //        let productID: String
-    //        switch route.routeType {
-    //        case "uberPOOL":
-    //          productID = uberProductIDs["uberPOOL"] ?? ""
-    //        case "uberX":
-    //          productID = uberProductIDs["uberX"] ?? ""
-    //        case "uberXL":
-    //          productID = uberProductIDs["uberXL"] ?? ""
-    //        case "UberBLACK":
-    //          productID = uberProductIDs["UberBLACK"] ?? ""
-    //        case "SUV":
-    //          productID = uberProductIDs["SUV"] ?? ""
-    //        case "WAV":
-    //          productID = uberProductIDs["WAV"] ?? ""
-    //        case "uberFAMILY":
-    //          productID = uberProductIDs["uberFAMILY"] ?? ""
-    //        default:
-    //          productID = ""
-    //        }
-    //
-    //        let urlString = "uber://?client_id=\(Secrets.uberClientID)&action=setPickup&pickup[latitude]=\(pickupLat)&pickup[longitude]=\(pickupLong)&pickup[nickname]=\(route.startNickname)&pickup[formatted_address]=\(route.startAddress)&dropoff[latitude]=\(dropoffLat)&dropoff[longitude]=\(dropoffLong)&dropoff[nickname]=\(route.endNickname)&dropoff[formatted_address]=\(route.endAddress)&product_id=\(productID)"
-    //        guard let encodedURLString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-    //          let uberURL = URL(string: encodedURLString) else { return }
-    //
-    //        UIApplication.shared.open(uberURL, options: [:], completionHandler: nil)
-    //      } else {
-    //        print("uber not installed")
-    //      }
-    //    case .lyft:
-    //      return
-    //    }
+    switch route.service {
+    case .uber:
+      if UIApplication.shared.canOpenURL(URL(fileURLWithPath: "uber://")) {
+        let productID: String
+        switch route.name {
+        case "uberPOOL":
+          productID = route.id
+        case "uberX":
+          productID = route.id
+        case "uberXL":
+          productID = route.id
+        case "UberBLACK":
+          productID = route.id
+        case "SUV":
+          productID = route.id
+        case "WAV":
+          productID = route.id
+        case "uberFAMILY":
+          productID = route.id
+        default:
+          productID = ""
+        }
+        
+        let urlString = "uber://?client_id=\(Secrets.uberClientID)&action=setPickup&pickup[latitude]=\(pickupLat)&pickup[longitude]=\(pickupLong)&pickup[nickname]=\(route.startName)&dropoff[latitude]=\(dropoffLat)&dropoff[longitude]=\(dropoffLong)&dropoff[formatted_address]=\(route.endAddress)&product_id=\(productID)"
+        guard let encodedURLString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+          let uberURL = URL(string: encodedURLString) else {
+            return
+        }
+        
+        UIApplication.shared.open(uberURL, options: [:], completionHandler: nil)
+      } else {
+        print("uber not installed")
+      }
+    case .lyft:
+      if UIApplication.shared.canOpenURL(URL(fileURLWithPath: "lyft://")) {
+        let id: String
+        switch route.name {
+        case "Lyft":
+          id = "lyft"
+        case "Lyft Line":
+          id = "lyft_line"
+        case "Lyft Plus":
+          id = "lyft_plus"
+        default:
+          id = ""
+        }
+        
+        let urlString = "lyft://ridetype?id=\(id)&pickup[latitude]=\(route.start.latitude)&pickup[longitude]=\(route.start.longitude)&destination[latitude]=\(route.end.latitude)&destination[longitude]=\(route.end.longitude)"
+        guard let encodedURLString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+          let lyftURL = URL(string: encodedURLString) else {
+            return
+        }
+        
+        UIApplication.shared.open(lyftURL, options: [:], completionHandler: nil)
+      }
+    }
   }
 }

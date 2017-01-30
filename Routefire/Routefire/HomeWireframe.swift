@@ -30,6 +30,7 @@ class HomeWireframe: NSObject, HomeWireframeProtocol {
     routePresenter.view = routeView
     routePresenter.wireframe = routeWireframe
     routeWireframe.view = routeView
+    routeWireframe.presenter = routePresenter
     
     routeView.transitioningDelegate = view
     view.present(routeView, animated: true, completion: nil)

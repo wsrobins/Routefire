@@ -22,22 +22,22 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4if-0q-Ce6">
                         <rect key="frame" x="0.0" y="0.0" width="217" height="217"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Route Type" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cUI-5K-avs">
-                                <rect key="frame" x="50" y="64" width="116.5" height="24"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Route name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cUI-5K-avs">
+                                <rect key="frame" x="47" y="64" width="122.5" height="24"/>
                                 <fontDescription key="fontDescription" type="system" weight="black" pointSize="20"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="nYy-Nz-2N7">
-                                <rect key="frame" x="81" y="143.5" width="55" height="38.5"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="nYy-Nz-2N7">
+                                <rect key="frame" x="83" y="143.5" width="51.5" height="38.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="9:41 PM" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Urx-uq-pLC">
-                                        <rect key="frame" x="0.0" y="0.0" width="55" height="18"/>
-                                        <fontDescription key="fontDescription" type="system" weight="thin" pointSize="15"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="51.5" height="17"/>
+                                        <fontDescription key="fontDescription" type="system" weight="thin" pointSize="14"/>
                                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$9-12" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g1m-2b-QqA">
-                                        <rect key="frame" x="3.5" y="19" width="48.5" height="19.5"/>
+                                        <rect key="frame" x="1.5" y="19" width="48.5" height="19.5"/>
                                         <fontDescription key="fontDescription" type="system" weight="black" pointSize="16"/>
                                         <color key="textColor" red="0.25851202010000002" green="0.52223694320000003" blue="0.9582508206" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
@@ -63,8 +63,8 @@
             </constraints>
             <size key="customSize" width="282" height="282"/>
             <connections>
+                <outlet property="nameLabel" destination="cUI-5K-avs" id="27f-Tx-5k6"/>
                 <outlet property="priceLabel" destination="g1m-2b-QqA" id="85A-Wc-Ipy"/>
-                <outlet property="routeTypeLabel" destination="cUI-5K-avs" id="E7L-x0-I4O"/>
                 <outlet property="timeLabel" destination="Urx-uq-pLC" id="Ac9-dP-Hep"/>
                 <outlet property="view" destination="4if-0q-Ce6" id="8Hl-4I-vsD"/>
             </connections>

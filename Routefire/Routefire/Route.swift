@@ -15,13 +15,14 @@ struct Route {
   }
   
   let service: Service
-  let routeType: String
-  let price: String
-  let distance: Double
-  let start: CLLocationCoordinate2D
-  let startAddress: String
-  let startNickname: String
+  let name: String
+  let id: String
+  let lowPrice: Int
+  let highPrice: Int
+  var wait: String
+  var arrival: String
+  let start = Location.current!
+  let startName = "Current location"
   let end: CLLocationCoordinate2D
   let endAddress: String
-  let endNickname: String
 }

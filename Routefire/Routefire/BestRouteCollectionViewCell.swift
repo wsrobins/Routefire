@@ -12,7 +12,7 @@ class BestRouteCollectionViewCell: UICollectionViewCell {
   
   // MARK: Views
   @IBOutlet weak var view: UIView!
-    @IBOutlet weak var routeTypeLabel: UILabel!
+  @IBOutlet weak var nameLabel: UILabel!
   @IBOutlet weak var priceLabel: UILabel!
   @IBOutlet weak var timeLabel: UILabel!
 		
@@ -21,8 +21,8 @@ class BestRouteCollectionViewCell: UICollectionViewCell {
     super.awakeFromNib()
     
     // Clear labels
-    routeTypeLabel.text = ""
+    nameLabel.text = ""
     priceLabel.text = ""
-//    timeLabel.text = ""
+    timeLabel.text = ""
   }
 }

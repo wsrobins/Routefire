@@ -7,30 +7,107 @@
 //
 
 import Alamofire
-import CoreLocation
+import GooglePlaces
 
-final class Uber: NSObject {
-  static private let shared = Uber()
-  private var productIDs: [String : String] = [:]
-  private override init() {}
-  
-  static func getEstimates(to place: CLLocationCoordinate2D, completion: @escaping ([[String : Any]]) -> Void) {
-    let pricesURL = URL(string: "https://api.uber.com/v1.2/estimates/price")!
-    let pricesParameters: [String : Any] = ["server_token" : Secrets.uberServerToken,
-                                            "start_latitude" : Location.current.latitude,
-                                            "start_longitude" : Location.current.longitude,
-                                            "end_latitude" : place.latitude,
-                                            "end_longitude" : place.longitude]
+final class Uber {
+  static func getEstimates(to place: GMSPlace, completion: @escaping ([String : [String : Any]], [String : Int]) -> Void) {
     let group = DispatchGroup()
-    group.enter()
-    Alamofire.request(pricesURL, parameters: pricesParameters).responseJSON { response in
-      print(response)
-      group.leave()
-      
+    
+    // Price estimates
+    var priceEstimates: [String : [String : Any]] = [:]
+    let pricesURL = URL(string: "https://api.uber.com/v1.2/estimates/price")!
+    let pricesParameters: [String : Any] = [
+      "server_token" : Secrets.uberServerToken,
+      "start_latitude" : Location.current.latitude,
+      "start_longitude" : Location.current.longitude,
+      "end_latitude" : place.coordinate.latitude,
+      "end_longitude" : place.coordinate.longitude
+    ]
+    
+    getPrices(pricesURL, pricesParameters, group) { estimates in
+      priceEstimates = estimates
     }
+    
+    // Time estimates
+    var timeEstimates: [String : Int] = [:]
+    let timesURL = URL(string: "https://api.uber.com/v1.2/estimates/time")!
+    let timesParameters: [String : Any] = [
+      "server_token" : Secrets.uberServerToken,
+      "start_latitude" : Location.current.latitude,
+      "start_longitude" : Location.current.longitude
+    ]
   
+    getTimes(timesURL, timesParameters, group) { estimates in
+      timeEstimates = estimates
+    }
+    
+    // Requests complete
     group.notify(queue: DispatchQueue.main) {
-      print("complete")
+      completion(priceEstimates, timeEstimates)
+    }
+  }
+  
+  static private func getPrices(_ url: URL, _ parameters: [String : Any], _ group: DispatchGroup, completion: @escaping ([String : [String : Any]]) -> Void) {
+    var priceEstimates: [String : [String : Any]] = [:]
+    group.enter()
+    Alamofire.request(url, parameters: parameters).responseJSON { response in
+      guard let pricesJSON = response.result.value as? [String : [[String : Any]]],
+        let pricesArray = pricesJSON.values.first else {
+          print("error unwrapping uber prices")
+          group.leave()
+          return
+      }
+      
+      for priceDict in pricesArray {
+        guard let name = priceDict["localized_display_name"] as? String,
+          let id = priceDict["product_id"] as? String,
+          let lowPrice = priceDict["low_estimate"] as? Int,
+          let highPrice = priceDict["high_estimate"] as? Int,
+          let duration = priceDict["duration"] as? Int else {
+            print("error unwrapping uber price info")
+            group.leave()
+            return
+        }
+        
+        priceEstimates[name] = ["id" : id, "lowPrice" : lowPrice, "highPrice" : highPrice, "duration" : duration]
+      }
+      
+      completion(priceEstimates)
+      group.leave()
+    }
+  }
+  
+  static private func getTimes(_ url: URL, _ parameters: [String : Any], _ group: DispatchGroup, completion: @escaping ([String : Int]) -> Void) {
+    var timeEstimates: [String : Int] = [:]
+    group.enter()
+    Alamofire.request(url, parameters: parameters).responseJSON { response in
+      guard let timesJSON = response.result.value as? [String : [[String : Any]]],
+        let timesArray = timesJSON.values.first else {
+          print("error unwrapping uber times")
+          group.leave()
+          return
+      }
+      
+      for timeDict in timesArray {
+        guard let name = timeDict["localized_display_name"] as? String,
+          let waitTime = timeDict["estimate"] as? Int else {
+            print("error unwrapping uber time info")
+            group.leave()
+            return
+        }
+        
+        timeEstimates[name] = waitTime
+      }
+      
+      completion(timeEstimates)
+      group.leave()
     }
   }
 }
+
+
+
+
+
+
+

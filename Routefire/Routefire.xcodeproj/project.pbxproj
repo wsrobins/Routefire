@@ -11,6 +11,7 @@
 		C414A6F21E30A3D600B9DF14 /* RouteWireframe.swift in Sources */ = {isa = PBXBuildFile; fileRef = C414A6F11E30A3D600B9DF14 /* RouteWireframe.swift */; };
 		C419CF221E3D8462007B39A3 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = C419CF211E3D8462007B39A3 /* Network.swift */; };
 		C43021A41E3EACB1006A5EA2 /* Uber.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43021A31E3EACB1006A5EA2 /* Uber.swift */; };
+		C4344AC71E3F9A3D0068DD29 /* Lyft.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4344AC61E3F9A3D0068DD29 /* Lyft.swift */; };
 		C438C74B1E25A7CE0043922E /* RoutePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C438C74A1E25A7CE0043922E /* RoutePresenter.swift */; };
 		C4584C151E3EB2B4003A6A18 /* Google.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4584C141E3EB2B4003A6A18 /* Google.swift */; };
 		C468F2D71E2333BA0046FDD2 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C468F2D51E2333BA0046FDD2 /* HomeViewController.swift */; };
@@ -46,6 +47,7 @@
 		C414A6F11E30A3D600B9DF14 /* RouteWireframe.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteWireframe.swift; sourceTree = "<group>"; };
 		C419CF211E3D8462007B39A3 /* Network.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		C43021A31E3EACB1006A5EA2 /* Uber.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Uber.swift; sourceTree = "<group>"; };
+		C4344AC61E3F9A3D0068DD29 /* Lyft.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lyft.swift; sourceTree = "<group>"; };
 		C438C74A1E25A7CE0043922E /* RoutePresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoutePresenter.swift; sourceTree = "<group>"; };
 		C4584C141E3EB2B4003A6A18 /* Google.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Google.swift; sourceTree = "<group>"; };
 		C468F2D51E2333BA0046FDD2 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
@@ -112,8 +114,17 @@
 				C419CF211E3D8462007B39A3 /* Network.swift */,
 				C4584C141E3EB2B4003A6A18 /* Google.swift */,
 				C43021A31E3EACB1006A5EA2 /* Uber.swift */,
+				C4344AC61E3F9A3D0068DD29 /* Lyft.swift */,
 			);
 			name = "Data Managers";
+			sourceTree = "<group>";
+		};
+		C4344AC51E3F2F060068DD29 /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				C474729E1E27479400292CD6 /* Route.swift */,
+			);
+			name = Entities;
 			sourceTree = "<group>";
 		};
 		C4746FDA1E1E082C00832FC3 = {
@@ -141,6 +152,7 @@
 				C4746FF21E1E082C00832FC3 /* LaunchScreen.storyboard */,
 				C4746FF01E1E082C00832FC3 /* Assets.xcassets */,
 				C43021A21E3EAC5B006A5EA2 /* Data Managers */,
+				C4344AC51E3F2F060068DD29 /* Entities */,
 				C4F471351E2F01BE00479187 /* Launch Module */,
 				C4DD69E71E205FA900667A4C /* Home Module */,
 				C4DD69F51E20610E00667A4C /* Route Module */,
@@ -166,14 +178,6 @@
 				C474729A1E27433600292CD6 /* BestRouteCollectionViewCell.xib */,
 			);
 			name = Subviews;
-			sourceTree = "<group>";
-		};
-		C474729D1E27478200292CD6 /* Entity */ = {
-			isa = PBXGroup;
-			children = (
-				C474729E1E27479400292CD6 /* Route.swift */,
-			);
-			name = Entity;
 			sourceTree = "<group>";
 		};
 		C4B305D41E1E0A0100C56A99 /* Other */ = {
@@ -223,7 +227,6 @@
 			children = (
 				C4DD69F81E20611E00667A4C /* View */,
 				C4EAF3FA1E27140C00AB7A23 /* Presenter */,
-				C474729D1E27478200292CD6 /* Entity */,
 				C4EAF3FC1E2714C000AB7A23 /* Wireframe */,
 			);
 			name = "Route Module";
@@ -417,6 +420,7 @@
 				C438C74B1E25A7CE0043922E /* RoutePresenter.swift in Sources */,
 				C474729B1E27433600292CD6 /* BestRouteCollectionViewCell.swift in Sources */,
 				C468F2D71E2333BA0046FDD2 /* HomeViewController.swift in Sources */,
+				C4344AC71E3F9A3D0068DD29 /* Lyft.swift in Sources */,
 				C4584C151E3EB2B4003A6A18 /* Google.swift in Sources */,
 				C419CF221E3D8462007B39A3 /* Network.swift in Sources */,
 				C4B305DD1E1E4BBE00C56A99 /* Constants.swift in Sources */,

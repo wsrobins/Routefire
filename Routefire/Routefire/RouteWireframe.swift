@@ -14,26 +14,16 @@ import IQKeyboardManagerSwift
 protocol RouteWireframeAnimatedTransitioning: UIViewControllerAnimatedTransitioning {}
 
 protocol RouteWireframeProtocol {
-  func transitionToHomeModule(routing: (routes: [Route], destinationName: String)?)
+  func transitionToHomeModule(timer: Timer?)
 }
 
 class RouteWireframe: NSObject, RouteWireframeProtocol {
   weak var view: RouteViewController!
+  weak var presenter: RoutePresenterProtocol!
   
-  func transitionToHomeModule(routing: (routes: [Route], destinationName: String)?) {
-    guard let routing = routing else {
-      view.dismiss(animated: true, completion: nil)
-      return
-    }
-  }
-  
-  func showBestRoutes(_ routeView: RouteViewController, routes: [Route], destinationName: String) {
-    let homeView = routeView.presentingViewController as! HomeViewController
-    homeView.presenter?.bestRoutes = routes
-    homeView.bestRoutesAddressButton.setTitle(destinationName, for: .normal)
-    homeView.bestRoutesView.isHidden = false
-    homeView.bestRoutesCollectionView.reloadData()
-    routeView.dismiss(animated: true, completion: nil)
+  func transitionToHomeModule(timer: Timer?) {
+    timer?.invalidate()
+    view.dismiss(animated: true, completion: nil)
   }
 }
 
@@ -47,8 +37,41 @@ extension RouteWireframe: RouteWireframeAnimatedTransitioning {
     let containerView = transitionContext.containerView
     let fromVC = transitionContext.viewController(forKey: .from) as! RouteViewController
     let toVC = transitionContext.viewController(forKey: .to) as! HomeViewController
+    if !presenter.routes.isEmpty {
+      toVC.presenter.bestRoutes = presenter.routes
+      toVC.whereToButton.isHidden = true
+      toVC.bestRoutesAddressButton.setTitle(presenter.destinationName, for: .normal)
+      toVC.bestRoutesView.isHidden = false
+      toVC.bestRoutesCollectionView.reloadData()
+    } else {
+      toVC.whereToButton.isHidden = false
+      toVC.bestRoutesView.isHidden = true
+    }
+    
     containerView.insertSubview(toVC.view, belowSubview: fromVC.view)
     IQKeyboardManager.sharedManager().resignFirstResponder()
+    
+    containerView.layoutIfNeeded()
+    UIView.animate(
+      withDuration: 0.3,
+      delay: 0,
+      options: .curveEaseOut,
+      animations: {
+        fromVC.blurView.effect = nil
+    }) { _ in
+      fromVC.blurView.isHidden = true
+    }
+    
+    containerView.layoutIfNeeded()
+    UIView.animate(
+      withDuration: 0.15,
+      delay: 0,
+      options: .curveEaseOut,
+      animations: {
+        fromVC.loadingView.alpha = 0
+    }) { _ in
+      fromVC.loadingView.isHidden = true
+    }
     
     containerView.layoutIfNeeded()
     UIView.animate(
@@ -81,6 +104,7 @@ extension RouteWireframe: RouteWireframeAnimatedTransitioning {
       options: .curveEaseInOut,
       animations: {
         toVC.whereToButton.titleLabel?.alpha = 1
+        toVC.bestRoutesView.alpha = 1
         containerView.layoutIfNeeded()
     }) { _ in
       toVC.presenter.observeReachability()

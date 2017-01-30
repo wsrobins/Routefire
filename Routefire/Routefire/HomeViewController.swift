@@ -67,6 +67,10 @@ class HomeViewController: UIViewController {
     presenter.setMapCamera(initial: true)
   }
   
+  override func viewDidLayoutSubviews() {
+    view.bringSubview(toFront: bestRoutesView)
+  }
+  
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     
@@ -105,32 +109,83 @@ class HomeViewController: UIViewController {
     }
   }
   
+  @IBAction func addressButtonTouched() {
+    whereToButton.alpha = 1
+    whereToButton.titleLabel?.alpha = 0
+    whereToButton.isHidden = false
+    
+    self.presenter.transitionToRouteModule()
+    
+    view.layoutIfNeeded()
+    UIView.animate(
+      withDuration: 0.15,
+      delay: 0,
+      options: .curveEaseIn,
+      animations: {
+        self.bestRoutesView.alpha = 0
+        self.view.layoutIfNeeded()
+    }) { _ in
+      self.bestRoutesView.isHidden = true
+    }
+  }
+  
   @IBAction func closeButtonTouched() {
-    //    closeBestRoutesView()
+    whereToButton.alpha = 0
+    whereToButton.titleLabel?.alpha = 0
+    whereToButton.isHidden = false
+    
+    view.layoutIfNeeded()
+    UIView.animate(
+      withDuration: 0.15,
+      delay: 0,
+      options: .curveEaseIn,
+      animations: {
+        self.whereToButton.alpha = 1
+        self.bestRoutesView.alpha = 0
+        self.view.layoutIfNeeded()
+    }) { _ in
+      self.bestRoutesView.isHidden = true
+    }
+    
+    view.layoutIfNeeded()
+    UIView.animate(
+      withDuration: 0.15,
+      delay: 0.15,
+      options: [.curveEaseIn, .allowUserInteraction],
+      animations: {
+        self.whereToButton.titleLabel?.alpha = 1
+        self.view.layoutIfNeeded()
+    }, completion: nil)
   }
 }
 
 // View input
 extension HomeViewController: HomeViewProtocol {
   func setInitialMapCamera(to location: CLLocationCoordinate2D, withZoom zoom: Float) {
-    mapView.camera = GMSCameraPosition.camera(withTarget: location, zoom: zoom)
+    DispatchQueue.main.async {
+      self.mapView.camera = GMSCameraPosition.camera(withTarget: location, zoom: zoom)
+    }
   }
   
   func zoomMapCamera(to location: CLLocationCoordinate2D, withZoom zoom: Float) {
-    mapView.animate(to: GMSCameraPosition.camera(withTarget: location, zoom: zoom))
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+      self.mapView.animate(to: GMSCameraPosition.camera(withTarget: location, zoom: zoom))
+    }
   }
   
   func toggleReachabilityView(_ networkReachable: Bool) {
-    setNeedsStatusBarAppearanceUpdate()
-    view.layoutIfNeeded()
-    UIView.animate(
-      withDuration: 0.2,
-      delay: 0,
-      options: .allowUserInteraction,
-      animations: {
-        self.reachabilityViewBottom.constant = networkReachable ? 0 : self.reachabilityView.frame.height
-        self.view.layoutIfNeeded()
-    }, completion: nil)
+    DispatchQueue.main.async {
+      self.setNeedsStatusBarAppearanceUpdate()
+      self.view.layoutIfNeeded()
+      UIView.animate(
+        withDuration: 0.2,
+        delay: 0,
+        options: .allowUserInteraction,
+        animations: {
+          self.reachabilityViewBottom.constant = networkReachable ? 0 : self.reachabilityView.frame.height
+          self.view.layoutIfNeeded()
+      }, completion: nil)
+    }
   }
 }
 
@@ -153,14 +208,15 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
     let route = presenter.bestRoutes[indexPath.row]
-    cell.routeTypeLabel.text = route.routeType
-    cell.priceLabel.text = route.price
+    cell.nameLabel.text = route.name
+    cell.timeLabel.text = route.arrival
+    cell.priceLabel.text = route.lowPrice == route.highPrice ? "$\(route.lowPrice)" : "$\(route.lowPrice)-\(route.highPrice)"
     
     switch indexPath.row {
     case 0:
-      cell.routeTypeLabel.font = UIFont.systemFont(ofSize: 30, weight: UIFontWeightBlack)
+      cell.nameLabel.font = UIFont.systemFont(ofSize: 30, weight: UIFontWeightBlack)
     default:
-      cell.routeTypeLabel.font = UIFont.systemFont(ofSize: 20, weight: UIFontWeightBlack)
+      cell.nameLabel.font = UIFont.systemFont(ofSize: 20, weight: UIFontWeightBlack)
     }
     
     return cell
@@ -181,66 +237,6 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
   }
 }
 
-// MARK: - Animate transitions
-private extension HomeViewController {
-  
-  //  // Close best routes view
-  //  func closeBestRoutesView() {
-  //
-  //    // Setup
-  //    whereToButton.titleLabel?.alpha = 0
-  //    whereToButton.alpha = 0
-  //    whereToButton.isHidden = false
-  //
-  //    // Animation
-  //    view.layoutIfNeeded()
-  //    UIView.animate(
-  //      withDuration: 0.35,
-  //      delay: 0,
-  //      options: .curveEaseInOut,
-  //      animations: {
-  //        self.whereToButton.alpha = 1
-  //        self.view.layoutIfNeeded()
-  //    }, completion: nil)
-  //
-  //    view.layoutIfNeeded()
-  //    UIView.animate(
-  //      withDuration: 0.3,
-  //      delay: 0.05,
-  //      options: .curveEaseInOut,
-  //      animations: {
-  //        self.settingsButtonBottom.constant = self.settingsButtonActiveBottomConstant
-  //        self.whereToButtonTop.constant = self.whereToButtonActiveTopConstant
-  //        self.whereToButtonWidth.constant = self.whereToButtonActiveWidthConstant
-  //        self.whereToButtonHeight.constant = self.whereToButtonActiveHeightConstant
-  //        self.settingsButton.alpha = 1
-  //        self.view.layoutIfNeeded()
-  //    }, completion: nil)
-  //
-  //    view.layoutIfNeeded()
-  //    UIView.animate(
-  //      withDuration: 0.2,
-  //      delay: 0,
-  //      options: .curveEaseIn,
-  //      animations: {
-  //        self.bestRoutesView.alpha = 0
-  //        self.view.layoutIfNeeded()
-  //    }) { _ in
-  //      self.bestRoutesView.isHidden = true
-  //    }
-  //
-  //    view.layoutIfNeeded()
-  //    UIView.animate(
-  //      withDuration: 0.2,
-  //      delay: 0.15,
-  //      options: .curveEaseInOut,
-  //      animations: {
-  //        self.whereToButton.titleLabel?.alpha = 1
-  //        self.view.layoutIfNeeded()
-  //    }, completion: nil)
-  //  }
-}
-
 // Transitioning delegate
 extension HomeViewController: UIViewControllerTransitioningDelegate {
   func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
@@ -252,7 +248,7 @@ extension HomeViewController: UIViewControllerTransitioningDelegate {
   }
 }
 
-// MARK: - Configuration
+// View configuration
 private extension HomeViewController {
   func configureView() {
     mapView.isMyLocationEnabled = true
@@ -261,9 +257,8 @@ private extension HomeViewController {
     mapView.isBuildingsEnabled = false
     mapView.mapStyle = try? GMSMapStyle(contentsOfFileURL: Bundle.main.url(forResource: "MapStyle", withExtension: "json")!)
     
-    CALayer.boldShadow(whereToButton)
-    CALayer.boldShadow(bestRoutesView)
-    CALayer.boldShadow(bestRoutesDropdownView)
+    bestRoutesDropdownViewHeight.constant = bestRoutesDropdownViewCollapsedHeight
+    bestRoutesAddressViewHeight.constant = bestRoutesDropdownViewCollapsedHeight
     
     let layout = UICollectionViewFlowLayout()
     layout.minimumInteritemSpacing = 8
@@ -274,9 +269,12 @@ private extension HomeViewController {
     bestRoutesCollectionView.dataSource = self
     bestRoutesCollectionView.register(UINib(nibName: "BestRouteCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: BestRouteCell)
     bestRoutesAddressButton.titleLabel?.adjustsFontSizeToFitWidth = true
-    view.bringSubview(toFront: bestRoutesView)
     
     whereToButtonWidth.constant = view.frame.width - 50
+    
+    CALayer.boldShadow(whereToButton)
+    CALayer.boldShadow(bestRoutesView)
+    CALayer.boldShadow(bestRoutesDropdownView)
     
     
     
