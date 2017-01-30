@@ -20,7 +20,9 @@ final class Google {
         return
       }
       
-      completion(results)
+      DispatchQueue.main.async {
+        completion(results)
+      }
     }
   }
   
@@ -31,7 +33,9 @@ final class Google {
         return
       }
       
-      completion(place)
+      DispatchQueue.main.async {
+        completion(place)
+      }
     }
   }
 }

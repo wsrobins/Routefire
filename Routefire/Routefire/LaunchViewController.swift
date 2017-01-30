@@ -30,8 +30,7 @@ class LaunchViewController: UIViewController {
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     
-    NotificationCenter.default.addObserver(self, selector: #selector(transitionToHomeModule), name: LocationFoundNotification, object: nil)
-    Location.request()
+    configureLocation()
   }
 }
 
@@ -40,6 +39,11 @@ private extension LaunchViewController {
   func configureView() {
     whiteViewWidth.constant = view.frame.width
     whiteViewHeight.constant = view.frame.height
+  }
+  
+  func configureLocation() {
+    NotificationCenter.default.addObserver(self, selector: #selector(transitionToHomeModule), name: LocationFoundNotification, object: nil)
+    Location.request()
   }
 }
 
