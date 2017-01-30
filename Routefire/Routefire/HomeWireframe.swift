@@ -18,21 +18,18 @@ protocol HomeWireframeProtocol: UIViewControllerAnimatedTransitioning {
 
 class HomeWireframe: NSObject, HomeWireframeProtocol {
   weak var view: HomeViewController!
-  weak var presenter: HomePresenterProtocol!
-  var interactor: HomeInteractorProtocol!
+  weak var presenter: HomePresenter!
   
   func transitionToRouteModule() {
+    NotificationCenter.default.removeObserver(presenter)
     let routeView = RouteViewController()
     let routePresenter = RoutePresenter()
-    let routeInteractor = RouteInteractor()
     let routeWireframe = RouteWireframe()
     routeView.presenter = routePresenter
     routeView.wireframe = routeWireframe
     routePresenter.view = routeView
-    routePresenter.interactor = routeInteractor
     routePresenter.wireframe = routeWireframe
-    routePresenter.uberProductIDs = presenter.uberProductIDs
-    routeInteractor.homeInteractor = interactor
+    routeWireframe.view = routeView
     
     routeView.transitioningDelegate = view
     view.present(routeView, animated: true, completion: nil)
@@ -86,6 +83,7 @@ extension HomeWireframe: HomeWireframeAnimatedTransitioning {
         fromVC.whereToButtonTop.constant = 0
         fromVC.whereToButtonWidth.constant = toVC.routeView.frame.width
         fromVC.whereToButtonHeight.constant = toVC.routeView.frame.height
+        fromVC.reachabilityViewBottom.constant = 0
         containerView.layoutIfNeeded()
     }) { _ in
       toVC.routeView.backgroundColor = UIColor.white

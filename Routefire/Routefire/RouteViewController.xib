@@ -35,6 +35,28 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <visualEffectView hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="i3V-6m-qnD">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="sWb-BF-kge">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v5u-uU-6vG">
+                                <rect key="frame" x="180" y="326" width="15" height="15"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="v5u-uU-6vG" secondAttribute="height" id="4da-ZO-rjP"/>
+                                    <constraint firstAttribute="width" constant="15" id="S4L-uQ-exc"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="v5u-uU-6vG" firstAttribute="centerY" secondItem="sWb-BF-kge" secondAttribute="centerY" id="TCI-H0-PCx"/>
+                            <constraint firstItem="v5u-uU-6vG" firstAttribute="centerX" secondItem="sWb-BF-kge" secondAttribute="centerX" id="Xbv-lm-sX7"/>
+                        </constraints>
+                    </view>
+                    <blurEffect style="light"/>
+                </visualEffectView>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" style="plain" allowsSelectionDuringEditing="YES" rowHeight="80" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="0qq-qH-yYG">
                     <rect key="frame" x="0.0" y="200" width="375" height="467"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -88,28 +110,6 @@
                         <constraint firstItem="aiI-DY-5ev" firstAttribute="top" secondItem="ZfR-OP-vwt" secondAttribute="top" constant="20" id="vub-tH-ePl"/>
                     </constraints>
                 </view>
-                <visualEffectView hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="i3V-6m-qnD">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                    <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="sWb-BF-kge">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v5u-uU-6vG">
-                                <rect key="frame" x="180" y="326" width="15" height="15"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" secondItem="v5u-uU-6vG" secondAttribute="height" id="4da-ZO-rjP"/>
-                                    <constraint firstAttribute="width" constant="15" id="S4L-uQ-exc"/>
-                                </constraints>
-                            </view>
-                        </subviews>
-                        <constraints>
-                            <constraint firstItem="v5u-uU-6vG" firstAttribute="centerY" secondItem="sWb-BF-kge" secondAttribute="centerY" id="TCI-H0-PCx"/>
-                            <constraint firstItem="v5u-uU-6vG" firstAttribute="centerX" secondItem="sWb-BF-kge" secondAttribute="centerX" id="Xbv-lm-sX7"/>
-                        </constraints>
-                    </view>
-                    <blurEffect style="light"/>
-                </visualEffectView>
             </subviews>
             <constraints>
                 <constraint firstItem="0qq-qH-yYG" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="5M5-z7-ful"/>

@@ -7,19 +7,24 @@
 //
 
 import UIKit
+import ReachabilitySwift
 import IQKeyboardManagerSwift
 
 // Custom animated transitioning protocol
 protocol RouteWireframeAnimatedTransitioning: UIViewControllerAnimatedTransitioning {}
 
-protocol RouteRouterProtocol {
-  func back(_ routeView: RouteViewController)
-  func showBestRoutes(_ routeView: RouteViewController, routes: [Route], destinationName: String)
+protocol RouteWireframeProtocol {
+  func transitionToHomeModule(routing: (routes: [Route], destinationName: String)?)
 }
 
-class RouteWireframe: NSObject, RouteRouterProtocol {
-  func back(_ routeView: RouteViewController) {
-    routeView.dismiss(animated: true, completion: nil)
+class RouteWireframe: NSObject, RouteWireframeProtocol {
+  weak var view: RouteViewController!
+  
+  func transitionToHomeModule(routing: (routes: [Route], destinationName: String)?) {
+    guard let routing = routing else {
+      view.dismiss(animated: true, completion: nil)
+      return
+    }
   }
   
   func showBestRoutes(_ routeView: RouteViewController, routes: [Route], destinationName: String) {
@@ -62,9 +67,10 @@ extension RouteWireframe: RouteWireframeAnimatedTransitioning {
       options: .curveEaseInOut,
       animations: {
         fromVC.destinationsTableViewTop.constant = 0
-        toVC.whereToButtonTop.constant = 100
-        toVC.whereToButtonWidth.constant = toVC.view.frame.width - 80
+        toVC.whereToButtonTop.constant = 80
+        toVC.whereToButtonWidth.constant = toVC.view.frame.width - 50
         toVC.whereToButtonHeight.constant = 60
+        toVC.reachabilityViewBottom.constant = toVC.presenter.networkReachable ? 0 : toVC.reachabilityView.frame.height
         containerView.layoutIfNeeded()
     }, completion: nil)
     
@@ -77,6 +83,7 @@ extension RouteWireframe: RouteWireframeAnimatedTransitioning {
         toVC.whereToButton.titleLabel?.alpha = 1
         containerView.layoutIfNeeded()
     }) { _ in
+      toVC.presenter.observeReachability()
       transitionContext.completeTransition(true)
     }
   }

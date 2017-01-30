@@ -47,20 +47,21 @@ class RouteViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    configure()
+    configureView()
   }
   
   // MARK: User interaction
   @IBAction func backButtonTouched() {
-    
+    presenter.transitionToHomeModule(routing: nil)
   }
   
   @objc func textDidChange(_ textField: UITextField) {
-    guard let text = textField.text else { return }
+    guard let text = textField.text else {
+      return
+    }
+    
     presenter.autocomplete(text) {
-      DispatchQueue.main.async {
-        self.destinationsTableView.reloadData()
-      }
+      self.destinationsTableView.reloadData()
     }
   }
 }
@@ -96,19 +97,19 @@ extension RouteViewController: UITableViewDelegate, UITableViewDataSource {
     presenter.selectedDestination(at: indexPath) {
       timer.invalidate()
     }
-//    { destinationName, routes in
-//      self.view.layoutIfNeeded()
-//      UIView.animate(
-//        withDuration: 0.1,
-//        delay: 0,
-//        options: .curveEaseIn,
-//        animations: {
-//          self.loadingView.alpha = 0
-//          self.view.layoutIfNeeded()
-//      }) { _ in
-//        timer.invalidate()
-//      }
-//    }
+    //    { destinationName, routes in
+    //      self.view.layoutIfNeeded()
+    //      UIView.animate(
+    //        withDuration: 0.1,
+    //        delay: 0,
+    //        options: .curveEaseIn,
+    //        animations: {
+    //          self.loadingView.alpha = 0
+    //          self.view.layoutIfNeeded()
+    //      }) { _ in
+    //        timer.invalidate()
+    //      }
+    //    }
   }
   
   // Data source
@@ -117,7 +118,7 @@ extension RouteViewController: UITableViewDelegate, UITableViewDataSource {
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    guard let cell = destinationsTableView.dequeueReusableCell(withIdentifier: Constants.destinationCell, for: indexPath) as? DestinationTableViewCell else {
+    guard let cell = destinationsTableView.dequeueReusableCell(withIdentifier: DestinationCell, for: indexPath) as? DestinationTableViewCell else {
       return UITableViewCell()
     }
     
@@ -144,9 +145,9 @@ private extension RouteViewController {
   }
 }
 
-// MARK: - Configuration
+// View configuration
 private extension RouteViewController {
-  func configure() {
+  func configureView() {
     
     // View
     CALayer.lightShadow(routeView)
@@ -158,7 +159,7 @@ private extension RouteViewController {
     destinationField.addTarget(self, action: #selector(textDidChange(_:)), for: .editingChanged)
     destinationsTableView.delegate = self
     destinationsTableView.dataSource = self
-    destinationsTableView.register(UINib(nibName: "DestinationTableViewCell", bundle: nil), forCellReuseIdentifier: Constants.destinationCell)
+    destinationsTableView.register(UINib(nibName: "DestinationTableViewCell", bundle: nil), forCellReuseIdentifier: DestinationCell)
     blurView.effect = nil
     
     // Store constraint constants

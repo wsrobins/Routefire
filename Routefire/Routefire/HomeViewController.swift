@@ -11,11 +11,10 @@ import GoogleMaps
 import Alamofire
 import ReachabilitySwift
 
-// View input protocol
 protocol HomeViewProtocol: class {
-  func enableCurrentLocationOnMap()
-  func zoomTo(_ myLocation: CLLocationCoordinate2D)
-  func whereToButtonTouched()
+  func setInitialMapCamera(to location: CLLocationCoordinate2D, withZoom zoom: Float)
+  func zoomMapCamera(to location: CLLocationCoordinate2D, withZoom zoom: Float)
+  func toggleReachabilityView(_ reachable: Bool)
 }
 
 class HomeViewController: UIViewController {
@@ -24,7 +23,7 @@ class HomeViewController: UIViewController {
   var presenter: HomePresenterProtocol!
   
   // Wireframe
-  var wireframe: HomeWireframeAnimatedTransitioning!
+  var wireframe: HomeWireframeProtocol!
   
   // Subviews
   @IBOutlet weak var mapView: GMSMapView!
@@ -49,22 +48,34 @@ class HomeViewController: UIViewController {
   let bestRoutesDropdownViewExpandedHeight = UIScreen.main.bounds.height - UIScreen.main.bounds.width - 24
   let bestRoutesDropdownViewCollapsedHeight = UIScreen.main.bounds.height - (UIScreen.main.bounds.width * 1.5) - 24
   
+  // Status bar
+  override var preferredStatusBarStyle: UIStatusBarStyle {
+    return presenter.networkReachable ? .default : .lightContent
+  }
+  
   // Life cycle
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    configure()
-    presenter.configureLocation()
+    configureView()
+    presenter.observeReachability()
   }
   
-  // KVO
-  override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-    presenter.updateLocation(change)
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    
+    presenter.setMapCamera(initial: true)
+  }
+  
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    
+    presenter.setMapCamera(initial: false)
   }
   
   // User interaction
   @IBAction func whereToButtonTouched() {
-    presenter.showRouteModule()
+    presenter.transitionToRouteModule()
   }
   
   @IBAction func expandButtonTouched() {
@@ -99,18 +110,31 @@ class HomeViewController: UIViewController {
   }
 }
 
-// MARK: - Home view protocol
+// View input
 extension HomeViewController: HomeViewProtocol {
-  func enableCurrentLocationOnMap() {
-    mapView.isMyLocationEnabled = true
+  func setInitialMapCamera(to location: CLLocationCoordinate2D, withZoom zoom: Float) {
+    mapView.camera = GMSCameraPosition.camera(withTarget: location, zoom: zoom)
   }
   
-  func zoomTo(_ myLocation: CLLocationCoordinate2D) {
-    mapView.camera = GMSCameraPosition.camera(withTarget: myLocation, zoom: 15)
+  func zoomMapCamera(to location: CLLocationCoordinate2D, withZoom zoom: Float) {
+    mapView.animate(to: GMSCameraPosition.camera(withTarget: location, zoom: zoom))
+  }
+  
+  func toggleReachabilityView(_ networkReachable: Bool) {
+    setNeedsStatusBarAppearanceUpdate()
+    view.layoutIfNeeded()
+    UIView.animate(
+      withDuration: 0.2,
+      delay: 0,
+      options: .allowUserInteraction,
+      animations: {
+        self.reachabilityViewBottom.constant = networkReachable ? 0 : self.reachabilityView.frame.height
+        self.view.layoutIfNeeded()
+    }, completion: nil)
   }
 }
 
-// MARK: - Best routes collection view delegate and data source
+// Best routes collection view delegate and data source
 extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
   
   // Delegate
@@ -124,7 +148,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.bestRouteCell, for: indexPath) as? BestRouteCollectionViewCell else {
+    guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BestRouteCell, for: indexPath) as? BestRouteCollectionViewCell else {
       return UICollectionViewCell()
     }
     
@@ -144,9 +168,10 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
   
   // Flow layout delegate
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-    guard let spacing = (collectionViewLayout as? UICollectionViewFlowLayout)?.minimumInteritemSpacing else { return CGSize.zero }
+    let spacing = (collectionViewLayout as! UICollectionViewFlowLayout).minimumInteritemSpacing
     let full = UIScreen.main.bounds.width - spacing * 2
     let half = (UIScreen.main.bounds.width - spacing * 3) / 2
+    
     switch indexPath.row {
     case 0:
       return CGSize(width: full, height: half)
@@ -216,25 +241,25 @@ private extension HomeViewController {
   //  }
 }
 
-// MARK: - Transitioning delegate
+// Transitioning delegate
 extension HomeViewController: UIViewControllerTransitioningDelegate {
   func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
     return wireframe
   }
   
   func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-    return (dismissed as? RouteViewController)?.wireframe
+    return (dismissed as! RouteViewController).wireframe
   }
 }
 
 // MARK: - Configuration
 private extension HomeViewController {
-  func configure() {
-    mapView.addObserver(self, forKeyPath: "myLocation", options: .new, context: nil)
-    
-    if let mapStyleURL = Bundle.main.url(forResource: "MapStyle", withExtension: "json") {
-      mapView.mapStyle = try? GMSMapStyle(contentsOfFileURL: mapStyleURL)
-    }
+  func configureView() {
+    mapView.isMyLocationEnabled = true
+    mapView.settings.myLocationButton = true
+    mapView.isIndoorEnabled = false
+    mapView.isBuildingsEnabled = false
+    mapView.mapStyle = try? GMSMapStyle(contentsOfFileURL: Bundle.main.url(forResource: "MapStyle", withExtension: "json")!)
     
     CALayer.boldShadow(whereToButton)
     CALayer.boldShadow(bestRoutesView)
@@ -247,10 +272,14 @@ private extension HomeViewController {
     bestRoutesCollectionView.backgroundColor = UIColor.clear
     bestRoutesCollectionView.delegate = self
     bestRoutesCollectionView.dataSource = self
-    bestRoutesCollectionView.register(UINib(nibName: "BestRouteCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: Constants.bestRouteCell)
+    bestRoutesCollectionView.register(UINib(nibName: "BestRouteCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: BestRouteCell)
     bestRoutesAddressButton.titleLabel?.adjustsFontSizeToFitWidth = true
+    view.bringSubview(toFront: bestRoutesView)
     
-    whereToButtonWidth.constant = view.frame.width - 80
+    whereToButtonWidth.constant = view.frame.width - 50
+    
+    
+    
     //    // Store constraint constants
     //    reachabilityViewActiveTopConstant = reachabilityViewTop.constant
     //    reachabilityViewInactiveTopConstant = reachabilityViewHeight.constant
@@ -280,7 +309,6 @@ private extension HomeViewController {
     //    whereToButtonWidth.constant = whereToButtonActiveWidthConstant
     //    bestRoutesAddressViewHeight.constant = bestRoutesAddressViewInactiveHeightConstant
     //    bestRoutesAddressTopViewHeight.constant = bestRoutesAddressViewInactiveHeightConstant
-    
   }
 }
 

@@ -35,25 +35,6 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hOe-gw-jne" customClass="GMSMapView">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                </view>
-                <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="waP-No-r0x">
-                    <rect key="frame" x="40" y="100" width="295" height="60"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="60" id="DKg-Ky-QCR"/>
-                        <constraint firstAttribute="width" constant="295" id="Stc-h4-1o4"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" type="system" weight="thin" pointSize="22"/>
-                    <state key="normal" title="Where to?">
-                        <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <connections>
-                        <action selector="whereToButtonTouched" destination="-1" eventType="touchUpInside" id="f0V-BI-Bmf"/>
-                    </connections>
-                </button>
                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aEj-E4-1s2">
                     <rect key="frame" x="8" y="28" width="359" height="631"/>
                     <subviews>
@@ -135,30 +116,49 @@
                         <constraint firstItem="LKW-Q6-gLi" firstAttribute="leading" secondItem="aEj-E4-1s2" secondAttribute="leading" id="d6d-Js-5Ps"/>
                     </constraints>
                 </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hOe-gw-jne" customClass="GMSMapView">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y4J-8y-Zai">
-                    <rect key="frame" x="0.0" y="-60" width="375" height="60"/>
+                    <rect key="frame" x="0.0" y="-40" width="375" height="40"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We can't reach our network right now." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tfj-kY-HhU">
-                            <rect key="frame" x="60" y="30" width="256" height="18"/>
-                            <fontDescription key="fontDescription" type="system" weight="light" pointSize="15"/>
+                            <rect key="frame" x="81" y="20" width="214.5" height="14.5"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
                     <color key="backgroundColor" red="0.25851202010000002" green="0.52223694320000003" blue="0.9582508206" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="60" id="1sj-je-4Xd"/>
+                        <constraint firstAttribute="height" constant="40" id="1sj-je-4Xd"/>
                         <constraint firstItem="Tfj-kY-HhU" firstAttribute="centerX" secondItem="y4J-8y-Zai" secondAttribute="centerX" id="CeL-pA-Nco"/>
-                        <constraint firstItem="Tfj-kY-HhU" firstAttribute="top" secondItem="y4J-8y-Zai" secondAttribute="top" constant="30" id="MIV-ah-ELA"/>
+                        <constraint firstItem="Tfj-kY-HhU" firstAttribute="top" secondItem="y4J-8y-Zai" secondAttribute="top" constant="20" id="MIV-ah-ELA"/>
                     </constraints>
                 </view>
+                <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="waP-No-r0x">
+                    <rect key="frame" x="25" y="80" width="325" height="60"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="60" id="DKg-Ky-QCR"/>
+                        <constraint firstAttribute="width" constant="325" id="Stc-h4-1o4"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" weight="thin" pointSize="22"/>
+                    <state key="normal" title="Where to?">
+                        <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="whereToButtonTouched" destination="-1" eventType="touchUpInside" id="f0V-BI-Bmf"/>
+                    </connections>
+                </button>
             </subviews>
             <constraints>
                 <constraint firstItem="y4J-8y-Zai" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="4ve-Fb-xVP"/>
                 <constraint firstAttribute="bottom" secondItem="aEj-E4-1s2" secondAttribute="bottom" constant="8" id="D34-bE-A6i"/>
                 <constraint firstItem="aEj-E4-1s2" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="28" id="DFW-3F-Va2"/>
                 <constraint firstAttribute="trailing" secondItem="y4J-8y-Zai" secondAttribute="trailing" id="HlK-Hr-sdD"/>
-                <constraint firstItem="waP-No-r0x" firstAttribute="top" secondItem="y4J-8y-Zai" secondAttribute="bottom" constant="100" id="KHq-Mb-I1O"/>
+                <constraint firstItem="waP-No-r0x" firstAttribute="top" secondItem="y4J-8y-Zai" secondAttribute="bottom" constant="80" id="KHq-Mb-I1O"/>
                 <constraint firstItem="hOe-gw-jne" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="Nxc-yi-Rsb"/>
                 <constraint firstItem="hOe-gw-jne" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="QdW-TL-TcL"/>
                 <constraint firstItem="waP-No-r0x" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="RMW-Vk-caU"/>

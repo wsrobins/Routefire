@@ -8,12 +8,12 @@
 
 import Foundation
 
-struct Constants {
-  
-  // Cell identifiers
-  static let bestRouteCell = "bestRouteCell"
-  static let destinationCell = "destinationCell"
-  
-  // Notification names
-  static let locationAuthorizedNotification = Notification.Name("locationAuthorized")
-}
+// Notification names
+let LocationFoundNotification = Notification.Name("locationFound")
+let NetworkReachableNotification = Notification.Name("networkReachable")
+let NetworkUnreachableNotification = Notification.Name("networkUnreachable")
+
+// Cell identifiers
+let BestRouteCell = "bestRouteCell"
+let DestinationCell = "destinationCell"
+

@@ -24,19 +24,20 @@ class LaunchViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    configure()
+    configureView()
   }
   
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     
-    transitionToHomeModule()
+    NotificationCenter.default.addObserver(self, selector: #selector(transitionToHomeModule), name: LocationFoundNotification, object: nil)
+    Location.request()
   }
 }
 
 // View configuration
 private extension LaunchViewController {
-  func configure() {
+  func configureView() {
     whiteViewWidth.constant = view.frame.width
     whiteViewHeight.constant = view.frame.height
   }
@@ -52,18 +53,16 @@ extension LaunchViewController: UIViewControllerTransitioningDelegate {
 // Transition to home module
 extension LaunchViewController {
   func transitionToHomeModule() {
+    NotificationCenter.default.removeObserver(self)
     let homeView = HomeViewController()
     let homePresenter = HomePresenter()
-    let homeInteractor = HomeInteractor()
     let homeWireframe = HomeWireframe()
     homeView.presenter = homePresenter
     homeView.wireframe = homeWireframe
     homePresenter.view = homeView
-    homePresenter.interactor = homeInteractor
     homePresenter.wireframe = homeWireframe
     homeWireframe.view = homeView
     homeWireframe.presenter = homePresenter
-    homeWireframe.interactor = homeInteractor
     
     homeView.transitioningDelegate = self
     present(homeView, animated: true, completion: nil)
