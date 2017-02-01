@@ -81,7 +81,7 @@ extension RouteViewController: UITableViewDelegate, UITableViewDataSource {
         animations: {
           self.loadingViewWidth.constant = self.loadingViewActiveWidthConstant
           self.view.layoutIfNeeded()
-      }, completion: nil)
+      })
       
       self.view.layoutIfNeeded()
       UIView.animate(
@@ -91,7 +91,7 @@ extension RouteViewController: UITableViewDelegate, UITableViewDataSource {
         animations: {
           self.loadingViewWidth.constant = self.loadingViewInactiveWidthConstant
           self.view.layoutIfNeeded()
-      }, completion: nil)
+      })
     }
     
     blurView.isHidden = false
@@ -105,7 +105,7 @@ extension RouteViewController: UITableViewDelegate, UITableViewDataSource {
         self.blurView.effect = UIBlurEffect(style: .light)
         self.loadingView.alpha = 1
         self.view.layoutIfNeeded()
-    }, completion: nil)
+    })
     
     presenter.selectedDestination(at: indexPath, timer: timer)
   }
@@ -130,27 +130,34 @@ extension RouteViewController: UITableViewDelegate, UITableViewDataSource {
 private extension RouteViewController {
   func configureView() {
     
-    // View
-    CALayer.lightShadow(routeView)
-    CALayer.lightShadow(loadingView)
-    
+    // View setup
+    view.bringSubview(toFront: blurView)
     backButton.alpha = 0
     fieldStackView.alpha = 0
     currentLocationButton.layer.cornerRadius = currentLocationButton.frame.height * 0.5
     destinationField.addTarget(self, action: #selector(textDidChange(_:)), for: .editingChanged)
+    destinationField.autocorrectionType = .no
     destinationsTableView.delegate = self
     destinationsTableView.dataSource = self
     destinationsTableView.register(UINib(nibName: "DestinationTableViewCell", bundle: nil), forCellReuseIdentifier: DestinationCell)
     blurView.effect = nil
+    CALayer.lightShadow(routeView)
+    CALayer.lightShadow(loadingView)
     
     // Store constraint constants
     destinationsTableViewActiveTopConstant = UIScreen.main.bounds.height - destinationsTableViewHeight.constant
     destinationsTableViewInactiveTopConstant = destinationsTableViewTop.constant
-    
     loadingViewActiveWidthConstant = loadingViewWidth.constant * 1.8
     loadingViewInactiveWidthConstant = loadingViewWidth.constant
     
-    view.bringSubview(toFront: blurView)
+    if let name = presenter.trip?.name {
+      self.destinationField.text = name
+      self.presenter.autocomplete(destinationField.text!) {
+        DispatchQueue.main.async {
+          self.destinationsTableView.reloadData()
+        }
+      }
+    }
   }
 }
 

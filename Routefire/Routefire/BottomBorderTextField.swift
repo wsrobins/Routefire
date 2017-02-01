@@ -15,14 +15,12 @@ class BottomBorderTextField: UITextField , UITextFieldDelegate {
   required init?(coder aDecoder: (NSCoder!)) {
     super.init(coder: aDecoder)
     
-    delegate = self
-    
-    border.borderColor = UIColor.lightGray.withAlphaComponent(0.4).cgColor
-    border.borderWidth = width
     border.frame = CGRect(x: 0, y: self.frame.size.height - width, width:  self.frame.size.width, height: width)
-    
-    self.layer.addSublayer(border)
-    self.layer.masksToBounds = true
+    border.borderWidth = width
+    border.borderColor = UIColor.lightGray.withAlphaComponent(0.4).cgColor
+    layer.addSublayer(border)
+    layer.masksToBounds = true
+    delegate = self
   }
   
   override func draw(_ rect: CGRect) {

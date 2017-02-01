@@ -28,6 +28,7 @@
 		C474729B1E27433600292CD6 /* BestRouteCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47472991E27433600292CD6 /* BestRouteCollectionViewCell.swift */; };
 		C474729C1E27433600292CD6 /* BestRouteCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C474729A1E27433600292CD6 /* BestRouteCollectionViewCell.xib */; };
 		C474729F1E27479400292CD6 /* Route.swift in Sources */ = {isa = PBXBuildFile; fileRef = C474729E1E27479400292CD6 /* Route.swift */; };
+		C48B988B1E414D3200871F96 /* Trip.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48B988A1E414D3200871F96 /* Trip.swift */; };
 		C4B305D71E1E0A2300C56A99 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B305D61E1E0A2300C56A99 /* Secrets.swift */; };
 		C4B305DB1E1E13D600C56A99 /* Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B305DA1E1E13D600C56A99 /* Animations.swift */; };
 		C4B305DD1E1E4BBE00C56A99 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B305DC1E1E4BBE00C56A99 /* Constants.swift */; };
@@ -66,6 +67,7 @@
 		C47472991E27433600292CD6 /* BestRouteCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BestRouteCollectionViewCell.swift; sourceTree = "<group>"; };
 		C474729A1E27433600292CD6 /* BestRouteCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BestRouteCollectionViewCell.xib; sourceTree = "<group>"; };
 		C474729E1E27479400292CD6 /* Route.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Route.swift; sourceTree = "<group>"; };
+		C48B988A1E414D3200871F96 /* Trip.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Trip.swift; sourceTree = "<group>"; };
 		C4B305D61E1E0A2300C56A99 /* Secrets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
 		C4B305DA1E1E13D600C56A99 /* Animations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Animations.swift; sourceTree = "<group>"; };
 		C4B305DC1E1E4BBE00C56A99 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -123,6 +125,7 @@
 			isa = PBXGroup;
 			children = (
 				C474729E1E27479400292CD6 /* Route.swift */,
+				C48B988A1E414D3200871F96 /* Trip.swift */,
 			);
 			name = Entities;
 			sourceTree = "<group>";
@@ -408,6 +411,7 @@
 				C4EAF3F61E26FDDF00AB7A23 /* HomePresenter.swift in Sources */,
 				C4F4713D1E2F03EE00479187 /* LaunchViewController.swift in Sources */,
 				C4746FE71E1E082C00832FC3 /* AppDelegate.swift in Sources */,
+				C48B988B1E414D3200871F96 /* Trip.swift in Sources */,
 				C4F471311E2EE64700479187 /* HomeWireframe.swift in Sources */,
 				C469AAAE1E1F31850009A15F /* BottomBorderTextField.swift in Sources */,
 				C4B305DB1E1E13D600C56A99 /* Animations.swift in Sources */,
@@ -540,6 +544,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = TWPE6ND5AF;
 				INFOPLIST_FILE = Routefire/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -555,6 +560,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = TWPE6ND5AF;
 				INFOPLIST_FILE = Routefire/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

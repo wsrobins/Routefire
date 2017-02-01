@@ -7,43 +7,35 @@
 //
 
 import CoreLocation
+import GooglePlaces
 import ReachabilitySwift
 
 protocol HomePresenterProtocol: class {
-  var networkReachable: Bool { get }
-  var bestRoutes: [Route] { get set }
+  var trip: Trip? { get set }
   var uberProductIDs: [String] { get }
+  var networkReachable: Bool { get }
+  func transitionToRouteModule()
+  func setMapCamera(initial: Bool)
+  func selectedRoute(at indexPath: IndexPath)
   func observeReachability()
   func reachabilityChanged(notification: Notification)
-  func setMapCamera(initial: Bool)
-  func transitionToRouteModule()
-  func selectedRoute(at indexPath: IndexPath)
 }
 
 class HomePresenter: HomePresenterProtocol {
   weak var view: HomeViewProtocol!
   var wireframe: HomeWireframeProtocol!
   
+  var trip: Trip?
   var uberProductIDs: [String] = []
-  var bestRoutes: [Route] = []
   var networkReachable: Bool {
     return Network.reachable
   }
   
-  func observeReachability() {
-    NotificationCenter.default.addObserver(self, selector: #selector(reachabilityChanged), name: ReachabilityChangedNotification, object: nil)
-    Network.startNotifier()
-  }
-  
-  @objc func reachabilityChanged(notification: Notification) {
-    self.view.toggleReachabilityView((notification.object as! Reachability).isReachable)
-  }
-  
   func setMapCamera(initial: Bool) {
     if initial {
-      view.setInitialMapCamera(to: Location.current, withZoom: 13)
+      view.setInitialMapCamera(to: Location.current, withZoom: 18)
     } else {
-      self.view.zoomMapCamera(to: Location.current, withZoom: 15)
+      self.view.zoomMapCamera(to: Location.current, withZoom: 14)
     }
   }
   
@@ -52,7 +44,7 @@ class HomePresenter: HomePresenterProtocol {
   }
   
   func selectedRoute(at indexPath: IndexPath) {
-    let route = bestRoutes[indexPath.row]
+    let route = trip!.routes[indexPath.row]
     let pickupLat = route.start.latitude.description
     let pickupLong = route.start.longitude.description
     let dropoffLat = route.end.latitude.description
@@ -112,7 +104,18 @@ class HomePresenter: HomePresenterProtocol {
         }
         
         UIApplication.shared.open(lyftURL, options: [:], completionHandler: nil)
+      } else {
+        print("lyft not installed")
       }
     }
+  }
+  
+  func observeReachability() {
+    NotificationCenter.default.addObserver(self, selector: #selector(reachabilityChanged), name: ReachabilityChangedNotification, object: nil)
+    Network.startNotifier()
+  }
+  
+  @objc func reachabilityChanged(notification: Notification) {
+    self.view.toggleReachabilityView((notification.object as! Reachability).isReachable)
   }
 }

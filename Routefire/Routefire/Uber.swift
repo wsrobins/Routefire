@@ -10,7 +10,7 @@ import Alamofire
 import GooglePlaces
 
 final class Uber {
-  static func getEstimates(to place: GMSPlace, completion: @escaping ([String : [String : Any]], [String : Int]) -> Void) {
+  static func getEstimates(to place: GMSPlace, completion: @escaping ([String : [String : Any]]?, [String : Int]?) -> Void) {
     let group = DispatchGroup()
     
     // Price estimates
@@ -25,7 +25,7 @@ final class Uber {
     ]
     
     getPrices(pricesURL, pricesParameters, group) { estimates in
-      priceEstimates = estimates
+      priceEstimates = estimates ?? [:]
     }
     
     // Time estimates
@@ -38,7 +38,7 @@ final class Uber {
     ]
   
     getTimes(timesURL, timesParameters, group) { estimates in
-      timeEstimates = estimates
+      timeEstimates = estimates ?? [:]
     }
     
     // Requests complete
@@ -47,13 +47,14 @@ final class Uber {
     }
   }
   
-  static private func getPrices(_ url: URL, _ parameters: [String : Any], _ group: DispatchGroup, completion: @escaping ([String : [String : Any]]) -> Void) {
+  static private func getPrices(_ url: URL, _ parameters: [String : Any], _ group: DispatchGroup, completion: @escaping ([String : [String : Any]]?) -> Void) {
     var priceEstimates: [String : [String : Any]] = [:]
     group.enter()
     Alamofire.request(url, parameters: parameters).responseJSON { response in
       guard let pricesJSON = response.result.value as? [String : [[String : Any]]],
         let pricesArray = pricesJSON.values.first else {
           print("error unwrapping uber prices")
+          completion(nil)
           group.leave()
           return
       }
@@ -65,6 +66,7 @@ final class Uber {
           let highPrice = priceDict["high_estimate"] as? Int,
           let duration = priceDict["duration"] as? Int else {
             print("error unwrapping uber price info")
+            completion(nil)
             group.leave()
             return
         }
@@ -77,13 +79,14 @@ final class Uber {
     }
   }
   
-  static private func getTimes(_ url: URL, _ parameters: [String : Any], _ group: DispatchGroup, completion: @escaping ([String : Int]) -> Void) {
+  static private func getTimes(_ url: URL, _ parameters: [String : Any], _ group: DispatchGroup, completion: @escaping ([String : Int]?) -> Void) {
     var timeEstimates: [String : Int] = [:]
     group.enter()
     Alamofire.request(url, parameters: parameters).responseJSON { response in
       guard let timesJSON = response.result.value as? [String : [[String : Any]]],
         let timesArray = timesJSON.values.first else {
           print("error unwrapping uber times")
+          completion(nil)
           group.leave()
           return
       }
@@ -92,6 +95,7 @@ final class Uber {
         guard let name = timeDict["localized_display_name"] as? String,
           let waitTime = timeDict["estimate"] as? Int else {
             print("error unwrapping uber time info")
+            completion(nil)
             group.leave()
             return
         }

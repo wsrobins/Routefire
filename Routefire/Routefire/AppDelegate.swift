@@ -21,7 +21,7 @@ import IQKeyboardManagerSwift
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
   var window: UIWindow?
-
+  
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
     
     // Activate Google Maps and Places
@@ -30,6 +30,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // Keyboard manager
     IQKeyboardManager.sharedManager().enable = true
+    IQKeyboardManager.sharedManager().enableAutoToolbar = false
+//    IQKeyboardManager.sharedManager().shouldShowTextFieldPlaceholder = false
     IQKeyboardManager.sharedManager().shouldResignOnTouchOutside = true
     
     // Set up window
@@ -39,10 +41,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // ••••••••••
     
-    //    var config = Configuration()
-    //    config.color = UIColor.lightGray
-    //    config.defaultSize = CGSize(width: 35, height: 35)
-    //    Visualizer.start(config)
+//    var config = Configuration()
+//    config.color = UIColor.lightGray
+//    config.defaultSize = CGSize(width: 35, height: 35)
+//    Visualizer.start(config)
     
     // ••••••••••
     

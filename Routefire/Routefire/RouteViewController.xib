@@ -65,10 +65,13 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZfR-OP-vwt">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aiI-DY-5ev">
+                        <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aiI-DY-5ev">
                             <rect key="frame" x="10" y="20" width="44" height="44"/>
+                            <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
-                            <state key="normal" image="Back Black"/>
+                            <state key="normal" image="Back Black">
+                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
                             <connections>
                                 <action selector="backButtonTouched" destination="-1" eventType="touchUpInside" id="fku-S2-ZqT"/>
                             </connections>
@@ -88,7 +91,7 @@
                                         <action selector="backButtonTouched" destination="-1" eventType="touchUpInside" id="F9m-GC-Z3A"/>
                                     </connections>
                                 </button>
-                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Where to?" textAlignment="natural" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="YL1-hP-6NM" customClass="BottomBorderTextField" customModule="Routefire" customModuleProvider="target">
+                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Where to?" textAlignment="natural" adjustsFontSizeToFit="NO" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="YL1-hP-6NM" customClass="BottomBorderTextField" customModule="Routefire" customModuleProvider="target">
                                     <rect key="frame" x="0.0" y="48" width="315" height="27"/>
                                     <nil key="textColor"/>
                                     <fontDescription key="fontDescription" type="system" weight="black" pointSize="22"/>

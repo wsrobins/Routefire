@@ -69,7 +69,7 @@ extension LaunchViewController {
     homeWireframe.presenter = homePresenter
     
     homeView.transitioningDelegate = self
-    present(homeView, animated: true, completion: nil)
+    present(homeView, animated: true)
   }
 }
 
@@ -96,7 +96,7 @@ extension LaunchViewController: UIViewControllerAnimatedTransitioning {
       animations: {
         fromVC.titleLabelCenterX.constant = fromVC.view.frame.width
         containerView.layoutIfNeeded()
-    }, completion: nil)
+    })
     
     containerView.layoutIfNeeded()
     UIView.animate(

@@ -36,16 +36,15 @@ final class Lyft {
                         "end_lat" : place.coordinate.latitude,
                         "end_lng" : place.coordinate.longitude]
       let headers = ["Authorization" : "bearer \(accessToken)"]
-      Alamofire
-        .request(url, parameters: parameters, headers: headers)
-        .responseJSON { response in
-          guard let estimatesJSON = response.result.value as? [String : [[String : Any]]],
-            let estimates = estimatesJSON.values.first else {
-              print("error unwrapping lyft prices")
-              return
-          }
-          
-          completion(estimates)
+      
+      Alamofire.request(url, parameters: parameters, headers: headers).responseJSON { response in
+        guard let estimatesJSON = response.result.value as? [String : [[String : Any]]],
+          let estimates = estimatesJSON.values.first else {
+            print("error unwrapping lyft prices")
+            return
+        }
+        
+        completion(estimates)
       }
     }
   }

@@ -20,6 +20,8 @@ class HomeWireframe: NSObject, HomeWireframeProtocol {
   weak var view: HomeViewController!
   weak var presenter: HomePresenter!
   
+  var trip: Trip?
+  
   func transitionToRouteModule() {
     NotificationCenter.default.removeObserver(presenter)
     let routeView = RouteViewController()
@@ -29,11 +31,12 @@ class HomeWireframe: NSObject, HomeWireframeProtocol {
     routeView.wireframe = routeWireframe
     routePresenter.view = routeView
     routePresenter.wireframe = routeWireframe
+    routePresenter.trip = presenter.trip
     routeWireframe.view = routeView
     routeWireframe.presenter = routePresenter
     
     routeView.transitioningDelegate = view
-    view.present(routeView, animated: true, completion: nil)
+    view.present(routeView, animated: true)
   }
 }
 
@@ -99,6 +102,6 @@ extension HomeWireframe: HomeWireframeAnimatedTransitioning {
         toVC.backButton.alpha = 1
         toVC.fieldStackView.alpha = 1
         containerView.layoutIfNeeded()
-    }, completion: nil)
+    })
   }
 }

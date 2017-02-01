@@ -11,9 +11,8 @@ import Alamofire
 import GooglePlaces
 
 protocol RoutePresenterProtocol: class {
-  var autocompleteResults: [GMSAutocompletePrediction] { get }
-  var routes: [Route] { get }
-  var destinationName: String { get }
+  var autocompleteResults: [GMSAutocompletePrediction] { get set }
+  var trip: Trip? { get set }
   func transitionToHomeModule()
   func autocomplete(_ text: String, completion: @escaping () -> Void)
   func selectedDestination(at indexPath: IndexPath, timer: Timer)
@@ -24,9 +23,8 @@ final class RoutePresenter: RoutePresenterProtocol {
   weak var view: RouteViewController!
   var wireframe: RouteWireframe!
   
+  var trip: Trip?
   var autocompleteResults: [GMSAutocompletePrediction] = []
-  var routes: [Route] = []
-  var destinationName = ""
   
   func transitionToHomeModule() {
     wireframe.transitionToHomeModule(timer: nil)
@@ -34,6 +32,12 @@ final class RoutePresenter: RoutePresenterProtocol {
   
   // Input
   func autocomplete(_ text: String, completion: @escaping () -> Void) {
+    guard text != "" else {
+      autocompleteResults = []
+      completion()
+      return
+    }
+    
     Google.autocomplete(text) { autocompleteResults in
       self.autocompleteResults = autocompleteResults
       completion()
@@ -47,11 +51,19 @@ final class RoutePresenter: RoutePresenterProtocol {
     }
     
     Google.getPlace(with: placeID) { place in
+      self.trip = Trip()
+      self.trip!.name = place.name
+      
       let group = DispatchGroup()
       
       // Uber estimates
       group.enter()
       Uber.getEstimates(to: place) { priceEstimates, timeEstimates in
+        guard let priceEstimates = priceEstimates, let timeEstimates = timeEstimates else {
+          self.wireframe.transitionToHomeModule(timer: timer)
+          return
+        }
+        
         for (name, waitTime) in timeEstimates {
           guard let priceEstimate = priceEstimates[name] else {
             continue
@@ -91,7 +103,7 @@ final class RoutePresenter: RoutePresenterProtocol {
             endAddress: place.formattedAddress!
           )
           
-          self.routes.append(route)
+          self.trip!.routes.append(route)
         }
         
         group.leave()
@@ -106,7 +118,7 @@ final class RoutePresenter: RoutePresenterProtocol {
             let lowPrice = estimate["estimated_cost_cents_min"] as? Int,
             let highPrice = estimate["estimated_cost_cents_max"] as? Int,
             let duration = estimate["estimated_duration_seconds"] as? Int else {
-              return
+              continue
           }
           
           let arrivalDate = Calendar.current.date(byAdding: .second, value: duration, to: Date())!
@@ -117,6 +129,9 @@ final class RoutePresenter: RoutePresenterProtocol {
           
           if arrivalHour < 12 {
             period = "AM"
+            if arrivalHour == 0 {
+              arrivalHour = 12
+            }
           } else {
             period = "PM"
             if arrivalHour > 12 {
@@ -141,15 +156,14 @@ final class RoutePresenter: RoutePresenterProtocol {
             endAddress: place.formattedAddress!
           )
           
-          self.routes.append(route)
+          self.trip!.routes.append(route)
         }
         
         group.leave()
       }
       
       group.notify(queue: DispatchQueue.main) {
-        self.destinationName = place.name
-        self.routes.sort {
+        self.trip!.routes.sort {
           if $0.lowPrice < $1.lowPrice {
             return true
           } else if $0.lowPrice == $1.lowPrice {

@@ -23,7 +23,7 @@ class RouteWireframe: NSObject, RouteWireframeProtocol {
   
   func transitionToHomeModule(timer: Timer?) {
     timer?.invalidate()
-    view.dismiss(animated: true, completion: nil)
+    view.dismiss(animated: true)
   }
 }
 
@@ -37,12 +37,21 @@ extension RouteWireframe: RouteWireframeAnimatedTransitioning {
     let containerView = transitionContext.containerView
     let fromVC = transitionContext.viewController(forKey: .from) as! RouteViewController
     let toVC = transitionContext.viewController(forKey: .to) as! HomeViewController
-    if !presenter.routes.isEmpty {
-      toVC.presenter.bestRoutes = presenter.routes
+    
+    if let trip = presenter.trip {
+      toVC.presenter.trip = trip
       toVC.whereToButton.isHidden = true
-      toVC.bestRoutesAddressButton.setTitle(presenter.destinationName, for: .normal)
+      toVC.bestRoutesAddressButton.setTitle(trip.name, for: .normal)
+      toVC.bestRoutesView.alpha = 0
       toVC.bestRoutesView.isHidden = false
-      toVC.bestRoutesCollectionView.reloadData()
+      if !trip.routes.isEmpty {
+        toVC.bestRoutesCollectionView.reloadData()
+        toVC.bestRoutesCollectionView.isHidden = false
+        toVC.noRoutesView.isHidden = true
+      } else {
+        toVC.bestRoutesCollectionView.isHidden = true
+        toVC.noRoutesView.isHidden = false
+      }
     } else {
       toVC.whereToButton.isHidden = false
       toVC.bestRoutesView.isHidden = true
@@ -81,7 +90,7 @@ extension RouteWireframe: RouteWireframeAnimatedTransitioning {
       animations: {
         fromVC.routeView.alpha = 0
         containerView.layoutIfNeeded()
-    }, completion: nil)
+    })
     
     containerView.layoutIfNeeded()
     UIView.animate(
@@ -94,8 +103,11 @@ extension RouteWireframe: RouteWireframeAnimatedTransitioning {
         toVC.whereToButtonWidth.constant = toVC.view.frame.width - 50
         toVC.whereToButtonHeight.constant = 60
         toVC.reachabilityViewBottom.constant = toVC.presenter.networkReachable ? 0 : toVC.reachabilityView.frame.height
+        toVC.bestRoutesViewTop.constant = toVC.presenter.networkReachable ? 28 : 8
+        toVC.bestRoutesDropdownViewHeight.constant = toVC.bestRoutesDropdownViewCollapsedHeight - (toVC.presenter.networkReachable ? 0 : 20)
+        toVC.bestRoutesAddressViewHeight.constant = toVC.bestRoutesDropdownViewCollapsedHeight - (toVC.presenter.networkReachable ? 0 : 20)
         containerView.layoutIfNeeded()
-    }, completion: nil)
+    })
     
     containerView.layoutIfNeeded()
     UIView.animate(

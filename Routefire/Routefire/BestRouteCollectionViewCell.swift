@@ -10,19 +10,28 @@ import UIKit
 
 class BestRouteCollectionViewCell: UICollectionViewCell {
   
-  // MARK: Views
+  // Subviews
   @IBOutlet weak var view: UIView!
   @IBOutlet weak var nameLabel: UILabel!
-  @IBOutlet weak var priceLabel: UILabel!
   @IBOutlet weak var timeLabel: UILabel!
+  @IBOutlet weak var priceLabel: UILabel!
 		
-  // MARK: Initialization
+  // Initialization
   override func awakeFromNib() {
     super.awakeFromNib()
     
-    // Clear labels
     nameLabel.text = ""
-    priceLabel.text = ""
     timeLabel.text = ""
+    priceLabel.text = ""
+  }
+  
+  // Add content to display
+  func addContent(for route: Route, best: Bool) {
+    nameLabel.font = UIFont.systemFont(ofSize: (best ? 32 : 22), weight: UIFontWeightBlack)
+    timeLabel.font = UIFont.systemFont(ofSize: (best ? 16 : 14), weight: UIFontWeightThin)
+    priceLabel.font = UIFont.systemFont(ofSize: (best ? 18 : 16), weight: UIFontWeightBlack)
+    nameLabel.text = route.name
+    timeLabel.text = route.arrival
+    priceLabel.text = route.lowPrice == route.highPrice ? "$\(route.lowPrice)" : "$\(route.lowPrice)-\(route.highPrice)"
   }
 }
