@@ -31,16 +31,26 @@ class HomePresenter: HomePresenterProtocol {
     return Network.reachable
   }
   
+  func transitionToRouteModule() {
+    wireframe.transitionToRouteModule()
+  }
+  
   func setMapCamera(initial: Bool) {
     if initial {
       view.setInitialMapCamera(to: Location.current, withZoom: 18)
     } else {
-      self.view.zoomMapCamera(to: Location.current, withZoom: 14)
+      self.view.zoomMapCamera(to: Location.current, withZoom: 14) {
+        self.showNoRoutesIfNeeded()
+      }
     }
   }
   
-  func transitionToRouteModule() {
-    wireframe.transitionToRouteModule()
+  private func showNoRoutesIfNeeded() {
+    if trip != nil, trip!.routes.isEmpty {
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+        self.view.showNoRoutes()
+      }
+    }
   }
   
   func selectedRoute(at indexPath: IndexPath) {
@@ -74,14 +84,10 @@ class HomePresenter: HomePresenterProtocol {
         }
         
         let urlString = "uber://?client_id=\(Secrets.uberClientID)&action=setPickup&pickup[latitude]=\(pickupLat)&pickup[longitude]=\(pickupLong)&pickup[nickname]=\(route.startName)&dropoff[latitude]=\(dropoffLat)&dropoff[longitude]=\(dropoffLong)&dropoff[formatted_address]=\(route.endAddress)&product_id=\(productID)"
-        guard let encodedURLString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-          let uberURL = URL(string: encodedURLString) else {
-            return
-        }
-        
-        UIApplication.shared.open(uberURL, options: [:], completionHandler: nil)
+        let uberURL = URL(string: urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
+        UIApplication.shared.open(uberURL, options: [:])
       } else {
-        print("uber not installed")
+        UIApplication.shared.open(URL(string: "https://itunes.apple.com/us/app/uber/id368677368?mt=8")!, options: [:])
       }
     case .lyft:
       if UIApplication.shared.canOpenURL(URL(fileURLWithPath: "lyft://")) {
@@ -98,14 +104,10 @@ class HomePresenter: HomePresenterProtocol {
         }
         
         let urlString = "lyft://ridetype?id=\(id)&pickup[latitude]=\(route.start.latitude)&pickup[longitude]=\(route.start.longitude)&destination[latitude]=\(route.end.latitude)&destination[longitude]=\(route.end.longitude)"
-        guard let encodedURLString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-          let lyftURL = URL(string: encodedURLString) else {
-            return
-        }
-        
-        UIApplication.shared.open(lyftURL, options: [:], completionHandler: nil)
+        let lyftURL = URL(string: urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
+        UIApplication.shared.open(lyftURL, options: [:])
       } else {
-        print("lyft not installed")
+        UIApplication.shared.open(URL(string: "https://itunes.apple.com/us/app/lyft-taxi-app-alternative/id529379082?mt=8")!, options: [:])
       }
     }
   }

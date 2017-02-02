@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import IQKeyboardManagerSwift
 
 // Custom animated transitioning protocol
 protocol HomeWireframeAnimatedTransitioning: UIViewControllerAnimatedTransitioning {}

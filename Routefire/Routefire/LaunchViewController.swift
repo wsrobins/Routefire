@@ -37,6 +37,7 @@ class LaunchViewController: UIViewController {
 // View configuration
 private extension LaunchViewController {
   func configureView() {
+    view.frame = UIScreen.main.bounds
     whiteViewWidth.constant = view.frame.width
     whiteViewHeight.constant = view.frame.height
   }

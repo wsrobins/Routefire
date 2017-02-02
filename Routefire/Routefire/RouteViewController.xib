@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12100" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12072"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -103,6 +103,7 @@
                             </constraints>
                         </stackView>
                     </subviews>
+                    <gestureRecognizers/>
                     <constraints>
                         <constraint firstItem="C88-BB-gUf" firstAttribute="centerY" secondItem="ZfR-OP-vwt" secondAttribute="centerY" constant="17" id="B4M-CX-Uf6"/>
                         <constraint firstAttribute="width" constant="375" id="GXv-Uo-l2M"/>
@@ -112,8 +113,12 @@
                         <constraint firstAttribute="height" constant="200" id="YKq-KC-dOM"/>
                         <constraint firstItem="aiI-DY-5ev" firstAttribute="top" secondItem="ZfR-OP-vwt" secondAttribute="top" constant="20" id="vub-tH-ePl"/>
                     </constraints>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="KC5-Rt-hbl" appends="YES" id="UT9-nK-5Re"/>
+                    </connections>
                 </view>
             </subviews>
+            <gestureRecognizers/>
             <constraints>
                 <constraint firstItem="0qq-qH-yYG" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="5M5-z7-ful"/>
                 <constraint firstItem="ZfR-OP-vwt" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="CQl-li-Aza"/>
@@ -128,6 +133,11 @@
                 <constraint firstAttribute="trailing" secondItem="i3V-6m-qnD" secondAttribute="trailing" id="wgz-ea-3wW"/>
             </constraints>
         </view>
+        <tapGestureRecognizer id="KC5-Rt-hbl">
+            <connections>
+                <action selector="routeViewTouched:" destination="-1" id="sbE-w0-o3H"/>
+            </connections>
+        </tapGestureRecognizer>
     </objects>
     <resources>
         <image name="Back Black" width="24" height="24"/>

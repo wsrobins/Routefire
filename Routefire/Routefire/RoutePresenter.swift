@@ -78,6 +78,9 @@ final class RoutePresenter: RoutePresenterProtocol {
           
           if arrivalHour < 12 {
             period = "AM"
+            if arrivalHour == 0 {
+              arrivalHour = 12
+            }
           } else {
             period = "PM"
             if arrivalHour > 12 {
@@ -117,7 +120,8 @@ final class RoutePresenter: RoutePresenterProtocol {
             let id = estimate["ride_type"] as? String,
             let lowPrice = estimate["estimated_cost_cents_min"] as? Int,
             let highPrice = estimate["estimated_cost_cents_max"] as? Int,
-            let duration = estimate["estimated_duration_seconds"] as? Int else {
+            let duration = estimate["estimated_duration_seconds"] as? Int,
+            lowPrice != 0, highPrice != 0 else {
               continue
           }
           

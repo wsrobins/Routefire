@@ -6,6 +6,5 @@ target 'Routefire' do
   pod 'GooglePlaces'
   pod 'Alamofire'
   pod 'ReachabilitySwift'
-  pod 'IQKeyboardManagerSwift'
-  pod 'TouchVisualizer'
+#  pod 'TouchVisualizer'
 end

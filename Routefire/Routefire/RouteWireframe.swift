@@ -8,7 +8,6 @@
 
 import UIKit
 import ReachabilitySwift
-import IQKeyboardManagerSwift
 
 // Custom animated transitioning protocol
 protocol RouteWireframeAnimatedTransitioning: UIViewControllerAnimatedTransitioning {}
@@ -23,6 +22,7 @@ class RouteWireframe: NSObject, RouteWireframeProtocol {
   
   func transitionToHomeModule(timer: Timer?) {
     timer?.invalidate()
+    NotificationCenter.default.removeObserver(view)
     view.dismiss(animated: true)
   }
 }
@@ -37,28 +37,28 @@ extension RouteWireframe: RouteWireframeAnimatedTransitioning {
     let containerView = transitionContext.containerView
     let fromVC = transitionContext.viewController(forKey: .from) as! RouteViewController
     let toVC = transitionContext.viewController(forKey: .to) as! HomeViewController
+    containerView.insertSubview(toVC.view, belowSubview: fromVC.view)
     
     if let trip = presenter.trip {
       toVC.presenter.trip = trip
-      toVC.whereToButton.isHidden = true
       toVC.bestRoutesAddressButton.setTitle(trip.name, for: .normal)
       toVC.bestRoutesView.alpha = 0
+      toVC.whereToButton.isHidden = true
+      toVC.bestRoutesCollectionView.isHidden = trip.routes.isEmpty
       toVC.bestRoutesView.isHidden = false
       if !trip.routes.isEmpty {
+        toVC.bestRoutesCollectionView.delegate = toVC
+        toVC.bestRoutesCollectionView.dataSource = toVC
+        toVC.bestRoutesExpandButton.isEnabled = true
+        toVC.bestRoutesCollectionView.setContentOffset(CGPoint.zero, animated: false)
         toVC.bestRoutesCollectionView.reloadData()
-        toVC.bestRoutesCollectionView.isHidden = false
-        toVC.noRoutesView.isHidden = true
       } else {
-        toVC.bestRoutesCollectionView.isHidden = true
-        toVC.noRoutesView.isHidden = false
+        toVC.bestRoutesExpandButton.isEnabled = false
       }
     } else {
       toVC.whereToButton.isHidden = false
       toVC.bestRoutesView.isHidden = true
     }
-    
-    containerView.insertSubview(toVC.view, belowSubview: fromVC.view)
-    IQKeyboardManager.sharedManager().resignFirstResponder()
     
     containerView.layoutIfNeeded()
     UIView.animate(

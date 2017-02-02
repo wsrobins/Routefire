@@ -10,7 +10,6 @@ import UIKit
 import CoreData
 import GoogleMaps
 import GooglePlaces
-import IQKeyboardManagerSwift
 
 // ••••••••••
 
@@ -27,12 +26,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // Activate Google Maps and Places
     GMSServices.provideAPIKey(Secrets.googleAPIKey)
     GMSPlacesClient.provideAPIKey(Secrets.googleAPIKey)
-    
-    // Keyboard manager
-    IQKeyboardManager.sharedManager().enable = true
-    IQKeyboardManager.sharedManager().enableAutoToolbar = false
-//    IQKeyboardManager.sharedManager().shouldShowTextFieldPlaceholder = false
-    IQKeyboardManager.sharedManager().shouldResignOnTouchOutside = true
     
     // Set up window
     window = UIWindow(frame: UIScreen.main.bounds)

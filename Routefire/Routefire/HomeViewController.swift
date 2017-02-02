@@ -13,7 +13,8 @@ import ReachabilitySwift
 
 protocol HomeViewProtocol: class {
   func setInitialMapCamera(to location: CLLocationCoordinate2D, withZoom zoom: Float)
-  func zoomMapCamera(to location: CLLocationCoordinate2D, withZoom zoom: Float)
+  func zoomMapCamera(to location: CLLocationCoordinate2D, withZoom zoom: Float, completion: @escaping () -> Void)
+  func showNoRoutes()
   func toggleReachabilityView(_ reachable: Bool)
 }
 
@@ -54,17 +55,17 @@ class HomeViewController: UIViewController {
   @IBOutlet weak var noRoutesViewWidth: NSLayoutConstraint!
   @IBOutlet weak var reachabilityViewBottom: NSLayoutConstraint!
   
-  // Constraint constants
+  // Constants
   var whereToButtonActiveTopConstant: CGFloat!
   var whereToButtonInactiveTopConstant: CGFloat!
   var whereToButtonActiveWidthConstant: CGFloat!
   var whereToButtonInactiveWidthConstant: CGFloat!
   var whereToButtonActiveHeightConstant: CGFloat!
   var whereToButtonInactiveHeightConstant: CGFloat!
+  var noRoutesViewActiveWidth: CGFloat!
+  var noRoutesViewInactiveWidth: CGFloat!
   var reachabilityViewActiveBottomConstant: CGFloat!
   var reachabilityViewInactiveBottomConstant: CGFloat!
-  
-  // Constants
   let bestRoutesDropdownViewExpandedHeight = UIScreen.main.bounds.height - UIScreen.main.bounds.width - 24
   let bestRoutesDropdownViewCollapsedHeight = UIScreen.main.bounds.height - (UIScreen.main.bounds.width * 1.5) - 24
   let activeBorderWidth: CGFloat = 8
@@ -113,7 +114,7 @@ class HomeViewController: UIViewController {
         delay: 0,
         usingSpringWithDamping: 0.8,
         initialSpringVelocity: 1,
-        options: [.curveEaseIn, .allowUserInteraction],
+        options: .curveEaseIn,
         animations: {
           self.bestRoutesDropdownViewHeight.constant = self.bestRoutesDropdownViewExpandedHeight - (self.presenter.networkReachable ? 0 : 20)
           self.bestRoutesExpandButton.transform = CGAffineTransform(rotationAngle: CGFloat(-M_PI * 0.5))
@@ -123,11 +124,11 @@ class HomeViewController: UIViewController {
       
       view.layoutIfNeeded()
       UIView.animate(
-        withDuration: 0.2,
+        withDuration: 0.3,
         delay: 0.1,
         usingSpringWithDamping: 0.9,
         initialSpringVelocity: 1,
-        options: [.curveEaseIn, .allowUserInteraction],
+        options: .curveEaseIn,
         animations: {
           self.priceButton.alpha = 1
           self.timeButton.alpha = 1
@@ -151,7 +152,7 @@ class HomeViewController: UIViewController {
         delay: 0.17,
         usingSpringWithDamping: 0.9,
         initialSpringVelocity: 1,
-        options: [.curveEaseIn, .allowUserInteraction],
+        options: .curveEaseIn,
         animations: {
           self.bestRoutesDropdownViewHeight.constant = self.bestRoutesDropdownViewCollapsedHeight - (self.presenter.networkReachable ? 0 : 20)
           self.bestRoutesExpandButton.transform = CGAffineTransform(rotationAngle: 0)
@@ -173,12 +174,18 @@ class HomeViewController: UIViewController {
       options: .curveEaseIn,
       animations: {
         self.bestRoutesDropdownViewHeight.constant = self.bestRoutesDropdownViewCollapsedHeight - (self.presenter.networkReachable ? 0 : 20)
+        self.noRoutesViewWidth.constant = self.noRoutesViewInactiveWidth
         self.bestRoutesExpandButton.transform = CGAffineTransform(rotationAngle: 0)
+        self.bestRoutesView.alpha = 0
+        self.noRoutesLabel.alpha = 0
+        self.noRoutesButton.alpha = 0
         self.priceButton.alpha = 0
         self.timeButton.alpha = 0
-        self.bestRoutesView.alpha = 0
         self.view.layoutIfNeeded()
     }) { _ in
+      self.bestRoutesView.isHidden = true
+      self.noRoutesView.isHidden = true
+      self.bestRoutesExpandButton.isEnabled = true
       self.priceButtonWidth.constant = self.activeButtonWidth
       self.priceButton.setTitleColor(UIColor.groupTableViewBackground, for: .normal)
       self.priceButton.titleLabel!.font = self.activeFont
@@ -189,12 +196,10 @@ class HomeViewController: UIViewController {
       self.timeButton.titleLabel!.font = self.inactiveFont
       self.timeButton.layer.borderColor = UIColor.lightGray.cgColor
       self.timeButton.layer.borderWidth = self.inactiveBorderWidth
-      self.bestRoutesView.isHidden = true
     }
   }
   
   @IBAction func closeButtonTouched() {
-    presenter.trip = nil
     whereToButton.alpha = 0
     whereToButton.titleLabel?.alpha = 0
     whereToButton.isHidden = false
@@ -208,10 +213,14 @@ class HomeViewController: UIViewController {
       animations: {
         self.bestRoutesViewTop.constant = self.view.frame.height
         self.bestRoutesDropdownViewHeight.constant = self.bestRoutesDropdownViewCollapsedHeight - (self.presenter.networkReachable ? 0 : 20)
+        self.noRoutesViewWidth.constant = self.noRoutesViewInactiveWidth
         self.bestRoutesExpandButton.transform = CGAffineTransform(rotationAngle: 0)
+        self.noRoutesLabel.alpha = 0
+        self.noRoutesButton.alpha = 0
         self.view.layoutIfNeeded()
     }) { _ in
       self.bestRoutesView.isHidden = true
+      self.noRoutesView.isHidden = true
       self.bestRoutesViewTop.constant = originalTop
       self.priceButtonWidth.constant = self.activeButtonWidth
       self.priceButton.setTitleColor(UIColor.groupTableViewBackground, for: .normal)
@@ -230,9 +239,9 @@ class HomeViewController: UIViewController {
     
     view.layoutIfNeeded()
     UIView.animate(
-      withDuration: 0.15,
-      delay: 0.1,
-      options: [.curveEaseIn, .allowUserInteraction],
+      withDuration: 0.1,
+      delay: 0.15,
+      options: .curveEaseIn,
       animations: {
         self.whereToButton.alpha = 1
         self.view.layoutIfNeeded()
@@ -242,11 +251,15 @@ class HomeViewController: UIViewController {
     UIView.animate(
       withDuration: 0.1,
       delay: 0.25,
-      options: [.curveEaseIn, .allowUserInteraction],
+      options: .curveEaseIn,
       animations: {
         self.whereToButton.titleLabel?.alpha = 1
         self.view.layoutIfNeeded()
-    })
+    }) { _ in
+      self.bestRoutesCollectionView.delegate = nil
+      self.bestRoutesCollectionView.dataSource = nil
+      self.presenter.trip = nil
+    }
   }
   
   @IBAction func filterButtonTouched(_ sender: UIButton) {
@@ -311,6 +324,7 @@ class HomeViewController: UIViewController {
         options: .curveEaseOut,
         animations: {
           self.blurView.effect = nil
+          CALayer.shadow(self.bestRoutesView)
           self.view.layoutIfNeeded()
       }) { _ in
         self.blurView.isHidden = true
@@ -319,11 +333,9 @@ class HomeViewController: UIViewController {
   }
   
   @IBAction func noRoutesButtonTouched() {
-    let originalWidth = noRoutesView.frame.width
-    
     view.layoutIfNeeded()
     UIView.animate(
-      withDuration: 0.15,
+      withDuration: 0.12,
       delay: 0,
       options: .curveEaseIn,
       animations: {
@@ -337,24 +349,21 @@ class HomeViewController: UIViewController {
       withDuration: 0.06,
       delay: 0,
       options: .curveEaseOut,
-      animations: { 
+      animations: {
         self.noRoutesViewWidth.constant += 20
         self.view.layoutIfNeeded()
     })
     
     view.layoutIfNeeded()
     UIView.animate(
-      withDuration: 0.15,
-      delay: 0.1,
+      withDuration: 0.12,
+      delay: 0.08,
       options: .curveEaseIn,
       animations: {
-        self.noRoutesViewWidth.constant = 0
+        self.noRoutesViewWidth.constant = self.noRoutesViewInactiveWidth
         self.view.layoutIfNeeded()
     }) { _ in
       self.noRoutesView.isHidden = true
-      self.noRoutesViewWidth.constant = originalWidth
-      self.noRoutesLabel.alpha = 1
-      self.noRoutesButton.alpha = 1
     }
   }
 }
@@ -406,14 +415,48 @@ extension HomeViewController: HomeViewProtocol {
     }
   }
   
-  func zoomMapCamera(to location: CLLocationCoordinate2D, withZoom zoom: Float) {
+  func zoomMapCamera(to location: CLLocationCoordinate2D, withZoom zoom: Float, completion: @escaping () -> Void) {
     DispatchQueue.main.async {
       CATransaction.begin()
       CATransaction.setAnimationDuration(0.4)
       CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut))
+      CATransaction.setCompletionBlock {
+        completion()
+      }
+      
       self.mapView.animate(to: GMSCameraPosition.camera(withTarget: location, zoom: zoom))
       CATransaction.commit()
     }
+  }
+  
+  func showNoRoutes() {
+    noRoutesViewWidth.constant = self.noRoutesViewInactiveWidth
+    noRoutesLabel.alpha = 0
+    noRoutesButton.alpha = 0
+    noRoutesView.isHidden = false
+    
+    view.layoutIfNeeded()
+    UIView.animate(
+      withDuration: 0.5,
+      delay: 0,
+      usingSpringWithDamping: 0.85,
+      initialSpringVelocity: 4,
+      options: .curveEaseIn,
+      animations: {
+        self.noRoutesViewWidth.constant = self.noRoutesViewActiveWidth
+        self.view.layoutIfNeeded()
+    })
+    
+    view.layoutIfNeeded()
+    UIView.animate(
+      withDuration: 0.15,
+      delay: 0.3,
+      options: .curveEaseIn,
+      animations: {
+        self.noRoutesLabel.alpha = 1
+        self.noRoutesButton.alpha = 1
+        self.view.layoutIfNeeded()
+    })
   }
   
   func toggleReachabilityView(_ networkReachable: Bool) {
@@ -487,6 +530,8 @@ extension HomeViewController: UIViewControllerTransitioningDelegate {
 // View configuration
 private extension HomeViewController {
   func configureView() {
+    view.frame = UIScreen.main.bounds
+    
     mapView.isMyLocationEnabled = true
     mapView.settings.myLocationButton = true
     mapView.isIndoorEnabled = false
@@ -503,8 +548,6 @@ private extension HomeViewController {
     layout.minimumLineSpacing = 8
     bestRoutesCollectionView.collectionViewLayout = layout
     bestRoutesCollectionView.backgroundColor = UIColor.clear
-    bestRoutesCollectionView.delegate = self
-    bestRoutesCollectionView.dataSource = self
     bestRoutesCollectionView.register(UINib(nibName: "BestRouteCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: BestRouteCell)
     blurView.effect = nil
     
@@ -523,6 +566,8 @@ private extension HomeViewController {
     CALayer.shadow(noRoutesView)
     CALayer.shadow(noRoutesButton)
     
+    noRoutesViewActiveWidth = noRoutesView.frame.width
+    noRoutesViewInactiveWidth = 0
     //    reachabilityViewActiveBottomConstant = reachabilityView.frame.height
     //    reachabilityViewInactiveTopConstant = reachabilityViewHeight.constant
     //
