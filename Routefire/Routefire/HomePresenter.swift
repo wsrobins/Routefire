@@ -16,9 +16,16 @@ protocol HomePresenterProtocol: class {
   var networkReachable: Bool { get }
   func transitionToRouteModule()
   func setMapCamera(initial: Bool)
+  func checkForRoutes()
+  func sort(_ type: String)
   func selectedRoute(at indexPath: IndexPath)
   func observeReachability()
   func reachabilityChanged(notification: Notification)
+}
+
+protocol HomePresenterRouteModuleProtocol: class {
+  func getReachabilitySettings() -> (routesViewTop: CGFloat, dropdownViewHeight: CGFloat, addressViewHeight: CGFloat, reachabilityViewBottom: CGFloat)
+  func setTrip(_ trip: Trip?)
 }
 
 class HomePresenter: HomePresenterProtocol {
@@ -39,17 +46,24 @@ class HomePresenter: HomePresenterProtocol {
     if initial {
       view.setInitialMapCamera(to: Location.current, withZoom: 18)
     } else {
-      self.view.zoomMapCamera(to: Location.current, withZoom: 14) {
-        self.showNoRoutesIfNeeded()
-      }
+      self.view.zoomMapCamera(to: Location.current, withZoom: 14)
     }
   }
   
-  private func showNoRoutesIfNeeded() {
+  func checkForRoutes() {
     if trip != nil, trip!.routes.isEmpty {
-      DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-        self.view.showNoRoutes()
-      }
+      self.view.noRoutesPopup()
+    }
+  }
+  
+  func sort(_ type: String) {
+    switch type {
+    case "Price":
+      view.priceSort()
+    case "Time":
+      view.timeSort()
+    default:
+      return
     }
   }
   
@@ -118,6 +132,24 @@ class HomePresenter: HomePresenterProtocol {
   }
   
   @objc func reachabilityChanged(notification: Notification) {
-    self.view.toggleReachabilityView((notification.object as! Reachability).isReachable)
+    DispatchQueue.main.async {
+      self.view.toggleReachabilityView((notification.object as! Reachability).isReachable)
+    }
+  }
+}
+
+// Set trip from route module
+extension HomePresenter: HomePresenterRouteModuleProtocol {
+  func getReachabilitySettings() -> (routesViewTop: CGFloat, dropdownViewHeight: CGFloat, addressViewHeight: CGFloat, reachabilityViewBottom: CGFloat) {
+    return view.getReachabilitySettings(networkReachable)
+  }
+  
+  func setTrip(_ trip: Trip?) {
+    guard let trip = trip else {
+      return
+    }
+    
+    self.trip = trip
+    view.routesLayout(trip)
   }
 }

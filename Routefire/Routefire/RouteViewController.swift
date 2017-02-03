@@ -35,16 +35,21 @@ class RouteViewController: UIViewController {
   @IBOutlet weak var loadingViewWidth: NSLayoutConstraint!
   
   // Constants
-  var destinationsTableViewActiveTopConstant: CGFloat!
-  var destinationsTableViewInactiveTopConstant: CGFloat!
-  var loadingViewActiveWidthConstant: CGFloat!
-  var loadingViewInactiveWidthConstant: CGFloat!
+  var destinationsTableViewActiveTop: CGFloat!
+  var destinationsTableViewInactiveTop: CGFloat!
+  var loadingViewActiveWidth: CGFloat!
+  var loadingViewInactiveWidth: CGFloat!
   
   // Life cycle
   override func viewDidLoad() {
     super.viewDidLoad()
     
     configureView()
+  }
+  
+  func setTrip(_ name: String) {
+    destinationField.text = name
+    destinationsTableView.reloadData()
   }
   
   // User interaction
@@ -59,9 +64,7 @@ class RouteViewController: UIViewController {
     }
     
     presenter.autocomplete(text) {
-      DispatchQueue.main.async {
-        self.destinationsTableView.reloadData()
-      }
+      self.destinationsTableView.reloadData()
     }
   }
   
@@ -70,20 +73,18 @@ class RouteViewController: UIViewController {
   }
   
   func expandTableView() {
-    let height = routeView.frame.height
-    if destinationsTableViewHeight.constant != height {
-      destinationsTableViewHeight.constant = height
-      view.layoutIfNeeded()
-      view.endEditing(true)
-    }
-  }
-  
-  func keyboardWillShow(notification: Notification) {
-    guard let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue else {
+    guard destinationsTableViewHeight.constant != routeView.frame.height else {
       return
     }
     
-    let rowHeight = (view.frame.height - routeView.frame.height - keyboardSize.height) / 3
+    destinationsTableViewHeight.constant = routeView.frame.height
+    view.layoutIfNeeded()
+    view.endEditing(true)
+  }
+  
+  func keyboardWillShow(notification: Notification) {
+    let keyboardHeight = (notification.userInfo![UIKeyboardFrameBeginUserInfoKey] as! NSValue).cgRectValue.height
+    let rowHeight = (view.frame.height - routeView.frame.height - keyboardHeight) / 3
     if destinationsTableView.rowHeight != rowHeight {
       destinationsTableView.rowHeight = rowHeight
     }
@@ -114,7 +115,7 @@ extension RouteViewController: UITableViewDelegate, UITableViewDataSource {
         delay: 0,
         options: .curveEaseIn,
         animations: {
-          self.loadingViewWidth.constant = self.loadingViewActiveWidthConstant
+          self.loadingViewWidth.constant = self.loadingViewActiveWidth
           self.view.layoutIfNeeded()
       })
       
@@ -124,7 +125,7 @@ extension RouteViewController: UITableViewDelegate, UITableViewDataSource {
         delay: 0.4,
         options: .curveEaseOut,
         animations: {
-          self.loadingViewWidth.constant = self.loadingViewInactiveWidthConstant
+          self.loadingViewWidth.constant = self.loadingViewInactiveWidth
           self.view.layoutIfNeeded()
       })
     }
@@ -165,41 +166,35 @@ extension RouteViewController: UITableViewDelegate, UITableViewDataSource {
 private extension RouteViewController {
   func configureView() {
     
-    // Observe keyboard
-    NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
-    NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShow), name: .UIKeyboardDidShow, object: nil)
-    
-    // Store constraint constants
-    destinationsTableViewActiveTopConstant = UIScreen.main.bounds.height - destinationsTableViewHeight.constant
-    destinationsTableViewInactiveTopConstant = destinationsTableViewTop.constant
-    loadingViewActiveWidthConstant = loadingViewWidth.constant * 1.8
-    loadingViewInactiveWidthConstant = loadingViewWidth.constant
-    
-    // View setup
+    // Frame
     view.frame = UIScreen.main.bounds
+    
+    // Initialize constants
+    destinationsTableViewActiveTop = destinationsTableView.frame.height
+    destinationsTableViewInactiveTop = destinationsTableViewTop.constant
+    loadingViewActiveWidth = loadingViewWidth.constant * 1.8
+    loadingViewInactiveWidth = loadingViewWidth.constant
+    
+    // Settings
+    view.bringSubview(toFront: blurView)
+    routeViewWidth.constant = view.frame.width
     backButton.alpha = 0
     fieldStackView.alpha = 0
     currentLocationButton.layer.cornerRadius = currentLocationButton.frame.height * 0.5
-    destinationField.addTarget(self, action: #selector(textDidChange(_:)), for: .editingChanged)
     destinationField.autocorrectionType = .no
+    destinationField.addTarget(self, action: #selector(textDidChange(_:)), for: .editingChanged)
     destinationsTableView.register(UINib(nibName: "DestinationTableViewCell", bundle: nil), forCellReuseIdentifier: DestinationCell)
     destinationsTableView.delegate = self
     destinationsTableView.dataSource = self
     blurView.effect = nil
+    
+    // Shadowing
     CALayer.lightShadow(routeView)
     CALayer.lightShadow(loadingView)
     
-    // Initial configuration
-    view.bringSubview(toFront: blurView)
-    routeViewWidth.constant = view.frame.width
-    if let name = presenter.trip?.name {
-      self.destinationField.text = name
-      self.presenter.autocomplete(destinationField.text!) {
-        DispatchQueue.main.async {
-          self.destinationsTableView.reloadData()
-        }
-      }
-    }
+    // Observe keyboard
+    NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShow), name: .UIKeyboardDidShow, object: nil)
   }
 }
 

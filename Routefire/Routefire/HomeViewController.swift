@@ -13,9 +13,13 @@ import ReachabilitySwift
 
 protocol HomeViewProtocol: class {
   func setInitialMapCamera(to location: CLLocationCoordinate2D, withZoom zoom: Float)
-  func zoomMapCamera(to location: CLLocationCoordinate2D, withZoom zoom: Float, completion: @escaping () -> Void)
-  func showNoRoutes()
+  func zoomMapCamera(to location: CLLocationCoordinate2D, withZoom zoom: Float)
+  func routesLayout(_ trip: Trip)
+  func priceSort()
+  func timeSort()
+  func noRoutesPopup()
   func toggleReachabilityView(_ reachable: Bool)
+  func getReachabilitySettings(_ networkReachable: Bool) -> (routesViewTop: CGFloat, dropdownViewHeight: CGFloat, addressViewHeight: CGFloat, reachabilityViewBottom: CGFloat)
 }
 
 class HomeViewController: UIViewController {
@@ -29,51 +33,49 @@ class HomeViewController: UIViewController {
   // Subviews
   @IBOutlet weak var mapView: GMSMapView!
   @IBOutlet weak var whereToButton: UIButton!
-  @IBOutlet weak var bestRoutesView: UIView!
-  @IBOutlet weak var bestRoutesDropdownView: UIView!
-  @IBOutlet weak var bestRoutesAddressView: UIView!
-  @IBOutlet weak var bestRoutesExpandButton: UIButton!
-  @IBOutlet weak var bestRoutesAddressButton: UIButton!
+  @IBOutlet weak var routesView: UIView!
+  @IBOutlet weak var dropdownView: UIView!
+  @IBOutlet weak var addressView: UIView!
+  @IBOutlet weak var dropdownButton: UIButton!
+  @IBOutlet weak var addressButton: UIButton!
   @IBOutlet weak var priceButton: UIButton!
   @IBOutlet weak var timeButton: UIButton!
-  @IBOutlet weak var bestRoutesCollectionView: UICollectionView!
+  @IBOutlet weak var routesCollectionView: UICollectionView!
+  @IBOutlet weak var blurView: UIVisualEffectView!
   @IBOutlet weak var noRoutesView: UIView!
   @IBOutlet weak var noRoutesLabel: UILabel!
   @IBOutlet weak var noRoutesButton: UIButton!
   @IBOutlet weak var reachabilityView: UIView!
-  @IBOutlet weak var blurView: UIVisualEffectView!
   
   // Constraints
   @IBOutlet weak var whereToButtonTop: NSLayoutConstraint!
   @IBOutlet weak var whereToButtonWidth: NSLayoutConstraint!
   @IBOutlet weak var whereToButtonHeight: NSLayoutConstraint!
-  @IBOutlet weak var bestRoutesViewTop: NSLayoutConstraint!
-  @IBOutlet weak var bestRoutesDropdownViewHeight: NSLayoutConstraint!
-  @IBOutlet weak var bestRoutesAddressViewHeight: NSLayoutConstraint!
+  @IBOutlet weak var routesViewTop: NSLayoutConstraint!
+  @IBOutlet weak var dropdownViewHeight: NSLayoutConstraint!
+  @IBOutlet weak var addressViewHeight: NSLayoutConstraint!
   @IBOutlet weak var priceButtonWidth: NSLayoutConstraint!
   @IBOutlet weak var timeButtonWidth: NSLayoutConstraint!
   @IBOutlet weak var noRoutesViewWidth: NSLayoutConstraint!
   @IBOutlet weak var reachabilityViewBottom: NSLayoutConstraint!
   
   // Constants
-  var whereToButtonActiveTopConstant: CGFloat!
-  var whereToButtonInactiveTopConstant: CGFloat!
-  var whereToButtonActiveWidthConstant: CGFloat!
-  var whereToButtonInactiveWidthConstant: CGFloat!
-  var whereToButtonActiveHeightConstant: CGFloat!
-  var whereToButtonInactiveHeightConstant: CGFloat!
+  var whereToButtonActiveTop: CGFloat!
+  var whereToButtonInactiveTop: CGFloat!
+  var whereToButtonActiveWidth: CGFloat!
+  var whereToButtonInactiveWidth: CGFloat!
+  var whereToButtonActiveHeight: CGFloat!
+  var whereToButtonInactiveHeight: CGFloat!
+  var routesViewActiveTop: CGFloat!
+  var routesViewInactiveTop: CGFloat!
+  var dropdownViewActiveHeight: CGFloat!
+  var dropdownViewInactiveHeight: CGFloat!
+  var filterButtonActiveSettings: (width: CGFloat, borderWidth: CGFloat, font: UIFont, color: UIColor)!
+  var filterButtonInactiveSettings: (width: CGFloat, borderWidth: CGFloat, font: UIFont, color: UIColor)!
   var noRoutesViewActiveWidth: CGFloat!
   var noRoutesViewInactiveWidth: CGFloat!
-  var reachabilityViewActiveBottomConstant: CGFloat!
-  var reachabilityViewInactiveBottomConstant: CGFloat!
-  let bestRoutesDropdownViewExpandedHeight = UIScreen.main.bounds.height - UIScreen.main.bounds.width - 24
-  let bestRoutesDropdownViewCollapsedHeight = UIScreen.main.bounds.height - (UIScreen.main.bounds.width * 1.5) - 24
-  let activeBorderWidth: CGFloat = 8
-  let inactiveBorderWidth: CGFloat = 6
-  let activeFont = UIFont.systemFont(ofSize: 29, weight: UIFontWeightBlack)
-  let inactiveFont = UIFont.systemFont(ofSize: 23, weight: UIFontWeightBlack)
-  let activeButtonWidth: CGFloat = 110
-  let inactiveButtonWidth: CGFloat = 80
+  var reachabilityViewActiveBottom: CGFloat!
+  var reachabilityViewInactiveBottom: CGFloat!
   
   // Status bar
   override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -98,6 +100,7 @@ class HomeViewController: UIViewController {
     super.viewDidAppear(animated)
     
     presenter.setMapCamera(initial: false)
+    presenter.checkForRoutes()
   }
   
   // User interaction
@@ -105,9 +108,9 @@ class HomeViewController: UIViewController {
     presenter.transitionToRouteModule()
   }
   
-  @IBAction func expandButtonTouched() {
-    switch bestRoutesDropdownViewHeight.constant {
-    case bestRoutesDropdownViewCollapsedHeight - (self.presenter.networkReachable ? 0 : 20):
+  @IBAction func dropdownButtonTouched() {
+    switch dropdownViewHeight.constant {
+    case dropdownViewInactiveHeight - (self.presenter.networkReachable ? 0 : 20):
       view.layoutIfNeeded()
       UIView.animate(
         withDuration: 0.3,
@@ -116,9 +119,9 @@ class HomeViewController: UIViewController {
         initialSpringVelocity: 1,
         options: .curveEaseIn,
         animations: {
-          self.bestRoutesDropdownViewHeight.constant = self.bestRoutesDropdownViewExpandedHeight - (self.presenter.networkReachable ? 0 : 20)
-          self.bestRoutesExpandButton.transform = CGAffineTransform(rotationAngle: CGFloat(-M_PI * 0.5))
-          self.bestRoutesExpandButton.transform = CGAffineTransform(rotationAngle: CGFloat(-M_PI))
+          self.dropdownViewHeight.constant = self.dropdownViewActiveHeight - (self.presenter.networkReachable ? 0 : 20)
+          self.dropdownButton.transform = CGAffineTransform(rotationAngle: CGFloat(-M_PI * 0.5))
+          self.dropdownButton.transform = CGAffineTransform(rotationAngle: CGFloat(-M_PI))
           self.view.layoutIfNeeded()
       })
       
@@ -154,16 +157,15 @@ class HomeViewController: UIViewController {
         initialSpringVelocity: 1,
         options: .curveEaseIn,
         animations: {
-          self.bestRoutesDropdownViewHeight.constant = self.bestRoutesDropdownViewCollapsedHeight - (self.presenter.networkReachable ? 0 : 20)
-          self.bestRoutesExpandButton.transform = CGAffineTransform(rotationAngle: 0)
+          self.dropdownViewHeight.constant = self.dropdownViewInactiveHeight - (self.presenter.networkReachable ? 0 : 20)
+          self.dropdownButton.transform = CGAffineTransform(rotationAngle: 0)
           self.view.layoutIfNeeded()
       })
     }
   }
   
   @IBAction func addressButtonTouched() {
-    whereToButton.alpha = 1
-    whereToButton.titleLabel?.alpha = 0
+    whereToButton.alpha = 0
     whereToButton.isHidden = false
     self.presenter.transitionToRouteModule()
     
@@ -173,68 +175,40 @@ class HomeViewController: UIViewController {
       delay: 0,
       options: .curveEaseIn,
       animations: {
-        self.bestRoutesDropdownViewHeight.constant = self.bestRoutesDropdownViewCollapsedHeight - (self.presenter.networkReachable ? 0 : 20)
+        self.whereToButton.alpha = 1
+        self.routesView.alpha = 0
+        self.dropdownViewHeight.constant = self.dropdownViewInactiveHeight - (self.presenter.networkReachable ? 0 : 20)
+        self.dropdownButton.transform = CGAffineTransform(rotationAngle: 0)
         self.noRoutesViewWidth.constant = self.noRoutesViewInactiveWidth
-        self.bestRoutesExpandButton.transform = CGAffineTransform(rotationAngle: 0)
-        self.bestRoutesView.alpha = 0
         self.noRoutesLabel.alpha = 0
         self.noRoutesButton.alpha = 0
-        self.priceButton.alpha = 0
-        self.timeButton.alpha = 0
         self.view.layoutIfNeeded()
     }) { _ in
-      self.bestRoutesView.isHidden = true
-      self.noRoutesView.isHidden = true
-      self.bestRoutesExpandButton.isEnabled = true
-      self.priceButtonWidth.constant = self.activeButtonWidth
-      self.priceButton.setTitleColor(UIColor.groupTableViewBackground, for: .normal)
-      self.priceButton.titleLabel!.font = self.activeFont
-      self.priceButton.layer.borderColor = UIColor.groupTableViewBackground.cgColor
-      self.priceButton.layer.borderWidth = self.activeBorderWidth
-      self.timeButtonWidth.constant = self.inactiveButtonWidth
-      self.timeButton.setTitleColor(UIColor.lightGray, for: .normal)
-      self.timeButton.titleLabel!.font = self.inactiveFont
-      self.timeButton.layer.borderColor = UIColor.lightGray.cgColor
-      self.timeButton.layer.borderWidth = self.inactiveBorderWidth
+      self.resetView()
     }
   }
   
   @IBAction func closeButtonTouched() {
     whereToButton.alpha = 0
-    whereToButton.titleLabel?.alpha = 0
     whereToButton.isHidden = false
-    let originalTop = self.bestRoutesViewTop.constant
     
     view.layoutIfNeeded()
     UIView.animate(
-      withDuration: 0.25,
+      withDuration: 0.2,
       delay: 0,
       options: .curveEaseIn,
       animations: {
-        self.bestRoutesViewTop.constant = self.view.frame.height
-        self.bestRoutesDropdownViewHeight.constant = self.bestRoutesDropdownViewCollapsedHeight - (self.presenter.networkReachable ? 0 : 20)
+        self.routesViewTop.constant = self.view.frame.height
+        self.dropdownViewHeight.constant = self.dropdownViewInactiveHeight - (self.presenter.networkReachable ? 0 : 20)
+        self.dropdownButton.transform = CGAffineTransform(rotationAngle: 0)
         self.noRoutesViewWidth.constant = self.noRoutesViewInactiveWidth
-        self.bestRoutesExpandButton.transform = CGAffineTransform(rotationAngle: 0)
         self.noRoutesLabel.alpha = 0
         self.noRoutesButton.alpha = 0
         self.view.layoutIfNeeded()
     }) { _ in
-      self.bestRoutesView.isHidden = true
-      self.noRoutesView.isHidden = true
-      self.bestRoutesViewTop.constant = originalTop
-      self.priceButtonWidth.constant = self.activeButtonWidth
-      self.priceButton.setTitleColor(UIColor.groupTableViewBackground, for: .normal)
-      self.priceButton.titleLabel!.font = self.activeFont
-      self.priceButton.layer.borderColor = UIColor.groupTableViewBackground.cgColor
-      self.priceButton.layer.borderWidth = self.activeBorderWidth
-      self.timeButtonWidth.constant = self.inactiveButtonWidth
-      self.timeButton.setTitleColor(UIColor.lightGray, for: .normal)
-      self.timeButton.titleLabel!.font = self.inactiveFont
-      self.timeButton.layer.borderColor = UIColor.lightGray.cgColor
-      self.timeButton.layer.borderWidth = self.inactiveBorderWidth
-      self.bestRoutesView.alpha = 0
-      self.priceButton.alpha = 0
-      self.timeButton.alpha = 0
+      self.routesView.alpha = 0
+      self.presenter.trip = nil
+      self.resetView()
     }
     
     view.layoutIfNeeded()
@@ -253,82 +227,64 @@ class HomeViewController: UIViewController {
       delay: 0.25,
       options: .curveEaseIn,
       animations: {
-        self.whereToButton.titleLabel?.alpha = 1
+        self.whereToButton.titleLabel!.alpha = 1
         self.view.layoutIfNeeded()
-    }) { _ in
-      self.bestRoutesCollectionView.delegate = nil
-      self.bestRoutesCollectionView.dataSource = nil
-      self.presenter.trip = nil
-    }
+    })
   }
   
   @IBAction func filterButtonTouched(_ sender: UIButton) {
-    if sender.titleColor(for: .normal) != UIColor.groupTableViewBackground {
-      let isPrice = sender == priceButton
-      let priceButtonWidth = isPrice ? activeButtonWidth : inactiveButtonWidth
-      let priceButtonColor = isPrice ? UIColor.groupTableViewBackground : UIColor.lightGray
-      let priceButtonBorder = isPrice ? activeBorderWidth : inactiveBorderWidth
-      let priceButtonFont = isPrice ? activeFont : inactiveFont
-      let timeButtonWidth = isPrice ? inactiveButtonWidth : activeButtonWidth
-      let timeButtonColor = isPrice ? UIColor.lightGray : UIColor.groupTableViewBackground
-      let timeButtonBorder = isPrice ? inactiveBorderWidth : activeBorderWidth
-      let timeButtonFont = isPrice ? inactiveFont : activeFont
-      blurView.isHidden = false
-      
-      view.layoutIfNeeded()
-      UIView.animate(
-        withDuration: 0.07,
-        delay: 0,
-        options: .curveEaseIn,
-        animations: {
-          CALayer.noShadow(self.bestRoutesView)
-          self.view.layoutIfNeeded()
-      })
-      
-      view.layoutIfNeeded()
-      UIView.animate(
-        withDuration: 0.08,
-        delay: 0.07,
-        options: .curveEaseIn,
-        animations: {
-          self.blurView.effect = UIBlurEffect(style: .light)
-          self.view.layoutIfNeeded()
-      }) { _ in
-        isPrice ? self.priceSort() : self.timeSort()
-        self.bestRoutesCollectionView.reloadData()
-      }
-      
-      view.layoutIfNeeded()
-      UIView.animate(
-        withDuration: 0.15,
-        delay: 0,
-        options: .curveEaseOut,
-        animations: {
-          self.priceButtonWidth.constant = priceButtonWidth
-          self.priceButton.setTitleColor(priceButtonColor, for: .normal)
-          self.priceButton.layer.borderColor = priceButtonColor.cgColor
-          self.priceButton.layer.borderWidth = priceButtonBorder
-          self.priceButton.titleLabel!.font = priceButtonFont
-          self.timeButtonWidth.constant = timeButtonWidth
-          self.timeButton.setTitleColor(timeButtonColor, for: .normal)
-          self.timeButton.layer.borderColor = timeButtonColor.cgColor
-          self.timeButton.layer.borderWidth = timeButtonBorder
-          self.timeButton.titleLabel!.font = timeButtonFont
-          self.view.layoutIfNeeded()
-      })
-      
-      view.layoutIfNeeded()
-      UIView.animate(
-        withDuration: 0.2,
-        delay: 0.1,
-        options: .curveEaseOut,
-        animations: {
-          self.blurView.effect = nil
-          CALayer.shadow(self.bestRoutesView)
-          self.view.layoutIfNeeded()
-      }) { _ in
-        self.blurView.isHidden = true
-      }
+    guard sender.frame.width == filterButtonInactiveSettings.width else {
+      return
+    }
+    
+    let priceButtonSettings = (sender.currentTitle! == "Price" ? filterButtonActiveSettings : filterButtonInactiveSettings)!
+    priceButton.layer.borderWidth = priceButtonSettings.borderWidth
+    priceButton.setTitleColor(priceButtonSettings.color, for: .normal)
+    priceButton.layer.borderColor = priceButtonSettings.color.cgColor
+    
+    let timeButtonSettings = (sender.currentTitle! == "Time" ? filterButtonActiveSettings : filterButtonInactiveSettings)!
+    self.timeButton.layer.borderWidth = timeButtonSettings.borderWidth
+    self.timeButton.setTitleColor(timeButtonSettings.color, for: .normal)
+    self.timeButton.layer.borderColor = timeButtonSettings.color.cgColor
+    
+    blurView.isHidden = false
+    
+    view.layoutIfNeeded()
+    UIView.animate(
+      withDuration: 0.12,
+      delay: 0,
+      options: .curveEaseOut,
+      animations: {
+        self.priceButtonWidth.constant = priceButtonSettings.width
+        self.priceButton.titleLabel!.font = priceButtonSettings.font
+        self.timeButtonWidth.constant = timeButtonSettings.width
+        self.timeButton.titleLabel!.font = timeButtonSettings.font
+        self.view.layoutIfNeeded()
+    })
+    
+    view.layoutIfNeeded()
+    UIView.animate(
+      withDuration: 0.12,
+      delay: 0,
+      options: .curveEaseIn,
+      animations: {
+        self.blurView.effect = UIBlurEffect(style: .light)
+        self.view.layoutIfNeeded()
+    }) { _ in
+      self.presenter.sort(sender.currentTitle!)
+      self.routesCollectionView.reloadData()
+    }
+    
+    view.layoutIfNeeded()
+    UIView.animate(
+      withDuration: 0.12,
+      delay: 0.1,
+      options: .curveEaseOut,
+      animations: {
+        self.blurView.effect = nil
+        self.view.layoutIfNeeded()
+    }) { _ in
+      self.blurView.isHidden = true
     }
   }
   
@@ -368,8 +324,20 @@ class HomeViewController: UIViewController {
   }
 }
 
-// Route sorting
-private extension HomeViewController {
+// View input
+extension HomeViewController: HomeViewProtocol {
+  func setInitialMapCamera(to location: CLLocationCoordinate2D, withZoom zoom: Float) {
+    self.mapView.camera = GMSCameraPosition.camera(withTarget: location, zoom: zoom)
+  }
+  
+  func zoomMapCamera(to location: CLLocationCoordinate2D, withZoom zoom: Float) {
+    CATransaction.begin()
+    CATransaction.setAnimationDuration(0.4)
+    CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut))
+    mapView.animate(to: GMSCameraPosition.camera(withTarget: location, zoom: zoom))
+    CATransaction.commit()
+  }
+  
   func priceSort() {
     self.presenter.trip!.routes.sort {
       if $0.lowPrice < $1.lowPrice {
@@ -405,34 +373,23 @@ private extension HomeViewController {
       return false
     }
   }
-}
-
-// View input
-extension HomeViewController: HomeViewProtocol {
-  func setInitialMapCamera(to location: CLLocationCoordinate2D, withZoom zoom: Float) {
-    DispatchQueue.main.async {
-      self.mapView.camera = GMSCameraPosition.camera(withTarget: location, zoom: zoom)
+  
+  func routesLayout(_ trip: Trip) {
+    whereToButton.isHidden = true
+    routesView.isHidden = false
+    addressButton.setTitle(trip.name, for: .normal)
+    
+    if !trip.routes.isEmpty {
+      routesCollectionView.setContentOffset(CGPoint.zero, animated: false)
+      routesCollectionView.reloadData()
+      routesCollectionView.isHidden = false
+    } else {
+      dropdownButton.isEnabled = false
+      routesCollectionView.isHidden = true
     }
   }
   
-  func zoomMapCamera(to location: CLLocationCoordinate2D, withZoom zoom: Float, completion: @escaping () -> Void) {
-    DispatchQueue.main.async {
-      CATransaction.begin()
-      CATransaction.setAnimationDuration(0.4)
-      CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut))
-      CATransaction.setCompletionBlock {
-        completion()
-      }
-      
-      self.mapView.animate(to: GMSCameraPosition.camera(withTarget: location, zoom: zoom))
-      CATransaction.commit()
-    }
-  }
-  
-  func showNoRoutes() {
-    noRoutesViewWidth.constant = self.noRoutesViewInactiveWidth
-    noRoutesLabel.alpha = 0
-    noRoutesButton.alpha = 0
+  func noRoutesPopup() {
     noRoutesView.isHidden = false
     
     view.layoutIfNeeded()
@@ -460,22 +417,39 @@ extension HomeViewController: HomeViewProtocol {
   }
   
   func toggleReachabilityView(_ networkReachable: Bool) {
-    DispatchQueue.main.async {
-      let isDropdown = self.bestRoutesDropdownViewHeight.constant > self.bestRoutesDropdownViewCollapsedHeight
-      self.setNeedsStatusBarAppearanceUpdate()
-      self.view.layoutIfNeeded()
-      UIView.animate(
-        withDuration: 0.25,
-        delay: 0,
-        options: [.curveEaseIn, .allowUserInteraction],
-        animations: {
-          self.reachabilityViewBottom.constant = networkReachable ? 0 : self.reachabilityView.frame.height
-          self.bestRoutesViewTop.constant = networkReachable ? 28 : 8
-          self.bestRoutesDropdownViewHeight.constant = (isDropdown ? self.bestRoutesDropdownViewExpandedHeight : self.bestRoutesDropdownViewCollapsedHeight) - (networkReachable ? 0 : 20)
-          self.bestRoutesAddressViewHeight.constant = self.bestRoutesDropdownViewCollapsedHeight - (networkReachable ? 0 : 20)
-          self.view.layoutIfNeeded()
-      })
+    let reachabilitySettings = getReachabilitySettings(networkReachable)
+    self.setNeedsStatusBarAppearanceUpdate()
+    self.view.layoutIfNeeded()
+    UIView.animate(
+      withDuration: 0.25,
+      delay: 0,
+      options: [.curveEaseIn, .allowUserInteraction],
+      animations: {
+        self.routesViewTop.constant = reachabilitySettings.routesViewTop
+        self.dropdownViewHeight.constant = reachabilitySettings.dropdownViewHeight
+        self.addressViewHeight.constant = reachabilitySettings.addressViewHeight
+        self.reachabilityViewBottom.constant = reachabilitySettings.reachabilityViewBottom
+        self.view.layoutIfNeeded()
+    })
+  }
+  
+  func getReachabilitySettings(_ networkReachable: Bool) -> (routesViewTop: CGFloat, dropdownViewHeight: CGFloat, addressViewHeight: CGFloat, reachabilityViewBottom: CGFloat) {
+    let dropdownViewReachabilityHeight = (dropdownViewHeight.constant > dropdownViewInactiveHeight ? dropdownViewActiveHeight : dropdownViewInactiveHeight)!
+    if networkReachable {
+      return (
+        routesViewTop: routesViewActiveTop,
+        dropdownViewHeight: dropdownViewReachabilityHeight,
+        addressViewHeight: dropdownViewInactiveHeight,
+        reachabilityViewBottom: reachabilityViewInactiveBottom
+      )
     }
+    
+    return (
+      routesViewTop: routesViewInactiveTop,
+      dropdownViewHeight: dropdownViewReachabilityHeight - 20,
+      addressViewHeight: dropdownViewInactiveHeight - 20,
+      reachabilityViewBottom: reachabilityViewActiveBottom
+    )
   }
 }
 
@@ -530,58 +504,84 @@ extension HomeViewController: UIViewControllerTransitioningDelegate {
 // View configuration
 private extension HomeViewController {
   func configureView() {
+    
+    // Frame
     view.frame = UIScreen.main.bounds
     
+    // Initialize constants
+    whereToButtonActiveTop = whereToButtonTop.constant
+    whereToButtonInactiveTop = 0
+    whereToButtonActiveWidth = view.frame.width - 50
+    whereToButtonInactiveWidth = view.frame.width
+    whereToButtonActiveHeight = whereToButton.frame.height
+    whereToButtonInactiveHeight = 200
+    routesViewActiveTop = routesViewTop.constant
+    routesViewInactiveTop = 8
+    dropdownViewActiveHeight = view.frame.height - view.frame.width - 24
+    dropdownViewInactiveHeight = view.frame.height - view.frame.width * 1.5 - 24
+    filterButtonActiveSettings = (width: 110, borderWidth: 8, font: priceButton.titleLabel!.font, color: priceButton.currentTitleColor)
+    filterButtonInactiveSettings = (width: 80, borderWidth: 6, font: timeButton.titleLabel!.font, color: timeButton.currentTitleColor)
+    noRoutesViewActiveWidth = noRoutesView.frame.width
+    noRoutesViewInactiveWidth = 0
+    reachabilityViewActiveBottom = reachabilityView.frame.height
+    reachabilityViewInactiveBottom = reachabilityViewBottom.constant
+    
+    // Settings
     mapView.isMyLocationEnabled = true
     mapView.settings.myLocationButton = true
     mapView.isIndoorEnabled = false
     mapView.isBuildingsEnabled = false
     mapView.mapStyle = try? GMSMapStyle(contentsOfFileURL: Bundle.main.url(forResource: "MapStyle", withExtension: "json")!)
-    
-    whereToButtonWidth.constant = view.frame.width - 50
-    bestRoutesDropdownViewHeight.constant = bestRoutesDropdownViewCollapsedHeight
-    bestRoutesAddressViewHeight.constant = bestRoutesDropdownViewCollapsedHeight
-    bestRoutesAddressButton.titleLabel?.adjustsFontSizeToFitWidth = true
-    
+    whereToButtonWidth.constant = whereToButtonActiveWidth
+    dropdownViewHeight.constant = dropdownViewInactiveHeight
+    addressViewHeight.constant = dropdownViewInactiveHeight
+    addressButton.titleLabel!.adjustsFontSizeToFitWidth = true
+    priceButton.layer.borderWidth = filterButtonActiveSettings.borderWidth
+    priceButton.layer.borderColor = filterButtonActiveSettings.color.cgColor
+    timeButton.layer.borderWidth = filterButtonInactiveSettings.borderWidth
+    timeButton.layer.borderColor = filterButtonInactiveSettings.color.cgColor
     let layout = UICollectionViewFlowLayout()
     layout.minimumInteritemSpacing = 8
     layout.minimumLineSpacing = 8
-    bestRoutesCollectionView.collectionViewLayout = layout
-    bestRoutesCollectionView.backgroundColor = UIColor.clear
-    bestRoutesCollectionView.register(UINib(nibName: "BestRouteCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: BestRouteCell)
+    routesCollectionView.collectionViewLayout = layout
+    routesCollectionView.backgroundColor = UIColor.clear
+    routesCollectionView.register(UINib(nibName: "BestRouteCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: BestRouteCell)
+    routesCollectionView.delegate = self
+    routesCollectionView.dataSource = self
     blurView.effect = nil
-    
-    priceButton.layer.borderColor = UIColor.groupTableViewBackground.cgColor
-    priceButton.layer.borderWidth = self.activeBorderWidth
-    timeButton.layer.borderColor = UIColor.lightGray.cgColor
-    timeButton.layer.borderWidth = self.inactiveBorderWidth
     noRoutesButton.layer.cornerRadius = noRoutesButton.frame.height / 2
     
+    // Shadowing
     CALayer.shadow(whereToButton)
-    CALayer.shadow(bestRoutesView)
-    CALayer.shadow(bestRoutesDropdownView)
-    CALayer.shadow(reachabilityView)
+    CALayer.shadow(routesView)
+    CALayer.shadow(dropdownView)
     CALayer.shadow(priceButton)
     CALayer.shadow(timeButton)
     CALayer.shadow(noRoutesView)
     CALayer.shadow(noRoutesButton)
+  }
+  
+  func resetView() {
     
-    noRoutesViewActiveWidth = noRoutesView.frame.width
-    noRoutesViewInactiveWidth = 0
-    //    reachabilityViewActiveBottomConstant = reachabilityView.frame.height
-    //    reachabilityViewInactiveTopConstant = reachabilityViewHeight.constant
-    //
-    //    settingsButtonActiveBottomConstant = settingsButtonBottom.constant
-    //    settingsButtounInactiveBottomConstant = 0
-    //
-    //    whereToButtonActiveTopConstant = whereToButtonTop.constant
-    //    whereToButtonInactiveTopConstant = 0
-    //
-    //    whereToButtonActiveWidthConstant = UIScreen.main.bounds.width - 40
-    //    whereToButtonInactiveWidthConstant = UIScreen.main.bounds.width
-    //
-    //    whereToButtonActiveHeightConstant = whereToButtonHeight.constant
-    //    whereToButtonInactiveHeightConstant = 200
+    // Visibility
+    routesView.isHidden = true
+    noRoutesView.isHidden = true
+    
+    // Settings
+    routesViewTop.constant = routesViewActiveTop
+    dropdownButton.isEnabled = true
+    priceButtonWidth.constant = filterButtonActiveSettings.width
+    priceButton.layer.borderWidth = filterButtonActiveSettings.borderWidth
+    priceButton.titleLabel!.font = filterButtonActiveSettings.font
+    priceButton.setTitleColor(filterButtonActiveSettings.color, for: .normal)
+    priceButton.layer.borderColor = filterButtonActiveSettings.color.cgColor
+    priceButton.alpha = 0
+    timeButtonWidth.constant = filterButtonInactiveSettings.width
+    timeButton.layer.borderWidth = filterButtonInactiveSettings.borderWidth
+    timeButton.titleLabel!.font = filterButtonInactiveSettings.font
+    timeButton.setTitleColor(filterButtonInactiveSettings.color, for: .normal)
+    timeButton.layer.borderColor = filterButtonInactiveSettings.color.cgColor
+    timeButton.alpha = 0
   }
 }
 

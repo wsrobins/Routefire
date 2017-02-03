@@ -27,7 +27,8 @@ class BestRouteCollectionViewCell: UICollectionViewCell {
   
   // Add content to display
   func addContent(for route: Route, best: Bool) {
-    nameLabel.font = UIFont.systemFont(ofSize: (best ? 30 : 22), weight: UIFontWeightBlack)
+    nameLabel.font = UIFont.systemFont(ofSize: (best ? 32 : 21), weight: UIFontWeightBlack)
+    timeLabel.font = UIFont.systemFont(ofSize: (best ? 15 : 14), weight: UIFontWeightThin)
     priceLabel.font = UIFont.systemFont(ofSize: (best ? 18 : 16), weight: UIFontWeightBlack)
     nameLabel.text = route.name
     timeLabel.text = route.arrival

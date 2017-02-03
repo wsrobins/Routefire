@@ -19,10 +19,13 @@ protocol RouteWireframeProtocol {
 class RouteWireframe: NSObject, RouteWireframeProtocol {
   weak var view: RouteViewController!
   weak var presenter: RoutePresenterProtocol!
+  weak var homePresenter: HomePresenterRouteModuleProtocol!
   
   func transitionToHomeModule(timer: Timer?) {
-    timer?.invalidate()
     NotificationCenter.default.removeObserver(view)
+    homePresenter.setTrip(presenter.trip)
+    timer?.invalidate()
+    
     view.dismiss(animated: true)
   }
 }
@@ -34,35 +37,15 @@ extension RouteWireframe: RouteWireframeAnimatedTransitioning {
   }
   
   func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
+    let reachabilitySettings = homePresenter.getReachabilitySettings()
     let containerView = transitionContext.containerView
     let fromVC = transitionContext.viewController(forKey: .from) as! RouteViewController
     let toVC = transitionContext.viewController(forKey: .to) as! HomeViewController
     containerView.insertSubview(toVC.view, belowSubview: fromVC.view)
     
-    if let trip = presenter.trip {
-      toVC.presenter.trip = trip
-      toVC.bestRoutesAddressButton.setTitle(trip.name, for: .normal)
-      toVC.bestRoutesView.alpha = 0
-      toVC.whereToButton.isHidden = true
-      toVC.bestRoutesCollectionView.isHidden = trip.routes.isEmpty
-      toVC.bestRoutesView.isHidden = false
-      if !trip.routes.isEmpty {
-        toVC.bestRoutesCollectionView.delegate = toVC
-        toVC.bestRoutesCollectionView.dataSource = toVC
-        toVC.bestRoutesExpandButton.isEnabled = true
-        toVC.bestRoutesCollectionView.setContentOffset(CGPoint.zero, animated: false)
-        toVC.bestRoutesCollectionView.reloadData()
-      } else {
-        toVC.bestRoutesExpandButton.isEnabled = false
-      }
-    } else {
-      toVC.whereToButton.isHidden = false
-      toVC.bestRoutesView.isHidden = true
-    }
-    
     containerView.layoutIfNeeded()
     UIView.animate(
-      withDuration: 0.3,
+      withDuration: 0.35,
       delay: 0,
       options: .curveEaseOut,
       animations: {
@@ -99,13 +82,13 @@ extension RouteWireframe: RouteWireframeAnimatedTransitioning {
       options: .curveEaseInOut,
       animations: {
         fromVC.destinationsTableViewTop.constant = 0
-        toVC.whereToButtonTop.constant = 80
-        toVC.whereToButtonWidth.constant = toVC.view.frame.width - 50
-        toVC.whereToButtonHeight.constant = 60
-        toVC.reachabilityViewBottom.constant = toVC.presenter.networkReachable ? 0 : toVC.reachabilityView.frame.height
-        toVC.bestRoutesViewTop.constant = toVC.presenter.networkReachable ? 28 : 8
-        toVC.bestRoutesDropdownViewHeight.constant = toVC.bestRoutesDropdownViewCollapsedHeight - (toVC.presenter.networkReachable ? 0 : 20)
-        toVC.bestRoutesAddressViewHeight.constant = toVC.bestRoutesDropdownViewCollapsedHeight - (toVC.presenter.networkReachable ? 0 : 20)
+        toVC.whereToButtonTop.constant = toVC.whereToButtonActiveTop
+        toVC.whereToButtonWidth.constant = toVC.whereToButtonActiveWidth
+        toVC.whereToButtonHeight.constant = toVC.whereToButtonActiveHeight
+        toVC.reachabilityViewBottom.constant = reachabilitySettings.reachabilityViewBottom
+        toVC.routesViewTop.constant = reachabilitySettings.routesViewTop
+        toVC.dropdownViewHeight.constant = reachabilitySettings.dropdownViewHeight
+        toVC.addressViewHeight.constant = reachabilitySettings.addressViewHeight
         containerView.layoutIfNeeded()
     })
     
@@ -115,8 +98,8 @@ extension RouteWireframe: RouteWireframeAnimatedTransitioning {
       delay: 0.2,
       options: .curveEaseInOut,
       animations: {
-        toVC.whereToButton.titleLabel?.alpha = 1
-        toVC.bestRoutesView.alpha = 1
+        toVC.whereToButton.titleLabel!.alpha = 1
+        toVC.routesView.alpha = 1
         containerView.layoutIfNeeded()
     }) { _ in
       toVC.presenter.observeReachability()

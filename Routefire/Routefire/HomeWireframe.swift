@@ -31,8 +31,10 @@ class HomeWireframe: NSObject, HomeWireframeProtocol {
     routePresenter.view = routeView
     routePresenter.wireframe = routeWireframe
     routePresenter.trip = presenter.trip
+    routePresenter.checkForTrip()
     routeWireframe.view = routeView
     routeWireframe.presenter = routePresenter
+    routeWireframe.homePresenter = presenter
     
     routeView.transitioningDelegate = view
     view.present(routeView, animated: true)
@@ -59,7 +61,7 @@ extension HomeWireframe: HomeWireframeAnimatedTransitioning {
       initialSpringVelocity: 1,
       options: .curveEaseIn,
       animations: {
-        toVC.destinationsTableViewTop.constant = toVC.destinationsTableView.frame.height
+        toVC.destinationsTableViewTop.constant = toVC.destinationsTableViewActiveTop
         containerView.layoutIfNeeded()
     }) { _ in
       transitionContext.completeTransition(true)
@@ -71,7 +73,7 @@ extension HomeWireframe: HomeWireframeAnimatedTransitioning {
       delay: 0,
       options: .curveEaseIn,
       animations: {
-        fromVC.whereToButton.titleLabel?.alpha = 0
+        fromVC.whereToButton.titleLabel!.alpha = 0
         containerView.layoutIfNeeded()
     }) { _ in
       toVC.destinationField.becomeFirstResponder()
@@ -83,10 +85,10 @@ extension HomeWireframe: HomeWireframeAnimatedTransitioning {
       delay: 0.04,
       options: .curveEaseInOut,
       animations: {
-        fromVC.whereToButtonTop.constant = 0
-        fromVC.whereToButtonWidth.constant = toVC.routeView.frame.width
-        fromVC.whereToButtonHeight.constant = toVC.routeView.frame.height
-        fromVC.reachabilityViewBottom.constant = 0
+        fromVC.whereToButtonTop.constant = fromVC.whereToButtonInactiveTop
+        fromVC.whereToButtonWidth.constant = fromVC.whereToButtonInactiveWidth
+        fromVC.whereToButtonHeight.constant = fromVC.whereToButtonInactiveHeight
+        fromVC.reachabilityViewBottom.constant = fromVC.reachabilityViewInactiveBottom
         containerView.layoutIfNeeded()
     }) { _ in
       toVC.routeView.backgroundColor = UIColor.white

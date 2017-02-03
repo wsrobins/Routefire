@@ -14,6 +14,7 @@ protocol RoutePresenterProtocol: class {
   var autocompleteResults: [GMSAutocompletePrediction] { get set }
   var trip: Trip? { get set }
   func transitionToHomeModule()
+  func checkForTrip()
   func autocomplete(_ text: String, completion: @escaping () -> Void)
   func selectedDestination(at indexPath: IndexPath, timer: Timer)
   func locationName(_ indexPath: IndexPath) -> NSMutableAttributedString
@@ -30,17 +31,30 @@ final class RoutePresenter: RoutePresenterProtocol {
     wireframe.transitionToHomeModule(timer: nil)
   }
   
-  // Input
+  func checkForTrip() {
+    guard let name = trip?.name else {
+      return
+    }
+    
+    autocomplete(name) {
+      self.view.setTrip(name)
+    }
+  }
+  
   func autocomplete(_ text: String, completion: @escaping () -> Void) {
     guard text != "" else {
       autocompleteResults = []
-      completion()
+      DispatchQueue.main.async {
+        completion()
+      }
       return
     }
     
     Google.autocomplete(text) { autocompleteResults in
       self.autocompleteResults = autocompleteResults
-      completion()
+      DispatchQueue.main.async {
+        completion()
+      }
     }
   }
   
