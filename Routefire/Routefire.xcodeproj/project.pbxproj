@@ -3,11 +3,10 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 48;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		BFB62AF832275CC1FA7C1D28 /* Pods_Routefire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34BC3A939C1E0D8C482FB926 /* Pods_Routefire.framework */; };
 		C40E1E521E43E08300A5592D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C40E1E511E43E08300A5592D /* LaunchScreen.storyboard */; };
 		C414A6F21E30A3D600B9DF14 /* RouteWireframe.swift in Sources */ = {isa = PBXBuildFile; fileRef = C414A6F11E30A3D600B9DF14 /* RouteWireframe.swift */; };
 		C419CF221E3D8462007B39A3 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = C419CF211E3D8462007B39A3 /* Network.swift */; };
@@ -24,8 +23,8 @@
 		C46E12991E258E64009E1D59 /* MapStyle.json in Resources */ = {isa = PBXBuildFile; fileRef = C46E12981E258E64009E1D59 /* MapStyle.json */; };
 		C4746FE71E1E082C00832FC3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4746FE61E1E082C00832FC3 /* AppDelegate.swift */; };
 		C4746FF11E1E082C00832FC3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C4746FF01E1E082C00832FC3 /* Assets.xcassets */; };
-		C474729B1E27433600292CD6 /* BestRouteCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47472991E27433600292CD6 /* BestRouteCollectionViewCell.swift */; };
-		C474729C1E27433600292CD6 /* BestRouteCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C474729A1E27433600292CD6 /* BestRouteCollectionViewCell.xib */; };
+		C474729B1E27433600292CD6 /* RouteCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47472991E27433600292CD6 /* RouteCollectionViewCell.swift */; };
+		C474729C1E27433600292CD6 /* RouteCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C474729A1E27433600292CD6 /* RouteCollectionViewCell.xib */; };
 		C474729F1E27479400292CD6 /* Route.swift in Sources */ = {isa = PBXBuildFile; fileRef = C474729E1E27479400292CD6 /* Route.swift */; };
 		C48B988B1E414D3200871F96 /* Trip.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48B988A1E414D3200871F96 /* Trip.swift */; };
 		C4B305D71E1E0A2300C56A99 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B305D61E1E0A2300C56A99 /* Secrets.swift */; };
@@ -37,12 +36,13 @@
 		C4F471311E2EE64700479187 /* HomeWireframe.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F471301E2EE64700479187 /* HomeWireframe.swift */; };
 		C4F4713D1E2F03EE00479187 /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F4713B1E2F03EE00479187 /* LaunchViewController.swift */; };
 		C4F4713E1E2F03EE00479187 /* LaunchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4F4713C1E2F03EE00479187 /* LaunchViewController.xib */; };
+		ED003ED4AF0E0FB4449D14F0 /* Pods_Routefire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C9854612FCE19350334D779 /* Pods_Routefire.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		34BC3A939C1E0D8C482FB926 /* Pods_Routefire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Routefire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C223F96DCEC47D1C0B8AF18 /* Pods-Routefire.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Routefire.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Routefire/Pods-Routefire.debug.xcconfig"; sourceTree = "<group>"; };
 		77BB0D6CCC46922D13B4BFF0 /* Pods-Routefire.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Routefire.release.xcconfig"; path = "Pods/Target Support Files/Pods-Routefire/Pods-Routefire.release.xcconfig"; sourceTree = "<group>"; };
+		8C9854612FCE19350334D779 /* Pods_Routefire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Routefire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C40E1E511E43E08300A5592D /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C414A6F11E30A3D600B9DF14 /* RouteWireframe.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteWireframe.swift; sourceTree = "<group>"; };
 		C419CF211E3D8462007B39A3 /* Network.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
@@ -61,8 +61,8 @@
 		C4746FE61E1E082C00832FC3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C4746FF01E1E082C00832FC3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C4746FF51E1E082C00832FC3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C47472991E27433600292CD6 /* BestRouteCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BestRouteCollectionViewCell.swift; sourceTree = "<group>"; };
-		C474729A1E27433600292CD6 /* BestRouteCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BestRouteCollectionViewCell.xib; sourceTree = "<group>"; };
+		C47472991E27433600292CD6 /* RouteCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteCollectionViewCell.swift; sourceTree = "<group>"; };
+		C474729A1E27433600292CD6 /* RouteCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RouteCollectionViewCell.xib; sourceTree = "<group>"; };
 		C474729E1E27479400292CD6 /* Route.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Route.swift; sourceTree = "<group>"; };
 		C48B988A1E414D3200871F96 /* Trip.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Trip.swift; sourceTree = "<group>"; };
 		C4B305D61E1E0A2300C56A99 /* Secrets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
@@ -81,17 +81,17 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BFB62AF832275CC1FA7C1D28 /* Pods_Routefire.framework in Frameworks */,
+				ED003ED4AF0E0FB4449D14F0 /* Pods_Routefire.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		40B50608910CC459277175BB /* Frameworks */ = {
+		63E51DB48760A89BED092D18 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				34BC3A939C1E0D8C482FB926 /* Pods_Routefire.framework */,
+				8C9854612FCE19350334D779 /* Pods_Routefire.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -132,7 +132,7 @@
 				C4746FE51E1E082C00832FC3 /* Routefire */,
 				C4746FE41E1E082C00832FC3 /* Products */,
 				AE3BEED239677E76C1E80767 /* Pods */,
-				40B50608910CC459277175BB /* Frameworks */,
+				63E51DB48760A89BED092D18 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -170,8 +170,8 @@
 		C47472941E2742D500292CD6 /* Subviews */ = {
 			isa = PBXGroup;
 			children = (
-				C47472991E27433600292CD6 /* BestRouteCollectionViewCell.swift */,
-				C474729A1E27433600292CD6 /* BestRouteCollectionViewCell.xib */,
+				C47472991E27433600292CD6 /* RouteCollectionViewCell.swift */,
+				C474729A1E27433600292CD6 /* RouteCollectionViewCell.xib */,
 			);
 			name = Subviews;
 			sourceTree = "<group>";
@@ -313,7 +313,7 @@
 				};
 			};
 			buildConfigurationList = C4746FDE1E1E082C00832FC3 /* Build configuration list for PBXProject "Routefire" */;
-			compatibilityVersion = "Xcode 3.2";
+			compatibilityVersion = "Xcode 8.0";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -340,7 +340,7 @@
 				C468F2DC1E2343190046FDD2 /* RouteViewController.xib in Resources */,
 				C46E12991E258E64009E1D59 /* MapStyle.json in Resources */,
 				C4EAF3F01E26EAA900AB7A23 /* DestinationTableViewCell.xib in Resources */,
-				C474729C1E27433600292CD6 /* BestRouteCollectionViewCell.xib in Resources */,
+				C474729C1E27433600292CD6 /* RouteCollectionViewCell.xib in Resources */,
 				C4746FF11E1E082C00832FC3 /* Assets.xcassets in Resources */,
 				C468F2D81E2333BA0046FDD2 /* HomeViewController.xib in Resources */,
 			);
@@ -414,7 +414,7 @@
 				C4EAF3EF1E26EAA900AB7A23 /* DestinationTableViewCell.swift in Sources */,
 				C4B311081E3ADE7200AB422D /* Location.swift in Sources */,
 				C438C74B1E25A7CE0043922E /* RoutePresenter.swift in Sources */,
-				C474729B1E27433600292CD6 /* BestRouteCollectionViewCell.swift in Sources */,
+				C474729B1E27433600292CD6 /* RouteCollectionViewCell.swift in Sources */,
 				C468F2D71E2333BA0046FDD2 /* HomeViewController.swift in Sources */,
 				C4344AC71E3F9A3D0068DD29 /* Lyft.swift in Sources */,
 				C4584C151E3EB2B4003A6A18 /* Google.swift in Sources */,
@@ -528,6 +528,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = TWPE6ND5AF;
 				INFOPLIST_FILE = Routefire/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.WilliamRobinson.Routefire;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -545,6 +546,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = TWPE6ND5AF;
 				INFOPLIST_FILE = Routefire/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.WilliamRobinson.Routefire;
 				PRODUCT_NAME = "$(TARGET_NAME)";

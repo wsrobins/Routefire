@@ -37,7 +37,6 @@ extension RouteWireframe: RouteWireframeAnimatedTransitioning {
   }
   
   func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
-    let reachabilitySettings = homePresenter.getReachabilitySettings()
     let containerView = transitionContext.containerView
     let fromVC = transitionContext.viewController(forKey: .from) as! RouteViewController
     let toVC = transitionContext.viewController(forKey: .to) as! HomeViewController
@@ -50,6 +49,7 @@ extension RouteWireframe: RouteWireframeAnimatedTransitioning {
       options: .curveEaseOut,
       animations: {
         fromVC.blurView.effect = nil
+        containerView.layoutIfNeeded()
     }) { _ in
       fromVC.blurView.isHidden = true
     }
@@ -61,6 +61,7 @@ extension RouteWireframe: RouteWireframeAnimatedTransitioning {
       options: .curveEaseOut,
       animations: {
         fromVC.loadingView.alpha = 0
+        containerView.layoutIfNeeded()
     }) { _ in
       fromVC.loadingView.isHidden = true
     }
@@ -85,10 +86,6 @@ extension RouteWireframe: RouteWireframeAnimatedTransitioning {
         toVC.whereToButtonTop.constant = toVC.whereToButtonActiveTop
         toVC.whereToButtonWidth.constant = toVC.whereToButtonActiveWidth
         toVC.whereToButtonHeight.constant = toVC.whereToButtonActiveHeight
-        toVC.reachabilityViewBottom.constant = reachabilitySettings.reachabilityViewBottom
-        toVC.routesViewTop.constant = reachabilitySettings.routesViewTop
-        toVC.dropdownViewHeight.constant = reachabilitySettings.dropdownViewHeight
-        toVC.addressViewHeight.constant = reachabilitySettings.addressViewHeight
         containerView.layoutIfNeeded()
     })
     

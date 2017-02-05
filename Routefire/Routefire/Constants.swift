@@ -14,6 +14,5 @@ let NetworkReachableNotification = Notification.Name("networkReachable")
 let NetworkUnreachableNotification = Notification.Name("networkUnreachable")
 
 // Cell identifiers
-let BestRouteCell = "bestRouteCell"
+let RouteCell = "routeCell"
 let DestinationCell = "destinationCell"
-

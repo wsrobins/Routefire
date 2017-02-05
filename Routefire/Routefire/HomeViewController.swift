@@ -15,11 +15,8 @@ protocol HomeViewProtocol: class {
   func setInitialMapCamera(to location: CLLocationCoordinate2D, withZoom zoom: Float)
   func zoomMapCamera(to location: CLLocationCoordinate2D, withZoom zoom: Float)
   func routesLayout(_ trip: Trip)
-  func priceSort()
-  func timeSort()
   func noRoutesPopup()
   func toggleReachabilityView(_ reachable: Bool)
-  func getReachabilitySettings(_ networkReachable: Bool) -> (routesViewTop: CGFloat, dropdownViewHeight: CGFloat, addressViewHeight: CGFloat, reachabilityViewBottom: CGFloat)
 }
 
 class HomeViewController: UIViewController {
@@ -52,10 +49,14 @@ class HomeViewController: UIViewController {
   @IBOutlet weak var whereToButtonWidth: NSLayoutConstraint!
   @IBOutlet weak var whereToButtonHeight: NSLayoutConstraint!
   @IBOutlet weak var routesViewTop: NSLayoutConstraint!
-  @IBOutlet weak var dropdownViewHeight: NSLayoutConstraint!
-  @IBOutlet weak var addressViewHeight: NSLayoutConstraint!
+  @IBOutlet var addressViewDynamicHeight: NSLayoutConstraint!
+  var addressViewStaticHeight: NSLayoutConstraint!
   @IBOutlet weak var priceButtonWidth: NSLayoutConstraint!
   @IBOutlet weak var timeButtonWidth: NSLayoutConstraint!
+  @IBOutlet var routesCollectionViewExpandedHeights: [NSLayoutConstraint]!
+  var routesCollectionViewExpandedHeight: NSLayoutConstraint!
+  @IBOutlet var routesCollectionViewCondensedHeights: [NSLayoutConstraint]!
+  var routesCollectionViewCondensedHeight: NSLayoutConstraint!
   @IBOutlet weak var noRoutesViewWidth: NSLayoutConstraint!
   @IBOutlet weak var reachabilityViewBottom: NSLayoutConstraint!
   
@@ -68,10 +69,11 @@ class HomeViewController: UIViewController {
   var whereToButtonInactiveHeight: CGFloat!
   var routesViewActiveTop: CGFloat!
   var routesViewInactiveTop: CGFloat!
-  var dropdownViewActiveHeight: CGFloat!
-  var dropdownViewInactiveHeight: CGFloat!
   var filterButtonActiveSettings: (width: CGFloat, borderWidth: CGFloat, font: UIFont, color: UIColor)!
   var filterButtonInactiveSettings: (width: CGFloat, borderWidth: CGFloat, font: UIFont, color: UIColor)!
+  var bestRouteCollectionViewCellWidth: CGFloat!
+  var routeCollectionViewCellWidth: CGFloat!
+  let routeCollectionViewSpacing: CGFloat = 8
   var noRoutesViewActiveWidth: CGFloat!
   var noRoutesViewInactiveWidth: CGFloat!
   var reachabilityViewActiveBottom: CGFloat!
@@ -109,8 +111,11 @@ class HomeViewController: UIViewController {
   }
   
   @IBAction func dropdownButtonTouched() {
-    switch dropdownViewHeight.constant {
-    case dropdownViewInactiveHeight - (self.presenter.networkReachable ? 0 : 20):
+    if routesCollectionViewExpandedHeight.isActive {
+      addressViewStaticHeight = addressView.heightAnchor.constraint(equalToConstant: addressView.frame.height)
+      addressViewStaticHeight.isActive = true
+      addressViewDynamicHeight.isActive = false
+      
       view.layoutIfNeeded()
       UIView.animate(
         withDuration: 0.3,
@@ -119,9 +124,10 @@ class HomeViewController: UIViewController {
         initialSpringVelocity: 1,
         options: .curveEaseIn,
         animations: {
-          self.dropdownViewHeight.constant = self.dropdownViewActiveHeight - (self.presenter.networkReachable ? 0 : 20)
           self.dropdownButton.transform = CGAffineTransform(rotationAngle: CGFloat(-M_PI * 0.5))
           self.dropdownButton.transform = CGAffineTransform(rotationAngle: CGFloat(-M_PI))
+          self.routesCollectionViewExpandedHeight.isActive = false
+          self.routesCollectionViewCondensedHeight.isActive = true
           self.view.layoutIfNeeded()
       })
       
@@ -137,7 +143,7 @@ class HomeViewController: UIViewController {
           self.timeButton.alpha = 1
           self.view.layoutIfNeeded()
       })
-    default:
+    } else {
       view.layoutIfNeeded()
       UIView.animate(
         withDuration: 0.2,
@@ -157,10 +163,14 @@ class HomeViewController: UIViewController {
         initialSpringVelocity: 1,
         options: .curveEaseIn,
         animations: {
-          self.dropdownViewHeight.constant = self.dropdownViewInactiveHeight - (self.presenter.networkReachable ? 0 : 20)
           self.dropdownButton.transform = CGAffineTransform(rotationAngle: 0)
+          self.routesCollectionViewCondensedHeight.isActive = false
+          self.routesCollectionViewExpandedHeight.isActive = true
           self.view.layoutIfNeeded()
-      })
+      }) { _ in
+        self.addressViewDynamicHeight.isActive = true
+        self.addressViewStaticHeight.isActive = false
+      }
     }
   }
   
@@ -177,8 +187,9 @@ class HomeViewController: UIViewController {
       animations: {
         self.whereToButton.alpha = 1
         self.routesView.alpha = 0
-        self.dropdownViewHeight.constant = self.dropdownViewInactiveHeight - (self.presenter.networkReachable ? 0 : 20)
         self.dropdownButton.transform = CGAffineTransform(rotationAngle: 0)
+        self.routesCollectionViewCondensedHeight.isActive = false
+        self.routesCollectionViewExpandedHeight.isActive = true
         self.noRoutesViewWidth.constant = self.noRoutesViewInactiveWidth
         self.noRoutesLabel.alpha = 0
         self.noRoutesButton.alpha = 0
@@ -199,8 +210,9 @@ class HomeViewController: UIViewController {
       options: .curveEaseIn,
       animations: {
         self.routesViewTop.constant = self.view.frame.height
-        self.dropdownViewHeight.constant = self.dropdownViewInactiveHeight - (self.presenter.networkReachable ? 0 : 20)
         self.dropdownButton.transform = CGAffineTransform(rotationAngle: 0)
+        self.routesCollectionViewCondensedHeight.isActive = false
+        self.routesCollectionViewExpandedHeight.isActive = true
         self.noRoutesViewWidth.constant = self.noRoutesViewInactiveWidth
         self.noRoutesLabel.alpha = 0
         self.noRoutesButton.alpha = 0
@@ -237,15 +249,15 @@ class HomeViewController: UIViewController {
       return
     }
     
-    let priceButtonSettings = (sender.currentTitle! == "Price" ? filterButtonActiveSettings : filterButtonInactiveSettings)!
+    let priceButtonSettings = (sender == priceButton ? filterButtonActiveSettings : filterButtonInactiveSettings)!
     priceButton.layer.borderWidth = priceButtonSettings.borderWidth
     priceButton.setTitleColor(priceButtonSettings.color, for: .normal)
     priceButton.layer.borderColor = priceButtonSettings.color.cgColor
     
-    let timeButtonSettings = (sender.currentTitle! == "Time" ? filterButtonActiveSettings : filterButtonInactiveSettings)!
-    self.timeButton.layer.borderWidth = timeButtonSettings.borderWidth
-    self.timeButton.setTitleColor(timeButtonSettings.color, for: .normal)
-    self.timeButton.layer.borderColor = timeButtonSettings.color.cgColor
+    let timeButtonSettings = (sender == timeButton ? filterButtonActiveSettings : filterButtonInactiveSettings)!
+    timeButton.layer.borderWidth = timeButtonSettings.borderWidth
+    timeButton.setTitleColor(timeButtonSettings.color, for: .normal)
+    timeButton.layer.borderColor = timeButtonSettings.color.cgColor
     
     blurView.isHidden = false
     
@@ -271,7 +283,7 @@ class HomeViewController: UIViewController {
         self.blurView.effect = UIBlurEffect(style: .light)
         self.view.layoutIfNeeded()
     }) { _ in
-      self.presenter.sort(sender.currentTitle!)
+      self.presenter.sortRoutes(sender.currentTitle!)
       self.routesCollectionView.reloadData()
     }
     
@@ -338,42 +350,6 @@ extension HomeViewController: HomeViewProtocol {
     CATransaction.commit()
   }
   
-  func priceSort() {
-    self.presenter.trip!.routes.sort {
-      if $0.lowPrice < $1.lowPrice {
-        return true
-      } else if $0.lowPrice == $1.lowPrice {
-        if $0.highPrice < $1.highPrice {
-          return true
-        } else if $0.highPrice == $1.highPrice {
-          if $0.arrival < $1.arrival {
-            return true
-          }
-          return $0.name < $1.name
-        }
-      }
-      return false
-    }
-  }
-  
-  func timeSort() {
-    self.presenter.trip!.routes.sort {
-      if $0.arrival < $1.arrival {
-        return true
-      } else if $0.arrival == $1.arrival {
-        if $0.lowPrice < $1.lowPrice {
-          return true
-        } else if $0.lowPrice == $1.lowPrice {
-          if $0.highPrice < $1.highPrice {
-            return true
-          }
-          return $0.name < $1.name
-        }
-      }
-      return false
-    }
-  }
-  
   func routesLayout(_ trip: Trip) {
     whereToButton.isHidden = true
     routesView.isHidden = false
@@ -416,40 +392,19 @@ extension HomeViewController: HomeViewProtocol {
     })
   }
   
-  func toggleReachabilityView(_ networkReachable: Bool) {
-    let reachabilitySettings = getReachabilitySettings(networkReachable)
+  func toggleReachabilityView(_ reachable: Bool) {
     self.setNeedsStatusBarAppearanceUpdate()
+    
     self.view.layoutIfNeeded()
     UIView.animate(
       withDuration: 0.25,
       delay: 0,
       options: [.curveEaseIn, .allowUserInteraction],
       animations: {
-        self.routesViewTop.constant = reachabilitySettings.routesViewTop
-        self.dropdownViewHeight.constant = reachabilitySettings.dropdownViewHeight
-        self.addressViewHeight.constant = reachabilitySettings.addressViewHeight
-        self.reachabilityViewBottom.constant = reachabilitySettings.reachabilityViewBottom
+        self.routesViewTop.constant = reachable ? self.routesViewActiveTop : self.routesViewInactiveTop
+        self.reachabilityViewBottom.constant = reachable ? self.reachabilityViewInactiveBottom : self.reachabilityViewActiveBottom
         self.view.layoutIfNeeded()
     })
-  }
-  
-  func getReachabilitySettings(_ networkReachable: Bool) -> (routesViewTop: CGFloat, dropdownViewHeight: CGFloat, addressViewHeight: CGFloat, reachabilityViewBottom: CGFloat) {
-    let dropdownViewReachabilityHeight = (dropdownViewHeight.constant > dropdownViewInactiveHeight ? dropdownViewActiveHeight : dropdownViewInactiveHeight)!
-    if networkReachable {
-      return (
-        routesViewTop: routesViewActiveTop,
-        dropdownViewHeight: dropdownViewReachabilityHeight,
-        addressViewHeight: dropdownViewInactiveHeight,
-        reachabilityViewBottom: reachabilityViewInactiveBottom
-      )
-    }
-    
-    return (
-      routesViewTop: routesViewInactiveTop,
-      dropdownViewHeight: dropdownViewReachabilityHeight - 20,
-      addressViewHeight: dropdownViewInactiveHeight - 20,
-      reachabilityViewBottom: reachabilityViewActiveBottom
-    )
   }
 }
 
@@ -467,7 +422,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BestRouteCell, for: indexPath) as! BestRouteCollectionViewCell
+    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RouteCell, for: indexPath) as! RouteCollectionViewCell
     if let route = presenter.trip?.routes[indexPath.row] {
       cell.addContent(for: route, best: indexPath.row == 0)
     }
@@ -477,15 +432,11 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
   
   // Flow layout delegate
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-    let spacing = (collectionViewLayout as! UICollectionViewFlowLayout).minimumInteritemSpacing
-    let full = UIScreen.main.bounds.width - spacing * 2
-    let half = (UIScreen.main.bounds.width - spacing * 3) / 2
-    
     switch indexPath.row {
     case 0:
-      return CGSize(width: full, height: half)
+      return CGSize(width: bestRouteCollectionViewCellWidth, height: routeCollectionViewCellWidth)
     default:
-      return CGSize(width: half, height: half)
+      return CGSize(width: routeCollectionViewCellWidth, height: routeCollectionViewCellWidth)
     }
   }
 }
@@ -508,44 +459,56 @@ private extension HomeViewController {
     // Frame
     view.frame = UIScreen.main.bounds
     
+    // Size class adjustments
+    switch UIScreen.main.traitCollection.horizontalSizeClass {
+    case .compact:
+      whereToButtonInactiveHeight = 200
+      routesCollectionViewExpandedHeight = routesCollectionViewExpandedHeights.first!
+      routesCollectionViewCondensedHeight = routesCollectionViewCondensedHeights.first!
+      routeCollectionViewCellWidth = (view.frame.width - routeCollectionViewSpacing * 3) / 2
+    case .regular:
+      whereToButtonInactiveHeight = 300
+      routesCollectionViewExpandedHeight = routesCollectionViewExpandedHeights.last!
+      routesCollectionViewCondensedHeight = routesCollectionViewCondensedHeights.last!
+      routeCollectionViewCellWidth = (view.frame.width - routeCollectionViewSpacing * 4 - 1) / 3
+    case .unspecified:
+      break
+    }
+    
     // Initialize constants
     whereToButtonActiveTop = whereToButtonTop.constant
     whereToButtonInactiveTop = 0
-    whereToButtonActiveWidth = view.frame.width - 50
-    whereToButtonInactiveWidth = view.frame.width
+    whereToButtonActiveWidth = whereToButtonWidth.constant
+    whereToButtonInactiveWidth = 0
     whereToButtonActiveHeight = whereToButton.frame.height
-    whereToButtonInactiveHeight = 200
     routesViewActiveTop = routesViewTop.constant
     routesViewInactiveTop = 8
-    dropdownViewActiveHeight = view.frame.height - view.frame.width - 24
-    dropdownViewInactiveHeight = view.frame.height - view.frame.width * 1.5 - 24
     filterButtonActiveSettings = (width: 110, borderWidth: 8, font: priceButton.titleLabel!.font, color: priceButton.currentTitleColor)
     filterButtonInactiveSettings = (width: 80, borderWidth: 6, font: timeButton.titleLabel!.font, color: timeButton.currentTitleColor)
+    bestRouteCollectionViewCellWidth = view.frame.width - routeCollectionViewSpacing * 2
     noRoutesViewActiveWidth = noRoutesView.frame.width
     noRoutesViewInactiveWidth = 0
     reachabilityViewActiveBottom = reachabilityView.frame.height
     reachabilityViewInactiveBottom = reachabilityViewBottom.constant
     
-    // Settings
+    // Setup
     mapView.isMyLocationEnabled = true
     mapView.settings.myLocationButton = true
     mapView.isIndoorEnabled = false
     mapView.isBuildingsEnabled = false
     mapView.mapStyle = try? GMSMapStyle(contentsOfFileURL: Bundle.main.url(forResource: "MapStyle", withExtension: "json")!)
     whereToButtonWidth.constant = whereToButtonActiveWidth
-    dropdownViewHeight.constant = dropdownViewInactiveHeight
-    addressViewHeight.constant = dropdownViewInactiveHeight
     addressButton.titleLabel!.adjustsFontSizeToFitWidth = true
     priceButton.layer.borderWidth = filterButtonActiveSettings.borderWidth
     priceButton.layer.borderColor = filterButtonActiveSettings.color.cgColor
     timeButton.layer.borderWidth = filterButtonInactiveSettings.borderWidth
     timeButton.layer.borderColor = filterButtonInactiveSettings.color.cgColor
     let layout = UICollectionViewFlowLayout()
-    layout.minimumInteritemSpacing = 8
-    layout.minimumLineSpacing = 8
+    layout.minimumInteritemSpacing = routeCollectionViewSpacing
+    layout.minimumLineSpacing = routeCollectionViewSpacing
     routesCollectionView.collectionViewLayout = layout
     routesCollectionView.backgroundColor = UIColor.clear
-    routesCollectionView.register(UINib(nibName: "BestRouteCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: BestRouteCell)
+    routesCollectionView.register(UINib(nibName: "RouteCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: RouteCell)
     routesCollectionView.delegate = self
     routesCollectionView.dataSource = self
     blurView.effect = nil
@@ -567,7 +530,7 @@ private extension HomeViewController {
     routesView.isHidden = true
     noRoutesView.isHidden = true
     
-    // Settings
+    // Setup
     routesViewTop.constant = routesViewActiveTop
     dropdownButton.isEnabled = true
     priceButtonWidth.constant = filterButtonActiveSettings.width

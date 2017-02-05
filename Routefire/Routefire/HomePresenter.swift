@@ -17,14 +17,13 @@ protocol HomePresenterProtocol: class {
   func transitionToRouteModule()
   func setMapCamera(initial: Bool)
   func checkForRoutes()
-  func sort(_ type: String)
+  func sortRoutes(_ type: String)
   func selectedRoute(at indexPath: IndexPath)
   func observeReachability()
   func reachabilityChanged(notification: Notification)
 }
 
 protocol HomePresenterRouteModuleProtocol: class {
-  func getReachabilitySettings() -> (routesViewTop: CGFloat, dropdownViewHeight: CGFloat, addressViewHeight: CGFloat, reachabilityViewBottom: CGFloat)
   func setTrip(_ trip: Trip?)
 }
 
@@ -56,12 +55,40 @@ class HomePresenter: HomePresenterProtocol {
     }
   }
   
-  func sort(_ type: String) {
+  func sortRoutes(_ type: String) {
     switch type {
     case "Price":
-      view.priceSort()
+      trip!.routes.sort {
+        if $0.lowPrice < $1.lowPrice {
+          return true
+        } else if $0.lowPrice == $1.lowPrice {
+          if $0.highPrice < $1.highPrice {
+            return true
+          } else if $0.highPrice == $1.highPrice {
+            if $0.arrival < $1.arrival {
+              return true
+            }
+            return $0.name < $1.name
+          }
+        }
+        return false
+      }
     case "Time":
-      view.timeSort()
+      trip!.routes.sort {
+        if $0.arrival < $1.arrival {
+          return true
+        } else if $0.arrival == $1.arrival {
+          if $0.lowPrice < $1.lowPrice {
+            return true
+          } else if $0.lowPrice == $1.lowPrice {
+            if $0.highPrice < $1.highPrice {
+              return true
+            }
+            return $0.name < $1.name
+          }
+        }
+        return false
+      }
     default:
       return
     }
@@ -140,16 +167,12 @@ class HomePresenter: HomePresenterProtocol {
 
 // Set trip from route module
 extension HomePresenter: HomePresenterRouteModuleProtocol {
-  func getReachabilitySettings() -> (routesViewTop: CGFloat, dropdownViewHeight: CGFloat, addressViewHeight: CGFloat, reachabilityViewBottom: CGFloat) {
-    return view.getReachabilitySettings(networkReachable)
-  }
-  
   func setTrip(_ trip: Trip?) {
     guard let trip = trip else {
       return
     }
-    
     self.trip = trip
+    sortRoutes("Price")
     view.routesLayout(trip)
   }
 }

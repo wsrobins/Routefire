@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol RouteViewProtocol: class {
+  func setTrip(_ name: String)
+}
+
 class RouteViewController: UIViewController {
   
   // Presenter
@@ -28,7 +32,6 @@ class RouteViewController: UIViewController {
   
   // Constraints
   @IBOutlet weak var routeViewTop: NSLayoutConstraint!
-  @IBOutlet weak var routeViewWidth: NSLayoutConstraint!
   @IBOutlet weak var routeViewHeight: NSLayoutConstraint!
   @IBOutlet weak var destinationsTableViewTop: NSLayoutConstraint!
   @IBOutlet weak var destinationsTableViewHeight: NSLayoutConstraint!
@@ -47,17 +50,7 @@ class RouteViewController: UIViewController {
     configureView()
   }
   
-  func setTrip(_ name: String) {
-    destinationField.text = name
-    destinationsTableView.reloadData()
-  }
-  
   // User interaction
-  @IBAction func backButtonTouched() {
-    expandTableView()
-    presenter.transitionToHomeModule()
-  }
-  
   @objc func textDidChange(_ textField: UITextField) {
     guard let text = textField.text else {
       return
@@ -68,36 +61,43 @@ class RouteViewController: UIViewController {
     }
   }
   
-  @IBAction func routeViewTouched(_ sender: UITapGestureRecognizer) {
-    expandTableView()
+  @IBAction func backButtonTouched() {
+    view.endEditing(true)
+    presenter.transitionToHomeModule()
   }
   
-  func expandTableView() {
-    guard destinationsTableViewHeight.constant != routeView.frame.height else {
-      return
-    }
-    
-    destinationsTableViewHeight.constant = routeView.frame.height
-    view.layoutIfNeeded()
+  @IBAction func routeViewTouched(_ sender: UITapGestureRecognizer) {
     view.endEditing(true)
   }
   
-  func keyboardWillShow(notification: Notification) {
-    let keyboardHeight = (notification.userInfo![UIKeyboardFrameBeginUserInfoKey] as! NSValue).cgRectValue.height
-    let rowHeight = (view.frame.height - routeView.frame.height - keyboardHeight) / 3
-    if destinationsTableView.rowHeight != rowHeight {
-      destinationsTableView.rowHeight = rowHeight
+  func keyboardChanged(notification: Notification) {
+    switch notification.name {
+    case Notification.Name.UIKeyboardWillShow:
+      let keyboardHeight = (notification.userInfo![UIKeyboardFrameBeginUserInfoKey] as! NSValue).cgRectValue.height
+      let rowHeight = (view.frame.height - routeView.frame.height - keyboardHeight) / 3
+      if destinationsTableView.rowHeight != rowHeight {
+        destinationsTableView.rowHeight = rowHeight
+        destinationsTableView.reloadData()
+      }
+    case Notification.Name.UIKeyboardDidShow:
+      let height = view.frame.height - destinationsTableView.rowHeight * 3
+      if destinationsTableViewHeight.constant != height {
+        destinationsTableViewHeight.constant = height
+      }
+    default:
+      if destinationsTableViewHeight.constant != routeView.frame.height {
+        destinationsTableViewHeight.constant = routeView.frame.height
+      }
     }
-    
     view.layoutIfNeeded()
   }
-  
-  func keyboardDidShow(notification: Notification) {
-    let height = view.frame.height - destinationsTableView.rowHeight * 3
-    if destinationsTableViewHeight.constant != height {
-      destinationsTableViewHeight.constant = height
-      view.layoutIfNeeded()
-    }
+}
+
+// View input
+extension RouteViewController: RouteViewProtocol {
+  func setTrip(_ name: String) {
+    destinationField.text = name
+    destinationsTableView.reloadData()
   }
 }
 
@@ -106,7 +106,7 @@ extension RouteViewController: UITableViewDelegate, UITableViewDataSource {
   
   // Delegate
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    expandTableView()
+    view.endEditing(true)
     
     let timer = Timer.scheduledTimer(withTimeInterval: 0.7, repeats: true) { _ in
       self.view.layoutIfNeeded()
@@ -170,14 +170,13 @@ private extension RouteViewController {
     view.frame = UIScreen.main.bounds
     
     // Initialize constants
-    destinationsTableViewActiveTop = destinationsTableView.frame.height
+    destinationsTableViewActiveTop = view.frame.height - routeView.frame.height
     destinationsTableViewInactiveTop = destinationsTableViewTop.constant
     loadingViewActiveWidth = loadingViewWidth.constant * 1.8
     loadingViewInactiveWidth = loadingViewWidth.constant
     
-    // Settings
+    // Setup
     view.bringSubview(toFront: blurView)
-    routeViewWidth.constant = view.frame.width
     backButton.alpha = 0
     fieldStackView.alpha = 0
     currentLocationButton.layer.cornerRadius = currentLocationButton.frame.height * 0.5
@@ -193,8 +192,9 @@ private extension RouteViewController {
     CALayer.lightShadow(loadingView)
     
     // Observe keyboard
-    NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
-    NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShow), name: .UIKeyboardDidShow, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(keyboardChanged), name: .UIKeyboardWillShow, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(keyboardChanged), name: .UIKeyboardDidShow, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(keyboardChanged), name: .UIKeyboardWillHide, object: nil)
   }
 }
 

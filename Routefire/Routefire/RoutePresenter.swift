@@ -21,7 +21,7 @@ protocol RoutePresenterProtocol: class {
 }
 
 final class RoutePresenter: RoutePresenterProtocol {
-  weak var view: RouteViewController!
+  weak var view: RouteViewProtocol!
   var wireframe: RouteWireframe!
   
   var trip: Trip?
@@ -181,24 +181,6 @@ final class RoutePresenter: RoutePresenterProtocol {
       }
       
       group.notify(queue: DispatchQueue.main) {
-        self.trip!.routes.sort {
-          if $0.lowPrice < $1.lowPrice {
-            return true
-          } else if $0.lowPrice == $1.lowPrice {
-            if $0.highPrice < $1.highPrice {
-              return true
-            } else if $0.highPrice == $1.highPrice {
-              if $0.arrival < $1.arrival {
-                return true
-              }
-              
-              return $0.name < $1.name
-            }
-          }
-          
-          return false
-        }
-        
         self.wireframe.transitionToHomeModule(timer: timer)
       }
     }

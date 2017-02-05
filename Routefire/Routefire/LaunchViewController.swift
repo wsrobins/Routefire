@@ -41,7 +41,7 @@ private extension LaunchViewController {
     // Frame
     view.frame = UIScreen.main.bounds
     
-    // Settings
+    // Setup
     whiteViewWidth.constant = view.frame.width
     whiteViewHeight.constant = view.frame.height
   }
