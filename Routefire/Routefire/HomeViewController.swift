@@ -16,7 +16,7 @@ protocol HomeViewProtocol: class {
   func zoomMapCamera(to location: CLLocationCoordinate2D, withZoom zoom: Float)
   func routesLayout(_ trip: Trip)
   func noRoutesPopup()
-  func toggleReachabilityView(_ reachable: Bool)
+  func toggleReachabilityView()
 }
 
 class HomeViewController: UIViewController {
@@ -35,6 +35,7 @@ class HomeViewController: UIViewController {
   @IBOutlet weak var addressView: UIView!
   @IBOutlet weak var dropdownButton: UIButton!
   @IBOutlet weak var addressButton: UIButton!
+  @IBOutlet weak var addressGradientView: UIView!
   @IBOutlet weak var priceButton: UIButton!
   @IBOutlet weak var timeButton: UIButton!
   @IBOutlet weak var routesCollectionView: UICollectionView!
@@ -46,7 +47,8 @@ class HomeViewController: UIViewController {
   
   // Constraints
   @IBOutlet weak var whereToButtonTop: NSLayoutConstraint!
-  @IBOutlet weak var whereToButtonWidth: NSLayoutConstraint!
+  @IBOutlet var whereToButtonCondensedWidth: NSLayoutConstraint!
+  @IBOutlet var whereToButtonExpandedWidth: NSLayoutConstraint!
   @IBOutlet weak var whereToButtonHeight: NSLayoutConstraint!
   @IBOutlet weak var routesViewTop: NSLayoutConstraint!
   @IBOutlet var addressViewDynamicHeight: NSLayoutConstraint!
@@ -63,12 +65,13 @@ class HomeViewController: UIViewController {
   // Constants
   var whereToButtonActiveTop: CGFloat!
   var whereToButtonInactiveTop: CGFloat!
-  var whereToButtonActiveWidth: CGFloat!
-  var whereToButtonInactiveWidth: CGFloat!
   var whereToButtonActiveHeight: CGFloat!
   var whereToButtonInactiveHeight: CGFloat!
   var routesViewActiveTop: CGFloat!
   var routesViewInactiveTop: CGFloat!
+  var addressViewReachableStaticHeight: CGFloat!
+  var addressViewUnreachableStaticHeight: CGFloat!
+  var addressGradient: CAGradientLayer!
   var filterButtonActiveSettings: (width: CGFloat, borderWidth: CGFloat, font: UIFont, color: UIColor)!
   var filterButtonInactiveSettings: (width: CGFloat, borderWidth: CGFloat, font: UIFont, color: UIColor)!
   var bestRouteCollectionViewCellWidth: CGFloat!
@@ -89,7 +92,6 @@ class HomeViewController: UIViewController {
     super.viewDidLoad()
     
     configureView()
-    presenter.observeReachability()
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -101,8 +103,15 @@ class HomeViewController: UIViewController {
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     
+    reachabilitySetup()
     presenter.setMapCamera(initial: false)
     presenter.checkForRoutes()
+  }
+  
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    
+    makeGradient()
   }
   
   // User interaction
@@ -112,7 +121,6 @@ class HomeViewController: UIViewController {
   
   @IBAction func dropdownButtonTouched() {
     if routesCollectionViewExpandedHeight.isActive {
-      addressViewStaticHeight = addressView.heightAnchor.constraint(equalToConstant: addressView.frame.height)
       addressViewStaticHeight.isActive = true
       addressViewDynamicHeight.isActive = false
       
@@ -226,7 +234,7 @@ class HomeViewController: UIViewController {
     view.layoutIfNeeded()
     UIView.animate(
       withDuration: 0.1,
-      delay: 0.15,
+      delay: 0.2,
       options: .curveEaseIn,
       animations: {
         self.whereToButton.alpha = 1
@@ -236,7 +244,7 @@ class HomeViewController: UIViewController {
     view.layoutIfNeeded()
     UIView.animate(
       withDuration: 0.1,
-      delay: 0.25,
+      delay: 0.3,
       options: .curveEaseIn,
       animations: {
         self.whereToButton.titleLabel!.alpha = 1
@@ -392,7 +400,7 @@ extension HomeViewController: HomeViewProtocol {
     })
   }
   
-  func toggleReachabilityView(_ reachable: Bool) {
+  func toggleReachabilityView() {
     self.setNeedsStatusBarAppearanceUpdate()
     
     self.view.layoutIfNeeded()
@@ -401,8 +409,9 @@ extension HomeViewController: HomeViewProtocol {
       delay: 0,
       options: [.curveEaseIn, .allowUserInteraction],
       animations: {
-        self.routesViewTop.constant = reachable ? self.routesViewActiveTop : self.routesViewInactiveTop
-        self.reachabilityViewBottom.constant = reachable ? self.reachabilityViewInactiveBottom : self.reachabilityViewActiveBottom
+        self.routesViewTop.constant = self.presenter.networkReachable ? self.routesViewActiveTop : self.routesViewInactiveTop
+        self.addressViewStaticHeight.constant = self.presenter.networkReachable ? self.addressViewReachableStaticHeight : self.addressViewUnreachableStaticHeight
+        self.reachabilityViewBottom.constant = self.presenter.networkReachable ? self.reachabilityViewInactiveBottom : self.reachabilityViewActiveBottom
         self.view.layoutIfNeeded()
     })
   }
@@ -422,7 +431,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RouteCell, for: indexPath) as! RouteCollectionViewCell
+    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: routeCell, for: indexPath) as! RouteCollectionViewCell
     if let route = presenter.trip?.routes[indexPath.row] {
       cell.addContent(for: route, best: indexPath.row == 0)
     }
@@ -478,8 +487,6 @@ private extension HomeViewController {
     // Initialize constants
     whereToButtonActiveTop = whereToButtonTop.constant
     whereToButtonInactiveTop = 0
-    whereToButtonActiveWidth = whereToButtonWidth.constant
-    whereToButtonInactiveWidth = 0
     whereToButtonActiveHeight = whereToButton.frame.height
     routesViewActiveTop = routesViewTop.constant
     routesViewInactiveTop = 8
@@ -497,8 +504,7 @@ private extension HomeViewController {
     mapView.isIndoorEnabled = false
     mapView.isBuildingsEnabled = false
     mapView.mapStyle = try? GMSMapStyle(contentsOfFileURL: Bundle.main.url(forResource: "MapStyle", withExtension: "json")!)
-    whereToButtonWidth.constant = whereToButtonActiveWidth
-    addressButton.titleLabel!.adjustsFontSizeToFitWidth = true
+    addressButton.titleLabel!.lineBreakMode = .byClipping
     priceButton.layer.borderWidth = filterButtonActiveSettings.borderWidth
     priceButton.layer.borderColor = filterButtonActiveSettings.color.cgColor
     timeButton.layer.borderWidth = filterButtonInactiveSettings.borderWidth
@@ -508,7 +514,7 @@ private extension HomeViewController {
     layout.minimumLineSpacing = routeCollectionViewSpacing
     routesCollectionView.collectionViewLayout = layout
     routesCollectionView.backgroundColor = UIColor.clear
-    routesCollectionView.register(UINib(nibName: "RouteCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: RouteCell)
+    routesCollectionView.register(UINib(nibName: "RouteCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: routeCell)
     routesCollectionView.delegate = self
     routesCollectionView.dataSource = self
     blurView.effect = nil
@@ -522,6 +528,29 @@ private extension HomeViewController {
     CALayer.shadow(timeButton)
     CALayer.shadow(noRoutesView)
     CALayer.shadow(noRoutesButton)
+  }
+  
+  func makeGradient() {
+    if addressGradient == nil {
+      addressGradient = CAGradientLayer()
+      addressGradient.frame = addressGradientView.bounds
+      addressGradient.startPoint = CGPoint(x: 0, y: 0.5)
+      addressGradient.endPoint = CGPoint(x: 1, y: 0.5)
+      addressGradient.locations = [0.3, 1]
+      addressGradient.colors = [UIColor.clear.cgColor, UIColor.black.cgColor]
+      addressGradientView.layer.mask = addressGradient
+    }
+  }
+  
+  func reachabilitySetup() {
+    
+    // Execute during first subview layout only
+    if addressViewStaticHeight == nil {
+      addressViewStaticHeight = addressView.heightAnchor.constraint(equalToConstant: addressView.frame.height)
+      addressViewReachableStaticHeight = addressViewStaticHeight.constant
+      addressViewUnreachableStaticHeight = addressViewStaticHeight.constant - (reachabilityView.frame.height + routesViewInactiveTop - routesViewActiveTop)
+      presenter.observeReachability()
+    }
   }
   
   func resetView() {

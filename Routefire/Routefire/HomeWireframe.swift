@@ -23,6 +23,7 @@ class HomeWireframe: NSObject, HomeWireframeProtocol {
   
   func transitionToRouteModule() {
     NotificationCenter.default.removeObserver(presenter)
+
     let routeView = RouteViewController()
     let routePresenter = RoutePresenter()
     let routeWireframe = RouteWireframe()
@@ -55,20 +56,6 @@ extension HomeWireframe: HomeWireframeAnimatedTransitioning {
     
     containerView.layoutIfNeeded()
     UIView.animate(
-      withDuration: 0.5,
-      delay: 0,
-      usingSpringWithDamping: 0.8,
-      initialSpringVelocity: 1,
-      options: .curveEaseIn,
-      animations: {
-        toVC.destinationsTableViewTop.constant = toVC.destinationsTableViewActiveTop
-        containerView.layoutIfNeeded()
-    }) { _ in
-      transitionContext.completeTransition(true)
-    }
-    
-    containerView.layoutIfNeeded()
-    UIView.animate(
       withDuration: 0.1,
       delay: 0,
       options: .curveEaseIn,
@@ -86,8 +73,11 @@ extension HomeWireframe: HomeWireframeAnimatedTransitioning {
       options: .curveEaseInOut,
       animations: {
         fromVC.whereToButtonTop.constant = fromVC.whereToButtonInactiveTop
-        fromVC.whereToButtonWidth.constant = fromVC.whereToButtonInactiveWidth
+        fromVC.whereToButtonCondensedWidth.isActive = false
+        fromVC.whereToButtonExpandedWidth.isActive = true
         fromVC.whereToButtonHeight.constant = fromVC.whereToButtonInactiveHeight
+        fromVC.routesViewTop.constant = fromVC.routesViewActiveTop
+        fromVC.addressViewStaticHeight.constant = fromVC.addressViewReachableStaticHeight
         fromVC.reachabilityViewBottom.constant = fromVC.reachabilityViewInactiveBottom
         containerView.layoutIfNeeded()
     }) { _ in
@@ -104,5 +94,20 @@ extension HomeWireframe: HomeWireframeAnimatedTransitioning {
         toVC.fieldStackView.alpha = 1
         containerView.layoutIfNeeded()
     })
+    
+    containerView.layoutIfNeeded()
+    UIView.animate(
+      withDuration: 0.5,
+      delay: 0,
+      usingSpringWithDamping: 0.8,
+      initialSpringVelocity: 1,
+      options: .curveEaseIn,
+      animations: {
+        toVC.destinationsTableViewHiddenTop.isActive = false
+        toVC.destinationsTableViewVisibleTop.isActive = true
+        containerView.layoutIfNeeded()
+    }) { _ in
+      transitionContext.completeTransition(true)
+    }
   }
 }

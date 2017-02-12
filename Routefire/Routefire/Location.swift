@@ -22,22 +22,22 @@ final class Location: NSObject {
     locationManager.delegate = self
   }
   
-  static func request() {
-    shared.locationManager.requestWhenInUseAuthorization()
+  static func checkAuthorizationStatus() {
+    switch CLLocationManager.authorizationStatus() {
+    case .authorizedWhenInUse:
+      shared.locationManager.startUpdatingLocation()
+    case .notDetermined:
+      shared.locationManager.requestWhenInUseAuthorization()
+    default:
+      NotificationCenter.default.post(Notification(name: noLocationNotification))
+    }
   }
 }
 
 // Location manager delegate
 extension Location: CLLocationManagerDelegate {
-  func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-    
-    if status == CLAuthorizationStatus.authorizedWhenInUse {
-      locationManager.startUpdatingLocation()
-    }
-  }
-  
   func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-    NotificationCenter.default.post(name: LocationFoundNotification, object: nil)
+    NotificationCenter.default.post(name: locationUpdatedNotification, object: nil)
   }
 }
 

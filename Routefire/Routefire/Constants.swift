@@ -9,10 +9,9 @@
 import Foundation
 
 // Notification names
-let LocationFoundNotification = Notification.Name("locationFound")
-let NetworkReachableNotification = Notification.Name("networkReachable")
-let NetworkUnreachableNotification = Notification.Name("networkUnreachable")
+let locationUpdatedNotification = Notification.Name("locationUpdated")
+let noLocationNotification = Notification.Name("noLocation")
 
 // Cell identifiers
-let RouteCell = "routeCell"
-let DestinationCell = "destinationCell"
+let routeCell = "routeCell"
+let destinationCell = "destinationCell"

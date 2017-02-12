@@ -14,7 +14,7 @@ final class Uber {
     let group = DispatchGroup()
     
     // Price estimates
-    var priceEstimates: [String : [String : Any]] = [:]
+    var priceEstimates: [String : [String : Any]]?
     let pricesURL = URL(string: "https://api.uber.com/v1.2/estimates/price")!
     let pricesParameters: [String : Any] = [
       "server_token" : Secrets.uberServerToken,
@@ -25,20 +25,20 @@ final class Uber {
     ]
     
     getPrices(pricesURL, pricesParameters, group) { estimates in
-      priceEstimates = estimates ?? [:]
+      priceEstimates = estimates
     }
     
     // Time estimates
-    var timeEstimates: [String : Int] = [:]
+    var timeEstimates: [String : Int]?
     let timesURL = URL(string: "https://api.uber.com/v1.2/estimates/time")!
     let timesParameters: [String : Any] = [
       "server_token" : Secrets.uberServerToken,
       "start_latitude" : Location.current.latitude,
       "start_longitude" : Location.current.longitude
     ]
-  
+    
     getTimes(timesURL, timesParameters, group) { estimates in
-      timeEstimates = estimates ?? [:]
+      timeEstimates = estimates
     }
     
     // Requests complete
@@ -64,13 +64,7 @@ final class Uber {
           let id = priceDict["product_id"] as? String,
           let lowPrice = priceDict["low_estimate"] as? Int,
           let highPrice = priceDict["high_estimate"] as? Int,
-          let duration = priceDict["duration"] as? Int else {
-            print("error unwrapping uber price info")
-            completion(nil)
-            group.leave()
-            return
-        }
-        
+          let duration = priceDict["duration"] as? Int else { continue }
         priceEstimates[name] = ["id" : id, "lowPrice" : lowPrice, "highPrice" : highPrice, "duration" : duration]
       }
       
@@ -93,13 +87,7 @@ final class Uber {
       
       for timeDict in timesArray {
         guard let name = timeDict["localized_display_name"] as? String,
-          let waitTime = timeDict["estimate"] as? Int else {
-            print("error unwrapping uber time info")
-            completion(nil)
-            group.leave()
-            return
-        }
-        
+          let waitTime = timeDict["estimate"] as? Int else { continue }
         timeEstimates[name] = waitTime
       }
       

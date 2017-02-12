@@ -9,7 +9,12 @@
 import UIKit
 
 protocol RouteViewProtocol: class {
-  func setTrip(_ name: String)
+  func setName(_ name: String)
+  func getTextInput() -> String
+  func refresh()
+  func loading() -> Timer
+  func doneLoading(_ success: Bool)
+  func networkUnreachableAlert()
 }
 
 class RouteViewController: UIViewController {
@@ -33,13 +38,12 @@ class RouteViewController: UIViewController {
   // Constraints
   @IBOutlet weak var routeViewTop: NSLayoutConstraint!
   @IBOutlet weak var routeViewHeight: NSLayoutConstraint!
-  @IBOutlet weak var destinationsTableViewTop: NSLayoutConstraint!
+  @IBOutlet var destinationsTableViewVisibleTop: NSLayoutConstraint!
+  @IBOutlet var destinationsTableViewHiddenTop: NSLayoutConstraint!
   @IBOutlet weak var destinationsTableViewHeight: NSLayoutConstraint!
   @IBOutlet weak var loadingViewWidth: NSLayoutConstraint!
   
   // Constants
-  var destinationsTableViewActiveTop: CGFloat!
-  var destinationsTableViewInactiveTop: CGFloat!
   var loadingViewActiveWidth: CGFloat!
   var loadingViewInactiveWidth: CGFloat!
   
@@ -48,17 +52,21 @@ class RouteViewController: UIViewController {
     super.viewDidLoad()
     
     configureView()
+    presenter.observeReachability()
+  }
+  
+  // Overrides
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    
+    if currentLocationButton.layer.cornerRadius != currentLocationButton.frame.height * 0.5 {
+      currentLocationButton.layer.cornerRadius = currentLocationButton.frame.height * 0.5
+    }
   }
   
   // User interaction
   @objc func textDidChange(_ textField: UITextField) {
-    guard let text = textField.text else {
-      return
-    }
-    
-    presenter.autocomplete(text) {
-      self.destinationsTableView.reloadData()
-    }
+    presenter.autocomplete()
   }
   
   @IBAction func backButtonTouched() {
@@ -77,17 +85,18 @@ class RouteViewController: UIViewController {
       let rowHeight = (view.frame.height - routeView.frame.height - keyboardHeight) / 3
       if destinationsTableView.rowHeight != rowHeight {
         destinationsTableView.rowHeight = rowHeight
-        destinationsTableView.reloadData()
       }
     case Notification.Name.UIKeyboardDidShow:
       let height = view.frame.height - destinationsTableView.rowHeight * 3
       if destinationsTableViewHeight.constant != height {
         destinationsTableViewHeight.constant = height
       }
-    default:
+    case Notification.Name.UIKeyboardWillHide:
       if destinationsTableViewHeight.constant != routeView.frame.height {
         destinationsTableViewHeight.constant = routeView.frame.height
       }
+    default:
+      break
     }
     view.layoutIfNeeded()
   }
@@ -95,19 +104,20 @@ class RouteViewController: UIViewController {
 
 // View input
 extension RouteViewController: RouteViewProtocol {
-  func setTrip(_ name: String) {
+  func setName(_ name: String) {
     destinationField.text = name
+    view.layoutIfNeeded()
+  }
+  
+  func getTextInput() -> String {
+    return destinationField.text ?? ""
+  }
+  
+  func refresh() {
     destinationsTableView.reloadData()
   }
-}
-
-// Destinations table view delegate and data source
-extension RouteViewController: UITableViewDelegate, UITableViewDataSource {
   
-  // Delegate
-  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    view.endEditing(true)
-    
+  func loading() -> Timer {
     let timer = Timer.scheduledTimer(withTimeInterval: 0.7, repeats: true) { _ in
       self.view.layoutIfNeeded()
       UIView.animate(
@@ -143,7 +153,54 @@ extension RouteViewController: UITableViewDelegate, UITableViewDataSource {
         self.view.layoutIfNeeded()
     })
     
-    presenter.selectedDestination(at: indexPath, timer: timer)
+    return timer
+  }
+  
+  func doneLoading(_ success: Bool) {
+    view.layoutIfNeeded()
+    UIView.animate(
+      withDuration: 0.15,
+      delay: 0,
+      options: .curveEaseOut,
+      animations: {
+        self.loadingView.alpha = 0
+        self.view.layoutIfNeeded()
+    }) { _ in
+      self.loadingView.isHidden = true
+    }
+    
+    view.layoutIfNeeded()
+    UIView.animate(
+      withDuration: 0.35,
+      delay: 0,
+      options: .curveEaseOut,
+      animations: {
+        self.blurView.effect = nil
+        self.view.layoutIfNeeded()
+    }) { _ in
+      self.blurView.isHidden = true
+      guard success else {
+        self.networkUnreachableAlert()
+        return
+      }
+    }
+  }
+  
+  func networkUnreachableAlert() {
+    let alert = UIAlertController(title: "We can't reach our network right now", message: nil, preferredStyle: .actionSheet)
+    alert.addAction(UIAlertAction(title: "Dismiss", style: .default))
+    alert.view.layoutIfNeeded()
+    present(alert, animated: true)
+  }
+}
+
+// Destinations table view delegate and data source
+extension RouteViewController: UITableViewDelegate, UITableViewDataSource {
+  
+  // Delegate
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    view.endEditing(true)
+    presenter.selectedDestination(at: indexPath)
   }
   
   // Data source
@@ -152,11 +209,11 @@ extension RouteViewController: UITableViewDelegate, UITableViewDataSource {
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    guard let cell = destinationsTableView.dequeueReusableCell(withIdentifier: DestinationCell, for: indexPath) as? DestinationTableViewCell else {
+    guard let cell = destinationsTableView.dequeueReusableCell(withIdentifier: destinationCell, for: indexPath) as? DestinationTableViewCell else {
       return UITableViewCell()
     }
     
-    cell.destinationLabel.attributedText = presenter.locationName(indexPath)
+    cell.destinationLabel.attributedText = presenter.locationName(for: indexPath, withFontSize: cell.destinationLabel.font.pointSize)
     
     return cell
   }
@@ -170,8 +227,6 @@ private extension RouteViewController {
     view.frame = UIScreen.main.bounds
     
     // Initialize constants
-    destinationsTableViewActiveTop = view.frame.height - routeView.frame.height
-    destinationsTableViewInactiveTop = destinationsTableViewTop.constant
     loadingViewActiveWidth = loadingViewWidth.constant * 1.8
     loadingViewInactiveWidth = loadingViewWidth.constant
     
@@ -179,10 +234,10 @@ private extension RouteViewController {
     view.bringSubview(toFront: blurView)
     backButton.alpha = 0
     fieldStackView.alpha = 0
-    currentLocationButton.layer.cornerRadius = currentLocationButton.frame.height * 0.5
     destinationField.autocorrectionType = .no
     destinationField.addTarget(self, action: #selector(textDidChange(_:)), for: .editingChanged)
-    destinationsTableView.register(UINib(nibName: "DestinationTableViewCell", bundle: nil), forCellReuseIdentifier: DestinationCell)
+    destinationsTableView.rowHeight = view.frame.height - routeView.frame.height
+    destinationsTableView.register(UINib(nibName: "DestinationTableViewCell", bundle: nil), forCellReuseIdentifier: destinationCell)
     destinationsTableView.delegate = self
     destinationsTableView.dataSource = self
     blurView.effect = nil

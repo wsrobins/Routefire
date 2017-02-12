@@ -11,7 +11,7 @@ import GooglePlaces
 
 final class Lyft {
   static private var accessToken = ""
-  static private func getAccessToken(completion: @escaping(String) -> Void) {
+  static private func getAccessToken(completion: @escaping(String?) -> Void) {
     let url = URL(string: "https://api.lyft.com/oauth/token")!
     let parameters = ["grant_type" : "client_credentials", "scope" : "public"]
     Alamofire
@@ -21,29 +21,39 @@ final class Lyft {
         guard let accessTokenJSON = response.result.value as? [String : Any],
           let accessToken = accessTokenJSON["access_token"] as? String else {
             print("error unwrapping lyft access token")
+            completion(nil)
             return
         }
-        
         completion(accessToken)
     }
   }
   
-  static func getEstimates(to place: GMSPlace, completion: @escaping ([[String : Any]]) -> Void) {
+  static func getEstimates(to place: GMSPlace, completion: @escaping ([[String : Any]]?) -> Void) {
     getAccessToken { accessToken in
+      guard let accessToken = accessToken else {
+        completion(nil)
+        return
+      }
+      
       let url = URL(string: "https://api.lyft.com/v1/cost")!
-      let parameters = ["start_lat" : Location.current.latitude,
-                        "start_lng" : Location.current.longitude,
-                        "end_lat" : place.coordinate.latitude,
-                        "end_lng" : place.coordinate.longitude]
       let headers = ["Authorization" : "bearer \(accessToken)"]
-      Alamofire.request(url, parameters: parameters, headers: headers).responseJSON { response in
-        guard let estimatesJSON = response.result.value as? [String : [[String : Any]]],
-          let estimates = estimatesJSON.values.first else {
-            print("error unwrapping lyft prices")
-            return
-        }
-        
-        completion(estimates)
+      let parameters = [
+        "start_lat" : Location.current.latitude,
+        "start_lng" : Location.current.longitude,
+        "end_lat" : place.coordinate.latitude,
+        "end_lng" : place.coordinate.longitude
+      ]
+      
+      Alamofire
+        .request(url, parameters: parameters, headers: headers)
+        .responseJSON { response in
+          guard let estimatesJSON = response.result.value as? [String : [[String : Any]]],
+            let estimates = estimatesJSON.values.first else {
+              print("error unwrapping lyft prices")
+              completion(nil)
+              return
+          }
+          completion(estimates)
       }
     }
   }

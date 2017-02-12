@@ -13,7 +13,7 @@ import ReachabilitySwift
 protocol RouteWireframeAnimatedTransitioning: UIViewControllerAnimatedTransitioning {}
 
 protocol RouteWireframeProtocol {
-  func transitionToHomeModule(timer: Timer?)
+  func transitionToHomeModule()
 }
 
 class RouteWireframe: NSObject, RouteWireframeProtocol {
@@ -21,11 +21,9 @@ class RouteWireframe: NSObject, RouteWireframeProtocol {
   weak var presenter: RoutePresenterProtocol!
   weak var homePresenter: HomePresenterRouteModuleProtocol!
   
-  func transitionToHomeModule(timer: Timer?) {
+  func transitionToHomeModule() {
     NotificationCenter.default.removeObserver(view)
     homePresenter.setTrip(presenter.trip)
-    timer?.invalidate()
-    
     view.dismiss(animated: true)
   }
 }
@@ -44,30 +42,6 @@ extension RouteWireframe: RouteWireframeAnimatedTransitioning {
     
     containerView.layoutIfNeeded()
     UIView.animate(
-      withDuration: 0.35,
-      delay: 0,
-      options: .curveEaseOut,
-      animations: {
-        fromVC.blurView.effect = nil
-        containerView.layoutIfNeeded()
-    }) { _ in
-      fromVC.blurView.isHidden = true
-    }
-    
-    containerView.layoutIfNeeded()
-    UIView.animate(
-      withDuration: 0.15,
-      delay: 0,
-      options: .curveEaseOut,
-      animations: {
-        fromVC.loadingView.alpha = 0
-        containerView.layoutIfNeeded()
-    }) { _ in
-      fromVC.loadingView.isHidden = true
-    }
-    
-    containerView.layoutIfNeeded()
-    UIView.animate(
       withDuration: 0.1,
       delay: 0,
       options: .curveEaseIn,
@@ -82,10 +56,13 @@ extension RouteWireframe: RouteWireframeAnimatedTransitioning {
       delay: 0.05,
       options: .curveEaseInOut,
       animations: {
-        fromVC.destinationsTableViewTop.constant = 0
+        fromVC.destinationsTableViewVisibleTop.isActive = false
+        fromVC.destinationsTableViewHiddenTop.isActive = true
         toVC.whereToButtonTop.constant = toVC.whereToButtonActiveTop
-        toVC.whereToButtonWidth.constant = toVC.whereToButtonActiveWidth
+        toVC.whereToButtonExpandedWidth.isActive = false
+        toVC.whereToButtonCondensedWidth.isActive = true
         toVC.whereToButtonHeight.constant = toVC.whereToButtonActiveHeight
+        toVC.toggleReachabilityView()
         containerView.layoutIfNeeded()
     })
     

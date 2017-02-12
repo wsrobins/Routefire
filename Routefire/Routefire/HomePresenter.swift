@@ -7,7 +7,6 @@
 //
 
 import CoreLocation
-import GooglePlaces
 import ReachabilitySwift
 
 protocol HomePresenterProtocol: class {
@@ -20,7 +19,6 @@ protocol HomePresenterProtocol: class {
   func sortRoutes(_ type: String)
   func selectedRoute(at indexPath: IndexPath)
   func observeReachability()
-  func reachabilityChanged(notification: Notification)
 }
 
 protocol HomePresenterRouteModuleProtocol: class {
@@ -153,14 +151,15 @@ class HomePresenter: HomePresenterProtocol {
     }
   }
   
+  // Ensure network connectivity
   func observeReachability() {
     NotificationCenter.default.addObserver(self, selector: #selector(reachabilityChanged), name: ReachabilityChangedNotification, object: nil)
     Network.startNotifier()
   }
   
-  @objc func reachabilityChanged(notification: Notification) {
+  @objc func reachabilityChanged() {
     DispatchQueue.main.async {
-      self.view.toggleReachabilityView((notification.object as! Reachability).isReachable)
+      self.view.toggleReachabilityView()
     }
   }
 }
@@ -168,11 +167,10 @@ class HomePresenter: HomePresenterProtocol {
 // Set trip from route module
 extension HomePresenter: HomePresenterRouteModuleProtocol {
   func setTrip(_ trip: Trip?) {
-    guard let trip = trip else {
-      return
+    if let trip = trip  {
+      self.trip = trip
+      sortRoutes("Price")
+      view.routesLayout(trip)
     }
-    self.trip = trip
-    sortRoutes("Price")
-    view.routesLayout(trip)
   }
 }
