@@ -1,0 +1,675 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		844A94BE736BDA8CCBEE3324 /* Pods_Routefire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56B6BDB9E8725EF5196D77B1 /* Pods_Routefire.framework */; };
+		C418BD1B1EE6AA0800D74AF8 /* GoogleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C418BD1A1EE6AA0800D74AF8 /* GoogleService.swift */; };
+		C43EB2B01EB828BF00549E9C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43EB2AF1EB828BF00549E9C /* AppDelegate.swift */; };
+		C43EB2B71EB828BF00549E9C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C43EB2B61EB828BF00549E9C /* Assets.xcassets */; };
+		C43EB2C21EB828DE00549E9C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C43EB2C11EB828DE00549E9C /* LaunchScreen.storyboard */; };
+		C443A8941EE246CC005D41B3 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = C443A8931EE246CC005D41B3 /* Secrets.swift */; };
+		C443A8971EE24935005D41B3 /* MapStyle.json in Resources */ = {isa = PBXBuildFile; fileRef = C443A8961EE24935005D41B3 /* MapStyle.json */; };
+		C446D6011EEBDAE700DE6F11 /* LaunchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C446D6001EEBDAE700DE6F11 /* LaunchViewModel.swift */; };
+		C446D60B1EEBF7AF00DE6F11 /* UIViewKeyframeAnimationOptionsExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C446D60A1EEBF7AF00DE6F11 /* UIViewKeyframeAnimationOptionsExtensions.swift */; };
+		C446D60E1EEC163800DE6F11 /* LaunchAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C446D60D1EEC163800DE6F11 /* LaunchAnimator.swift */; };
+		C46180F31EE3630900C2AB2B /* CLLocationManagerRxExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46180F21EE3630900C2AB2B /* CLLocationManagerRxExtensions.swift */; };
+		C46180F91EE363D200C2AB2B /* RxCLLocationManagerDelegateProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46180F81EE363D200C2AB2B /* RxCLLocationManagerDelegateProxy.swift */; };
+		C46180FD1EE3842100C2AB2B /* Autocompletion.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46180FC1EE3842100C2AB2B /* Autocompletion.swift */; };
+		C46180FF1EE3B1AC00C2AB2B /* AutocompletionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46180FE1EE3B1AC00C2AB2B /* AutocompletionCell.swift */; };
+		C46ED7061EE1F3BD0045FEC0 /* AppNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46ED7051EE1F3BD0045FEC0 /* AppNavigationController.swift */; };
+		C46ED7081EE1F50B0045FEC0 /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46ED7071EE1F50B0045FEC0 /* LaunchViewController.swift */; };
+		C46ED70A1EE1FABE0045FEC0 /* LaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46ED7091EE1FABE0045FEC0 /* LaunchView.swift */; };
+		C46ED70F1EE2113D0045FEC0 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46ED70E1EE2113D0045FEC0 /* HomeView.swift */; };
+		C46ED7111EE211480045FEC0 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46ED7101EE211480045FEC0 /* HomeViewController.swift */; };
+		C46ED7131EE211530045FEC0 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46ED7121EE211530045FEC0 /* HomeViewModel.swift */; };
+		C4CB569E1EE6144B000E4478 /* SettingsServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CB569A1EE6144B000E4478 /* SettingsServices.swift */; };
+		C4CB569F1EE6144B000E4478 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CB569B1EE6144B000E4478 /* SettingsView.swift */; };
+		C4CB56A01EE6144B000E4478 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CB569C1EE6144B000E4478 /* SettingsViewController.swift */; };
+		C4CB56A11EE6144B000E4478 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CB569D1EE6144B000E4478 /* SettingsViewModel.swift */; };
+		C4CB56A91EE61526000E4478 /* RouteServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CB56A51EE61526000E4478 /* RouteServices.swift */; };
+		C4CB56AA1EE61526000E4478 /* RouteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CB56A61EE61526000E4478 /* RouteView.swift */; };
+		C4CB56AB1EE61526000E4478 /* RouteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CB56A71EE61526000E4478 /* RouteViewController.swift */; };
+		C4CB56AC1EE61526000E4478 /* RouteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CB56A81EE61526000E4478 /* RouteViewModel.swift */; };
+		C4D624431EE7CC940000504A /* NewsServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D6243F1EE7CC940000504A /* NewsServices.swift */; };
+		C4D624441EE7CC940000504A /* NewsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D624401EE7CC940000504A /* NewsView.swift */; };
+		C4D624451EE7CC940000504A /* NewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D624411EE7CC940000504A /* NewsViewController.swift */; };
+		C4D624461EE7CC940000504A /* NewsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D624421EE7CC940000504A /* NewsViewModel.swift */; };
+		C4E502CC1EE3526200F10604 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E502CB1EE3526200F10604 /* LocationService.swift */; };
+		C4E5E4311EE89CCF0094F4AA /* SettingsNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E5E4301EE89CCF0094F4AA /* SettingsNavigationController.swift */; };
+		C4ED12951EEBC8C100795D2B /* RoutefireLogoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4ED12941EEBC8C100795D2B /* RoutefireLogoView.swift */; };
+		C4ED12971EEBC97300795D2B /* StyleKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4ED12961EEBC97300795D2B /* StyleKit.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		4AC92D8B8B9630B636ADE46A /* Pods-Routefire.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Routefire.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Routefire/Pods-Routefire.debug.xcconfig"; sourceTree = "<group>"; };
+		56B6BDB9E8725EF5196D77B1 /* Pods_Routefire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Routefire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		86BC3F39B4B5ECADA7F66A24 /* Pods-Routefire.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Routefire.release.xcconfig"; path = "Pods/Target Support Files/Pods-Routefire/Pods-Routefire.release.xcconfig"; sourceTree = "<group>"; };
+		C418BD1A1EE6AA0800D74AF8 /* GoogleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleService.swift; sourceTree = "<group>"; };
+		C43EB2AC1EB828BF00549E9C /* Routefire.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Routefire.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C43EB2AF1EB828BF00549E9C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		C43EB2B61EB828BF00549E9C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C43EB2BB1EB828BF00549E9C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C43EB2C11EB828DE00549E9C /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		C443A8931EE246CC005D41B3 /* Secrets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
+		C443A8961EE24935005D41B3 /* MapStyle.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MapStyle.json; sourceTree = "<group>"; };
+		C446D6001EEBDAE700DE6F11 /* LaunchViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchViewModel.swift; sourceTree = "<group>"; };
+		C446D60A1EEBF7AF00DE6F11 /* UIViewKeyframeAnimationOptionsExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewKeyframeAnimationOptionsExtensions.swift; sourceTree = "<group>"; };
+		C446D60D1EEC163800DE6F11 /* LaunchAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchAnimator.swift; sourceTree = "<group>"; };
+		C46180F21EE3630900C2AB2B /* CLLocationManagerRxExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CLLocationManagerRxExtensions.swift; sourceTree = "<group>"; };
+		C46180F81EE363D200C2AB2B /* RxCLLocationManagerDelegateProxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RxCLLocationManagerDelegateProxy.swift; sourceTree = "<group>"; };
+		C46180FC1EE3842100C2AB2B /* Autocompletion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Autocompletion.swift; sourceTree = "<group>"; };
+		C46180FE1EE3B1AC00C2AB2B /* AutocompletionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutocompletionCell.swift; sourceTree = "<group>"; };
+		C46ED7051EE1F3BD0045FEC0 /* AppNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppNavigationController.swift; sourceTree = "<group>"; };
+		C46ED7071EE1F50B0045FEC0 /* LaunchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
+		C46ED7091EE1FABE0045FEC0 /* LaunchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchView.swift; sourceTree = "<group>"; };
+		C46ED70E1EE2113D0045FEC0 /* HomeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		C46ED7101EE211480045FEC0 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		C46ED7121EE211530045FEC0 /* HomeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		C4CB569A1EE6144B000E4478 /* SettingsServices.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsServices.swift; sourceTree = "<group>"; };
+		C4CB569B1EE6144B000E4478 /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		C4CB569C1EE6144B000E4478 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		C4CB569D1EE6144B000E4478 /* SettingsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
+		C4CB56A51EE61526000E4478 /* RouteServices.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteServices.swift; sourceTree = "<group>"; };
+		C4CB56A61EE61526000E4478 /* RouteView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteView.swift; sourceTree = "<group>"; };
+		C4CB56A71EE61526000E4478 /* RouteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteViewController.swift; sourceTree = "<group>"; };
+		C4CB56A81EE61526000E4478 /* RouteViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteViewModel.swift; sourceTree = "<group>"; };
+		C4D6243F1EE7CC940000504A /* NewsServices.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsServices.swift; sourceTree = "<group>"; };
+		C4D624401EE7CC940000504A /* NewsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsView.swift; sourceTree = "<group>"; };
+		C4D624411EE7CC940000504A /* NewsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsViewController.swift; sourceTree = "<group>"; };
+		C4D624421EE7CC940000504A /* NewsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsViewModel.swift; sourceTree = "<group>"; };
+		C4E502CB1EE3526200F10604 /* LocationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
+		C4E5E4301EE89CCF0094F4AA /* SettingsNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsNavigationController.swift; sourceTree = "<group>"; };
+		C4ED12941EEBC8C100795D2B /* RoutefireLogoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoutefireLogoView.swift; sourceTree = "<group>"; };
+		C4ED12961EEBC97300795D2B /* StyleKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleKit.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C43EB2A91EB828BF00549E9C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				844A94BE736BDA8CCBEE3324 /* Pods_Routefire.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		26C62E5F9F570619D213819D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				56B6BDB9E8725EF5196D77B1 /* Pods_Routefire.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		4B2152E83C0C647B7DB6BE37 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				4AC92D8B8B9630B636ADE46A /* Pods-Routefire.debug.xcconfig */,
+				86BC3F39B4B5ECADA7F66A24 /* Pods-Routefire.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		C43EB2A31EB828BF00549E9C = {
+			isa = PBXGroup;
+			children = (
+				C43EB2AE1EB828BF00549E9C /* Routefire */,
+				C43EB2AD1EB828BF00549E9C /* Products */,
+				4B2152E83C0C647B7DB6BE37 /* Pods */,
+				26C62E5F9F570619D213819D /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		C43EB2AD1EB828BF00549E9C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C43EB2AC1EB828BF00549E9C /* Routefire.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C43EB2AE1EB828BF00549E9C /* Routefire */ = {
+			isa = PBXGroup;
+			children = (
+				C46ED70C1EE211200045FEC0 /* Main App */,
+				C46ED70B1EE211140045FEC0 /* Launch Module */,
+				C46ED70D1EE2112D0045FEC0 /* Home Module */,
+				C4CB56A21EE61503000E4478 /* Route module */,
+				C49E78481EE7432A0061D25D /* News Module */,
+				C4CB56971EE6142F000E4478 /* Settings Module */,
+				C4E502CD1EE35A9F00F10604 /* Services */,
+				C4E502C81EE3509E00F10604 /* Extensions */,
+				C443A8951EE247A8005D41B3 /* Supporting */,
+			);
+			path = Routefire;
+			sourceTree = "<group>";
+		};
+		C443A8951EE247A8005D41B3 /* Supporting */ = {
+			isa = PBXGroup;
+			children = (
+				C43EB2B61EB828BF00549E9C /* Assets.xcassets */,
+				C43EB2C11EB828DE00549E9C /* LaunchScreen.storyboard */,
+				C443A8961EE24935005D41B3 /* MapStyle.json */,
+				C4ED12961EEBC97300795D2B /* StyleKit.swift */,
+				C443A8931EE246CC005D41B3 /* Secrets.swift */,
+				C43EB2BB1EB828BF00549E9C /* Info.plist */,
+			);
+			name = Supporting;
+			sourceTree = "<group>";
+		};
+		C446D6021EEBDB8D00DE6F11 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				C446D6001EEBDAE700DE6F11 /* LaunchViewModel.swift */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		C446D6031EEBDB9100DE6F11 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				C46ED7071EE1F50B0045FEC0 /* LaunchViewController.swift */,
+				C46ED7091EE1FABE0045FEC0 /* LaunchView.swift */,
+				C4ED12941EEBC8C100795D2B /* RoutefireLogoView.swift */,
+				C446D60D1EEC163800DE6F11 /* LaunchAnimator.swift */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		C46180F61EE3632700C2AB2B /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				C446D60A1EEBF7AF00DE6F11 /* UIViewKeyframeAnimationOptionsExtensions.swift */,
+			);
+			name = UI;
+			sourceTree = "<group>";
+		};
+		C46180F71EE3632C00C2AB2B /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				C46180F21EE3630900C2AB2B /* CLLocationManagerRxExtensions.swift */,
+				C46180F81EE363D200C2AB2B /* RxCLLocationManagerDelegateProxy.swift */,
+			);
+			name = Other;
+			sourceTree = "<group>";
+		};
+		C46ED70B1EE211140045FEC0 /* Launch Module */ = {
+			isa = PBXGroup;
+			children = (
+				C446D6031EEBDB9100DE6F11 /* View */,
+				C446D6021EEBDB8D00DE6F11 /* Model */,
+			);
+			name = "Launch Module";
+			sourceTree = "<group>";
+		};
+		C46ED70C1EE211200045FEC0 /* Main App */ = {
+			isa = PBXGroup;
+			children = (
+				C43EB2AF1EB828BF00549E9C /* AppDelegate.swift */,
+				C46ED7051EE1F3BD0045FEC0 /* AppNavigationController.swift */,
+			);
+			name = "Main App";
+			sourceTree = "<group>";
+		};
+		C46ED70D1EE2112D0045FEC0 /* Home Module */ = {
+			isa = PBXGroup;
+			children = (
+				C4CB56961EE600A6000E4478 /* View */,
+				C4CB56951EE600A2000E4478 /* Model */,
+			);
+			name = "Home Module";
+			sourceTree = "<group>";
+		};
+		C49E78481EE7432A0061D25D /* News Module */ = {
+			isa = PBXGroup;
+			children = (
+				C49E78521EE7434D0061D25D /* View */,
+				C49E78511EE743460061D25D /* Model */,
+			);
+			name = "News Module";
+			sourceTree = "<group>";
+		};
+		C49E78511EE743460061D25D /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				C4D624421EE7CC940000504A /* NewsViewModel.swift */,
+				C4D6243F1EE7CC940000504A /* NewsServices.swift */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		C49E78521EE7434D0061D25D /* View */ = {
+			isa = PBXGroup;
+			children = (
+				C4D624411EE7CC940000504A /* NewsViewController.swift */,
+				C4D624401EE7CC940000504A /* NewsView.swift */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		C4CB56951EE600A2000E4478 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				C46ED7121EE211530045FEC0 /* HomeViewModel.swift */,
+				C46180FC1EE3842100C2AB2B /* Autocompletion.swift */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		C4CB56961EE600A6000E4478 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				C46ED7101EE211480045FEC0 /* HomeViewController.swift */,
+				C46ED70E1EE2113D0045FEC0 /* HomeView.swift */,
+				C46180FE1EE3B1AC00C2AB2B /* AutocompletionCell.swift */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		C4CB56971EE6142F000E4478 /* Settings Module */ = {
+			isa = PBXGroup;
+			children = (
+				C4CB56991EE6143A000E4478 /* View */,
+				C4CB56981EE61435000E4478 /* Model */,
+			);
+			name = "Settings Module";
+			sourceTree = "<group>";
+		};
+		C4CB56981EE61435000E4478 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				C4CB569D1EE6144B000E4478 /* SettingsViewModel.swift */,
+				C4CB569A1EE6144B000E4478 /* SettingsServices.swift */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		C4CB56991EE6143A000E4478 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				C4E5E4301EE89CCF0094F4AA /* SettingsNavigationController.swift */,
+				C4CB569C1EE6144B000E4478 /* SettingsViewController.swift */,
+				C4CB569B1EE6144B000E4478 /* SettingsView.swift */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		C4CB56A21EE61503000E4478 /* Route module */ = {
+			isa = PBXGroup;
+			children = (
+				C4CB56A41EE6151B000E4478 /* View */,
+				C4CB56A31EE61514000E4478 /* Model */,
+			);
+			name = "Route module";
+			sourceTree = "<group>";
+		};
+		C4CB56A31EE61514000E4478 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				C4CB56A81EE61526000E4478 /* RouteViewModel.swift */,
+				C4CB56A51EE61526000E4478 /* RouteServices.swift */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		C4CB56A41EE6151B000E4478 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				C4CB56A71EE61526000E4478 /* RouteViewController.swift */,
+				C4CB56A61EE61526000E4478 /* RouteView.swift */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		C4E502C81EE3509E00F10604 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				C46180F61EE3632700C2AB2B /* UI */,
+				C46180F71EE3632C00C2AB2B /* Other */,
+			);
+			name = Extensions;
+			sourceTree = "<group>";
+		};
+		C4E502CD1EE35A9F00F10604 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				C4E502CB1EE3526200F10604 /* LocationService.swift */,
+				C418BD1A1EE6AA0800D74AF8 /* GoogleService.swift */,
+			);
+			name = Services;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		C43EB2AB1EB828BF00549E9C /* Routefire */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C43EB2BE1EB828BF00549E9C /* Build configuration list for PBXNativeTarget "Routefire" */;
+			buildPhases = (
+				97E6D5A8A6F476A8EC2EEE7E /* [CP] Check Pods Manifest.lock */,
+				C43EB2A81EB828BF00549E9C /* Sources */,
+				C43EB2A91EB828BF00549E9C /* Frameworks */,
+				C43EB2AA1EB828BF00549E9C /* Resources */,
+				DE9F29B92299F9662D83527E /* [CP] Embed Pods Frameworks */,
+				625E41CF0AE65AA208143428 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Routefire;
+			productName = Routefire;
+			productReference = C43EB2AC1EB828BF00549E9C /* Routefire.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C43EB2A41EB828BF00549E9C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0830;
+				LastUpgradeCheck = 0900;
+				ORGANIZATIONNAME = "William Robinson";
+				TargetAttributes = {
+					C43EB2AB1EB828BF00549E9C = {
+						CreatedOnToolsVersion = 8.3;
+						DevelopmentTeam = TWPE6ND5AF;
+						LastSwiftMigration = 0900;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = C43EB2A71EB828BF00549E9C /* Build configuration list for PBXProject "Routefire" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = C43EB2A31EB828BF00549E9C;
+			productRefGroup = C43EB2AD1EB828BF00549E9C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C43EB2AB1EB828BF00549E9C /* Routefire */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		C43EB2AA1EB828BF00549E9C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C43EB2B71EB828BF00549E9C /* Assets.xcassets in Resources */,
+				C43EB2C21EB828DE00549E9C /* LaunchScreen.storyboard in Resources */,
+				C443A8971EE24935005D41B3 /* MapStyle.json in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		625E41CF0AE65AA208143428 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Routefire/Pods-Routefire-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		97E6D5A8A6F476A8EC2EEE7E /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		DE9F29B92299F9662D83527E /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Routefire/Pods-Routefire-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C43EB2A81EB828BF00549E9C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C4CB56AA1EE61526000E4478 /* RouteView.swift in Sources */,
+				C4CB56AB1EE61526000E4478 /* RouteViewController.swift in Sources */,
+				C43EB2B01EB828BF00549E9C /* AppDelegate.swift in Sources */,
+				C46180F31EE3630900C2AB2B /* CLLocationManagerRxExtensions.swift in Sources */,
+				C46180FF1EE3B1AC00C2AB2B /* AutocompletionCell.swift in Sources */,
+				C446D60E1EEC163800DE6F11 /* LaunchAnimator.swift in Sources */,
+				C4ED12951EEBC8C100795D2B /* RoutefireLogoView.swift in Sources */,
+				C4E5E4311EE89CCF0094F4AA /* SettingsNavigationController.swift in Sources */,
+				C4D624441EE7CC940000504A /* NewsView.swift in Sources */,
+				C4CB56A11EE6144B000E4478 /* SettingsViewModel.swift in Sources */,
+				C4CB569F1EE6144B000E4478 /* SettingsView.swift in Sources */,
+				C4E502CC1EE3526200F10604 /* LocationService.swift in Sources */,
+				C4D624461EE7CC940000504A /* NewsViewModel.swift in Sources */,
+				C4CB56AC1EE61526000E4478 /* RouteViewModel.swift in Sources */,
+				C4CB569E1EE6144B000E4478 /* SettingsServices.swift in Sources */,
+				C443A8941EE246CC005D41B3 /* Secrets.swift in Sources */,
+				C46ED70A1EE1FABE0045FEC0 /* LaunchView.swift in Sources */,
+				C4D624451EE7CC940000504A /* NewsViewController.swift in Sources */,
+				C446D60B1EEBF7AF00DE6F11 /* UIViewKeyframeAnimationOptionsExtensions.swift in Sources */,
+				C4ED12971EEBC97300795D2B /* StyleKit.swift in Sources */,
+				C46ED7131EE211530045FEC0 /* HomeViewModel.swift in Sources */,
+				C46180FD1EE3842100C2AB2B /* Autocompletion.swift in Sources */,
+				C446D6011EEBDAE700DE6F11 /* LaunchViewModel.swift in Sources */,
+				C4CB56A91EE61526000E4478 /* RouteServices.swift in Sources */,
+				C46180F91EE363D200C2AB2B /* RxCLLocationManagerDelegateProxy.swift in Sources */,
+				C4D624431EE7CC940000504A /* NewsServices.swift in Sources */,
+				C46ED7081EE1F50B0045FEC0 /* LaunchViewController.swift in Sources */,
+				C46ED70F1EE2113D0045FEC0 /* HomeView.swift in Sources */,
+				C418BD1B1EE6AA0800D74AF8 /* GoogleService.swift in Sources */,
+				C46ED7061EE1F3BD0045FEC0 /* AppNavigationController.swift in Sources */,
+				C46ED7111EE211480045FEC0 /* HomeViewController.swift in Sources */,
+				C4CB56A01EE6144B000E4478 /* SettingsViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		C43EB2BC1EB828BF00549E9C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		C43EB2BD1EB828BF00549E9C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		C43EB2BF1EB828BF00549E9C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4AC92D8B8B9630B636ADE46A /* Pods-Routefire.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = TWPE6ND5AF;
+				INFOPLIST_FILE = Routefire/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.WilliamRobinson.Routefire;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		C43EB2C01EB828BF00549E9C /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 86BC3F39B4B5ECADA7F66A24 /* Pods-Routefire.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = TWPE6ND5AF;
+				INFOPLIST_FILE = Routefire/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.WilliamRobinson.Routefire;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C43EB2A71EB828BF00549E9C /* Build configuration list for PBXProject "Routefire" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C43EB2BC1EB828BF00549E9C /* Debug */,
+				C43EB2BD1EB828BF00549E9C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C43EB2BE1EB828BF00549E9C /* Build configuration list for PBXNativeTarget "Routefire" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C43EB2BF1EB828BF00549E9C /* Debug */,
+				C43EB2C01EB828BF00549E9C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = C43EB2A41EB828BF00549E9C /* Project object */;
+}

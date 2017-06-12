@@ -1,0 +1,58 @@
+PODS:
+  - BouncyLayout (1.1.0)
+  - GoogleMaps (2.3.0):
+    - GoogleMaps/Maps (= 2.3.0)
+  - GoogleMaps/Base (2.3.0)
+  - GoogleMaps/Maps (2.3.0):
+    - GoogleMaps/Base
+  - GooglePlaces (2.3.0):
+    - GoogleMaps/Base (= 2.3.0)
+  - Material (2.6.3):
+    - Material/Core (= 2.6.3)
+  - Material/Core (2.6.3)
+  - RxCocoa (3.5.0):
+    - RxSwift (~> 3.4)
+  - RxKeyboard (0.5.0):
+    - RxCocoa (>= 3.4)
+    - RxSwift (>= 3.4)
+  - RxSwift (3.5.0)
+  - SideMenu (2.3.2)
+  - SnapKit (3.2.0)
+  - Spring (1.0.3)
+
+DEPENDENCIES:
+  - BouncyLayout
+  - GoogleMaps
+  - GooglePlaces
+  - Material
+  - RxCocoa
+  - RxKeyboard
+  - SideMenu
+  - SnapKit
+  - Spring (from `https://github.com/MengTo/Spring.git`, branch `swift3`)
+
+EXTERNAL SOURCES:
+  Spring:
+    :branch: swift3
+    :git: https://github.com/MengTo/Spring.git
+
+CHECKOUT OPTIONS:
+  Spring:
+    :commit: 8201b5c93bd7ebdf4cd18160bcde1e6e88c2be64
+    :git: https://github.com/MengTo/Spring.git
+
+SPEC CHECKSUMS:
+  BouncyLayout: f91c6504437a61acd733404f55f75bd8154f5840
+  GoogleMaps: 340a6a0bebd17c2db8abcd3921976c7c53c86cb8
+  GooglePlaces: 74d322c74184ea4576184089b496d291cf0dcd38
+  Material: af607a7ec0e9978ef85cf189a3d8ceeeb650400f
+  RxCocoa: a0a09f45d0e5b48ecb6a4a7b4b4c89c88d3f633f
+  RxKeyboard: a0a681f3efa0c265e42ced07537f7a464e867e74
+  RxSwift: 18ee9d78b45edb3b0b7e79916b47a116e6dbc842
+  SideMenu: 3fa07dd05d4bade2b6f9889fb1877e312e1ba319
+  SnapKit: 1ca44df72cfa543218d177cb8aab029d10d86ea7
+  Spring: 3f02b5dc3308572ef177b3cad0fa7bbc4b0706f7
+
+PODFILE CHECKSUM: 851d8d5aa472ae5bb3f8f33071b19b98a0489fbe
+
+COCOAPODS: 1.2.1
